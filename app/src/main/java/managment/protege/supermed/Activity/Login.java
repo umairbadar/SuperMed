@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -214,7 +215,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
     public void initializations() {
         hud = KProgressHUD.create(Login.this)
                 .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
-                .setCancellable(false);
+                .setCancellable(false)
+                .setWindowColor(Color.parseColor("#5D910B"));
 
         login_email = (EditText) findViewById(R.id.login_email);
         login_password = (EditText) findViewById(R.id.login_password);

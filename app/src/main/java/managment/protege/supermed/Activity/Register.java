@@ -2,6 +2,7 @@ package managment.protege.supermed.Activity;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -130,7 +131,8 @@ public class Register extends AppCompatActivity {
 
         hud = KProgressHUD.create(Register.this)
                 .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
-                .setCancellable(false);
+                .setCancellable(false)
+                .setWindowColor(Color.parseColor("#5D910B"));
         et_fname = findViewById(R.id.et_fname);
         et_lname = findViewById(R.id.et_lname);
         et_email = findViewById(R.id.et_email);
