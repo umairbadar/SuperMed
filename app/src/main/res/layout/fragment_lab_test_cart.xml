@@ -1,0 +1,238 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="managment.protege.supermed.Fragment.Cart">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.4"
+                android:id="@+id/labTestCart"
+                ></android.support.v7.widget.RecyclerView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="20dp"/>
+
+            <!-- COUPON SECTION-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/cartApplyCoupon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/cart_coupon_bg"
+                    android:fontFamily="@font/lato_bold"
+                    android:hint="APPLY COUPON"
+                    android:padding="12dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/cartCouponText"
+                    android:textColorHint="@color/cartCouponBg"
+                    android:textSize="14dp" />
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="match_parent"/>
+                <EditText
+                    android:id="@+id/cartApplyPromo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/cart_coupon_bg"
+                    android:fontFamily="@font/lato_bold"
+                    android:hint="PROMO CODE"
+                    android:text=""
+                    android:padding="12dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/cartCouponText"
+                    android:textColorHint="@color/cartCouponText"
+                    android:textSize="14dp" />
+
+            </LinearLayout>
+            <!-- COUPON SECTION END-->
+            <!-- PRICE SECTION -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@color/cartAmountSection"
+                >
+
+                <!-- LABEL SECTION -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="0.2"
+                    >
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato_bold"
+                        android:padding="10dp"
+                        android:text="Price"
+                        android:textColor="@color/cartCouponText"
+                        android:textColorHint="@color/cartCouponText"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato_bold"
+                        android:padding="10dp"
+                        android:text="Discount"
+                        android:textColor="@color/cartCouponText"
+                        android:textColorHint="@color/cartCouponText"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato_bold"
+                        android:padding="10dp"
+                        android:text="Sub Total"
+                        android:textColor="@color/cartCouponText"
+                        android:textColorHint="@color/cartCouponText"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato_bold"
+                        android:padding="10dp"
+                        android:text="Coupon Discount"
+                        android:textColor="@color/cartCouponText"
+                        android:textColorHint="@color/cartCouponText"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato_bold"
+                        android:padding="10dp"
+                        android:text="Delivery"
+                        android:textColor="@color/cartCouponText"
+                        android:textColorHint="@color/cartCouponText"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato_bold"
+                        android:padding="10dp"
+                        android:text="Total Payable"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="15dp"/>
+                </LinearLayout>
+                <!-- LABEL SECTION END-->
+                <!-- AMOUNT SECTION-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="0.8"
+                    >
+
+                    <TextView
+                        android:id="@+id/cartPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato_bold"
+                        android:padding="10dp"
+                        android:text="$130"
+                        android:textColor="@color/cartCouponText"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/cartDiscount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato_bold"
+                        android:padding="10dp"
+                        android:text="- $30"
+                        android:textColor="@color/cartCouponBg"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/cartSubTotal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato_bold"
+                        android:padding="10dp"
+                        android:text="$100"
+                        android:textColor="@color/cartCouponText"
+                        android:textColorHint="@color/cartCouponText"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/cartCouponDiscount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato_bold"
+                        android:padding="10dp"
+                        android:text="$0"
+                        android:textColor="@color/cartCouponBg"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/cartDelivery"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato_bold"
+                        android:padding="10dp"
+                        android:text="FREE"
+                        android:textColor="@color/cartCouponBg"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/cartTotalPayable"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato_bold"
+                        android:padding="10dp"
+                        android:text="$100"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="15dp"/>
+                </LinearLayout>
+                <!-- AMOUNT SECTION END-->
+
+            </LinearLayout>
+
+
+            <Button
+                android:id="@+id/btn_confirmAppointment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/cartCouponBg"
+                android:textColor="@color/white"
+                android:fontFamily="@font/lato_bold"
+                android:textSize="14dp"
+                android:text="confirm Appointment"
+                />
+        </LinearLayout>
+    </ScrollView>
+
+
+</RelativeLayout>

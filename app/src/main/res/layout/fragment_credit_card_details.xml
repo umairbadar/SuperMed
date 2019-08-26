@@ -1,0 +1,132 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="managment.protege.supermed.Fragment.CreditCardDetails">
+
+    <!-- TODO: Update blank fragment layout -->
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar_back"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"/>
+
+        <EditText
+            android:id="@+id/credit_fullName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/change_password_bg"
+            android:hint="@string/fullname"
+            android:padding="15dp"
+            android:fontFamily="@font/lato_bold"
+            android:textColorHint="@color/changePasswordTextColor"
+            android:textColor="@color/changePasswordTextColor"
+            android:textSize="14dp"
+            android:inputType="textCapSentences"
+            />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"/>
+        <EditText
+            android:id="@+id/credit_cardNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/change_password_bg"
+            android:hint="@string/cardnumber"
+            android:padding="15dp"
+            android:maxLength="19"
+            android:inputType="phone"
+            android:fontFamily="@font/lato_bold"
+            android:textColorHint="@color/changePasswordTextColor"
+            android:textColor="@color/changePasswordTextColor"
+            android:textSize="14dp"
+            />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"/>
+        <TextView
+            android:id="@+id/credit_expiryDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/change_password_bg"
+            android:hint="@string/expirydate"
+            android:padding="15dp"
+
+            android:fontFamily="@font/lato_bold"
+            android:textColorHint="@color/changePasswordTextColor"
+            android:textColor="@color/changePasswordTextColor"
+            android:textSize="14dp"
+            />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <EditText
+                android:id="@+id/credit_cvv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/change_password_bg"
+                android:hint="@string/cvv"
+                android:maxLength="3"
+                android:inputType="number"
+                android:padding="15dp"
+                android:fontFamily="@font/lato_bold"
+                android:textColorHint="@color/changePasswordTextColor"
+                android:textColor="@color/changePasswordTextColor"
+                android:textSize="14dp"
+                android:layout_weight="1"
+                />
+            <View
+                android:layout_width="5dp"
+                android:layout_height="match_parent"/>
+            <EditText
+                android:id="@+id/credit_pin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/change_password_bg"
+                android:hint="@string/pin"
+                android:padding="15dp"
+                android:fontFamily="@font/lato_bold"
+                android:textColorHint="@color/changePasswordTextColor"
+                android:textColor="@color/changePasswordTextColor"
+                android:textSize="14dp"
+                android:layout_weight="1"
+                />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="15dp"/>
+
+        <Button
+            android:id="@+id/btn_saveInformation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/cartCouponBg"
+            android:textColor="@color/white"
+            android:fontFamily="@font/lato_bold"
+            android:textSize="14dp"
+            android:text="SAVE INFORMATION"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

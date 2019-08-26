@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:title="HOME" />
+
+        <item
+            android:id="@+id/nav_alternateMedicine"
+            android:title="ALTERNATIVE MEDICINE" />
+        <item
+            android:id="@+id/nav_uploadPresciption"
+            android:title="UPLOAD PRESCRIPTION" />
+        <item
+            android:id="@+id/nav_placeOrder"
+            android:title="CHECK OUT" />
+        <item
+            android:id="@+id/nav_Categories"
+            android:title="CATEGORIES" />
+
+        <item
+            android:id="@+id/nav_orderHistory"
+            android:title="ORDER HISTORY" />
+        <item
+            android:id="@+id/nav_settings"
+            android:title="SETTINGS" />
+       <!-- <item
+            android:id="@+id/nav_newsletter"
+            android:title="NEWSLETTERS" />-->
+        <item
+            android:id="@+id/nav_helpCenter"
+            android:title="HELP CENTER" />
+
+        <!--<item
+            android:id="@+id/terms"
+            android:title="TERMS AND CONDITIONS" />-->
+        <item
+            android:id="@+id/nav_contact"
+            android:title="CONTACT US" />
+        <item
+            android:id="@+id/nav_join"
+            android:title="JOIN US" />
+        <item
+            android:id="@+id/nav_logout"
+            android:title="LOG OUT" />
+    </group>
+
+
+</menu>

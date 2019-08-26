@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:gravity="center"
+    >
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:paddingRight="15dp"
+        android:paddingLeft="15dp"
+        android:layout_marginTop="15dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:orientation="vertical">
+
+
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="30dp" />
+
+        <TextView
+            android:id="@+id/tv_cd_rp_invoice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/lato_bold"
+            android:gravity="center"
+            android:paddingBottom="3dp"
+            android:paddingLeft="3dp"
+            android:text="Credit/Debit Card Details"
+            android:textAllCaps="true"
+            android:textColor="@color/upperBar"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="15dp" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginRight="25dp"
+            android:layout_marginLeft="25dp"
+            >
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lato_regular"
+                android:textSize="16dp"
+                android:textColor="@color/placeOrderText"
+                android:text="@string/checkoutCardDetails"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/change_password_bg"
+                android:id="@+id/checkoutCardNumber"
+                android:maxLength="19"
+                android:inputType="phone"
+                android:textColor="@color/placeOrderEditText"
+                android:hint="Card Number"
+                android:textColorHint="@color/placeOrderEditText"
+                android:gravity="left"
+                android:padding="10dp"
+                android:textSize="16dp"
+                />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/change_password_bg"
+                    android:id="@+id/checkoutExpiryDate"
+                    android:textColor="@color/placeOrderEditText"
+                    android:hint="Expiry Date"
+                    android:textColorHint="@color/placeOrderEditText"
+                    android:gravity="left"
+                    android:padding="10dp"
+                    android:textSize="16dp"
+                    android:layout_weight="0.5"
+                    />
+                <View
+                    android:layout_width="10dp"
+                    android:layout_height="match_parent"/>
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/change_password_bg"
+                    android:id="@+id/checkoutCvv"
+                    android:textColor="@color/placeOrderEditText"
+                    android:hint="CVV"
+                    android:textColorHint="@color/placeOrderEditText"
+                    android:gravity="left"
+                    android:padding="10dp"
+                    android:maxLength="3"
+                    android:inputType="number"
+                    android:textSize="16dp"
+                    android:layout_weight="1"
+                    />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="20dp"/>
+            <!-- Order Summary Section-->
+
+
+            <!--End Order Summary Section-->
+
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="20dp"/>
+        <Button
+            android:id="@+id/btn_submitCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/cartCouponBg"
+            android:textColor="@color/white"
+            android:fontFamily="@font/lato_bold"
+            android:textSize="14dp"
+            android:text="Submit" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
+
+    </LinearLayout>
+    <ImageView
+        android:id="@+id/iv_rp_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/error"
+        android:layout_alignParentRight="true"
+
+        android:layout_marginRight="8dp"
+        />
+
+
+</RelativeLayout>

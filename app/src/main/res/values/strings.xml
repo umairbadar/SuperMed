@@ -1,0 +1,101 @@
+<resources>
+    <string name="app_name">Super Med</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="email">abc@Email.com</string>
+    <string name="password">Password</string>
+    <string name="repassword">Confirm Password</string>
+    <string name="loginBtn">SIGN IN</string>
+    <string name="or">OR</string>
+    <string name="login_google">LOGIN USING GOOGLE</string>
+    <string name="login_facebook">LOGIN USING FACEBOOK</string>
+    <string name="forgot_password"><u>Did you Forget your Password?</u></string>
+    <string name="guest_user"><u>Start as Guest User</u></string>
+    <string name="already_user"><u>Already have an account?Click here</u></string>
+    <string name="create_account"><u>Create an Account</u></string>
+    <string name="fname">First Name</string>
+    <string name="lname">Last Name</string>
+    <string name="mobile">+92-330-1234567</string>
+    <string name="fax">FAX</string>
+    <string name="company">Company</string>
+    <string name="address">Address</string>
+    <string name="city">City</string>
+    <string name="country">Country</string>
+    <string name="postalCode">Postal Code</string>
+    <string name="Region">Region</string>
+    <string name="dob">Date of Birth</string>
+    <string name="signup">SIGN UP</string>
+    <string name="newsletter">Subscribe to Newsletter</string>
+    <string name="oldpassword">Old Password</string>
+    <string name="newpassword">New Password</string>
+    <string name="newsletter_email">Enter Email to receive Newsletter</string>
+    <string name="forgotpassword_popup">Enter Email to Reset Password</string>
+    <string name="confirmnewpassword">Re-Enter New Password</string>
+    <string name="fullname">Full Name</string>
+    <string name="cardnumber">Card Number</string>
+    <string name="expirydate">Expiry Date</string>
+    <string name="cvv">CVV</string>
+    <string name="pin">PIN</string>
+    <string name="orderHistorySrNumber">01.</string>
+    <string name="orderHistoryNumberLabel">Order Number</string>
+    <string name="orderHistoryNumber">11401852</string>
+    <string name="placeOrderCreditCard">Pay with Keenu</string>
+    <string name="placeOrdercod">Cash on Delivery</string>
+    <string name="Search_Product">ENTER PRODUCT NAME HERE</string>
+    <string name="EditProfile">Change Profile Photo</string>
+    <string name="savechanges">Save Changes</string>
+    <string name="checkoutCardDetails">Please enter your Credit/Debit Card details:</string>
+    <string name="doc">Doctors\nInformation</string>
+    <string name="emergency">Emergency\nContacts</string>
+    <string name="scheduleAppointment">Book an\nAppointment</string>
+    <!--<string name="facebook_app_id">480977719051570</string>-->
+    <!--<string name="fb_login_protocol_scheme">fb480977719051570</string>-->
+    <string name="doc_info">DOCTORS INFORMATION</string>
+    <string name="emergency_contacts">EMERGENCY CONTACTS</string>
+    <string name="appointment_history">APPOINTMENT HISTORY</string>
+    <string name="cart">CART</string>
+    <string name="place_order">PLACE ORDER</string>
+    <string name="join_us">JOIN US</string>
+    <string name="fb_link">https://www.facebook.com/</string>
+    <string name="linkedin_link">https://www.linkedin.com/</string>
+    <string name="contact_us">CONTACT US</string>
+    <string name="terms_conditions">TERMS AND CONDITIONS</string>
+    <string name="news_letter">Newsletter</string>
+    <string name="settings">SETTINGS</string>
+    <string name="edit_profile">EDIT PROFILE</string>
+    <string name="faq">FAQs</string>
+    <string name="card_details">Card Details</string>
+    <string name="change_password">CHANGE PASSWORD</string>
+    <string name="order_history">ORDER HSITORY</string>
+    <string name="categories">CATEGORIES</string>
+    <string name="sub_categories">SUB-CATEGORIES</string>
+    <string name="products">PRODUCTS</string>
+    <string name="upload_prescription">UPLOAD PRESCRIPTION</string>
+    <string name="alternative_list">ALTERNATIVE LISTS</string>
+
+
+    <string-array name="blood_groups">
+        <item>Select Blood Group</item>
+        <item>A+</item>
+        <item>A-</item>
+        <item>B+</item>
+        <item>B-</item>
+        <item>O+</item>
+        <item>O-</item>
+        <item>AB+</item>
+        <item>AB-</item>
+    </string-array>
+
+
+    <string name="facebook_app_id">449739072458171</string>
+    <string name="fb_login_protocol_scheme">fb449739072458171</string>
+    <string name="already_have_an_account"><u>Already Have an Account?</u></string>
+    <string name="lab_test">Lab Test</string>
+</resources>

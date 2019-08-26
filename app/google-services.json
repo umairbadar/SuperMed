@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "838875456487",
+    "firebase_url": "https://super-med.firebaseio.com",
+    "project_id": "super-med",
+    "storage_bucket": "super-med.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:838875456487:android:2e1c57234da1046a",
+        "android_client_info": {
+          "package_name": "managment.protege.supermed"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "838875456487-2c2brj1k45qqvpbbd9nj3raus1cjifps.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "managment.protege.supermed",
+            "certificate_hash": "7c1b4bd6e140b64017f4e71dbba3eb0146b56256"
+          }
+        },
+        {
+          "client_id": "838875456487-7eosnj70p33pqjo349t9c48ovvucbutr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDfPT_0GZMgMdgYUUFF7z0CxUoBHoKuAYo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "838875456487-7eosnj70p33pqjo349t9c48ovvucbutr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
