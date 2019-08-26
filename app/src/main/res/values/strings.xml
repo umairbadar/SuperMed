@@ -22,7 +22,7 @@
     <string name="create_account"><u>Create an Account</u></string>
     <string name="fname">First Name</string>
     <string name="lname">Last Name</string>
-    <string name="mobile">+92330en dash1234567</string>
+    <string name="mobile" tools:ignore="TypographyDashes">+92330-1234567</string>
     <string name="fax">FAX</string>
     <string name="company">Company</string>
     <string name="address">Address</string>
