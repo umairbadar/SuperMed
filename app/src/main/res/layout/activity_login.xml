@@ -70,7 +70,8 @@
         android:fontFamily="@font/lato_regular"
         android:gravity="center"
         android:hint="@string/password"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        android:imeOptions="actionDone"/>
 
 
     <Button
