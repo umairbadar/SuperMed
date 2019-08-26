@@ -2,57 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:layout_marginLeft="20dp"
     android:layout_marginRight="20dp"
-    >
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="10dp"/>
-    <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:orientation="horizontal"-->
-        <!--android:paddingLeft="10dp"-->
-        <!--&gt;-->
+    android:orientation="vertical">
 
-        <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="@string/orderHistoryNumberLabel"-->
-            <!--android:textColor="@color/black"-->
-            <!--android:paddingRight="3dp"-->
-            <!--android:fontFamily="@font/lato_bold"-->
-            <!--android:textSize="14dp"-->
-
-            <!--/>-->
-        <!--<TextView-->
-            <!--android:id="@+id/orderNumber"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="@string/orderHistoryNumber"-->
-            <!--android:textColor="@color/black"-->
-            <!--android:fontFamily="@font/lato_bold"-->
-            <!--android:textSize="14dp"-->
-
-            <!--/>-->
-
-
-    <!--</LinearLayout>-->
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="10dp"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/cart_list_bg"
+        android:orientation="vertical"
         android:paddingLeft="15dp"
         android:paddingTop="10dp"
-        android:paddingBottom="10dp"
         android:paddingRight="10dp"
-
-        android:orientation="vertical"
-        android:background="@drawable/cart_list_bg"
-        >
+        android:paddingBottom="10dp">
         <!-- Order Number Section -->
 
         <!-- Order Number Section END -->
@@ -60,80 +22,80 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal">
 
             <!-- second  rowCartcart box -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_gravity="center"
                 android:gravity="center"
-                >
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/orderHistoryProductName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Herbal"
-                    android:textColor="@color/green"
-                    android:textSize="18dp"
                     android:fontFamily="@font/lato_bold"
-                    />
+                    android:text="Herbal"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="18dp" />
+
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="5dp"/>
+                    android:layout_height="5dp" />
+
                 <TextView
                     android:id="@+id/orderHistoryStatus"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Order Status"
                     android:layout_marginLeft="5dp"
-                    android:textColor="@color/settingsButtonColor"
-                    android:textSize="14dp"
                     android:fontFamily="@font/lato_bold"
-                    />
+                    android:text="Order Status"
+                    android:textColor="@color/settingsButtonColor"
+                    android:textSize="14dp" />
+
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="5dp"/>
+                    android:layout_height="5dp" />
+
                 <TextView
                     android:id="@+id/orderHistoryNote"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Order Note:"
                     android:layout_marginLeft="5dp"
-                    android:textColor="@color/settingsButtonColor"
-                    android:textSize="14dp"
                     android:fontFamily="@font/lato_bold"
-                    />
+                    android:text="Order Note:"
+                    android:textColor="@color/settingsButtonColor"
+                    android:textSize="14dp" />
+
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="10dp"/>
+                    android:layout_height="10dp" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    >
+                    android:orientation="horizontal">
+
                     <TextView
                         android:id="@+id/orderHistoryProductSalePrice"
-                         android:layout_width="0dp"
+                        android:layout_width="0dp"
                         android:layout_height="0dp"
+                        android:fontFamily="@font/lato_bold"
                         android:text="$49"
                         android:textColor="@color/black"
-                        android:textSize="18dp"
-                        android:fontFamily="@font/lato_bold"
-                        />
+                        android:textSize="18dp" />
+
                     <TextView
-                        android:layout_weight="1"
                         android:id="@+id/orderHistoryProductActualPrice"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/lato_bold"
                         android:text="$49"
                         android:textColor="@color/sale"
-                        android:textSize="16dp"
-                        android:fontFamily="@font/lato_bold"
-                        />
+                        android:textSize="16dp" />
 
                 </LinearLayout>
 
