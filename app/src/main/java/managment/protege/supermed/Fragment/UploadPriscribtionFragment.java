@@ -86,6 +86,7 @@ public class UploadPriscribtionFragment extends Fragment {
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
         Main_Apps.getMainActivity().addToolbarBack(getContext(), getString(R.string.upload_prescription), view);
 
+        isStoragePermissionGranted();
         onclick();
         return view;
     }
@@ -101,11 +102,6 @@ public class UploadPriscribtionFragment extends Fragment {
     }
 
     private void onclick() {
-
-        if (Build.VERSION.SDK_INT >= 23) {
-            //do your check here
-            isStoragePermissionGranted();
-        }
 
         imageup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -227,21 +223,19 @@ public class UploadPriscribtionFragment extends Fragment {
         });
     }
 
-    public boolean isStoragePermissionGranted() {
+    public void isStoragePermissionGranted() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (getActivity().checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     == PackageManager.PERMISSION_GRANTED) {
                 Log.v("TAG", "Permission is granted");
-                return true;
             } else {
 
                 Log.v("TAG", "Permission is revoked");
                 ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-                return false;
             }
-        } else { //permission is automatically granted on sdk<23 upon installation
+        } else {
+            //permission is automatically granted on sdk<23 upon installation
             Log.v("TAG", "Permission is granted");
-            return true;
         }
     }
 
