@@ -1,5 +1,5 @@
-<resources>
-    <string name="app_name">Super Med</string>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name" tools:ignore="PrivateResource">Super Med</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -22,7 +22,7 @@
     <string name="create_account"><u>Create an Account</u></string>
     <string name="fname">First Name</string>
     <string name="lname">Last Name</string>
-    <string name="mobile">+92-330-1234567</string>
+    <string name="mobile">+92330en dash1234567</string>
     <string name="fax">FAX</string>
     <string name="company">Company</string>
     <string name="address">Address</string>
@@ -98,4 +98,6 @@
     <string name="fb_login_protocol_scheme">fb449739072458171</string>
     <string name="already_have_an_account"><u>Already Have an Account?</u></string>
     <string name="lab_test">Lab Test</string>
+    <string name="todo">TODO</string>
+    <string name="upload_your_prescription">Upload Your Prescription</string>
 </resources>
