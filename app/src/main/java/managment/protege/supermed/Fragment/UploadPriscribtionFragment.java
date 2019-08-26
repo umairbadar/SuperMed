@@ -18,6 +18,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -62,7 +63,7 @@ import static android.app.Activity.RESULT_OK;
 public class UploadPriscribtionFragment extends Fragment {
 
     View view;
-    Button uploadPrescription, submit_presc, wapp, btn_camera, btn_gallery;
+    Button submit_presc, wapp, btn_camera, btn_gallery;
     ImageView imageup;
     TextView toolbar_text;
 
@@ -89,7 +90,22 @@ public class UploadPriscribtionFragment extends Fragment {
         return view;
     }
 
+    private void initialize() {
+        toolbar_text = (TextView) view.findViewById(R.id.toolbar_text);
+        wapp = (Button) view.findViewById(R.id.wapp);
+        imageup = (ImageView) view.findViewById(R.id.imageup);
+        //uploadPrescription = (Button) view.findViewById(R.id.uploadimage);
+        submit_presc = (Button) view.findViewById(R.id.submit_presc);
+        btn_camera = view.findViewById(R.id.btn_camera);
+        btn_gallery = view.findViewById(R.id.btn_gallery);
+    }
+
     private void onclick() {
+
+        if (Build.VERSION.SDK_INT >= 23) {
+            //do your check here
+            isStoragePermissionGranted();
+        }
 
         imageup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -188,11 +204,13 @@ public class UploadPriscribtionFragment extends Fragment {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View view) {
-                if (getActivity().checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                    requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_PERMISSION_CODE);
-                } else {
-                    Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                if (getActivity().checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                    if (getActivity().checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                        requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_PERMISSION_CODE);
+                    } else {
+                        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                    }
                 }
             }
         });
@@ -209,16 +227,39 @@ public class UploadPriscribtionFragment extends Fragment {
         });
     }
 
+    public boolean isStoragePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (getActivity().checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                Log.v("TAG", "Permission is granted");
+                return true;
+            } else {
+
+                Log.v("TAG", "Permission is revoked");
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                return false;
+            }
+        } else { //permission is automatically granted on sdk<23 upon installation
+            Log.v("TAG", "Permission is granted");
+            return true;
+        }
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == MY_CAMERA_PERMISSION_CODE) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(getContext(), "camera permission granted", Toast.LENGTH_LONG).show();
-                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, CAMERA_REQUEST);
-            } else {
-                Toast.makeText(getContext(), "camera permission denied", Toast.LENGTH_LONG).show();
+
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            Log.v("TAG", "Permission: " + permissions[0] + "was " + grantResults[0]);
+            //resume tasks needing this permission
+            if (requestCode == MY_CAMERA_PERMISSION_CODE) {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(getContext(), "camera permission granted", Toast.LENGTH_LONG).show();
+                    Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                } else {
+                    Toast.makeText(getContext(), "camera permission denied", Toast.LENGTH_LONG).show();
+                }
             }
         }
     }
@@ -226,13 +267,13 @@ public class UploadPriscribtionFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
+        if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK && data != null) {
             Bitmap photo = (Bitmap) data.getExtras().get("data");
             imageup.setImageBitmap(photo);
             Uri tempUri = getImageUri(getContext(), photo);
             file = new File(getRealPathFromURI(tempUri));
         }
-        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
+        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && data != null) {
             Uri selectedImage = data.getData();
             String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
@@ -268,16 +309,6 @@ public class UploadPriscribtionFragment extends Fragment {
             }
         }
         return path;
-    }
-
-    private void initialize() {
-        toolbar_text = (TextView) view.findViewById(R.id.toolbar_text);
-        wapp = (Button) view.findViewById(R.id.wapp);
-        imageup = (ImageView) view.findViewById(R.id.imageup);
-        //uploadPrescription = (Button) view.findViewById(R.id.uploadimage);
-        submit_presc = (Button) view.findViewById(R.id.submit_presc);
-        btn_camera = view.findViewById(R.id.btn_camera);
-        btn_gallery = view.findViewById(R.id.btn_gallery);
     }
 
     public void UploadPresc(final String userid, File file) {

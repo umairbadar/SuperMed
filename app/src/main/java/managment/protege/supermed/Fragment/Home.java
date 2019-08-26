@@ -141,7 +141,8 @@ public class Home extends Fragment {
         hud = KProgressHUD.create(getContext())
                 .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
                 .setCancellable(false)
-                .setWindowColor(Color.parseColor("#5D910B"));
+                .setWindowColor(Color.parseColor("#5D910B"))
+                .show();
         btn_upload_prescription = view.findViewById(R.id.btn_upload_prescription);
         btn_upload_prescription.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -228,7 +229,6 @@ public class Home extends Fragment {
     }
 
     public void getCategories() {
-        hud.show();
         String URL = "https://www.supermed.pk/api/api/getCategories";
         StringRequest req = new StringRequest(Request.Method.GET, URL,
                 new com.android.volley.Response.Listener<String>() {
