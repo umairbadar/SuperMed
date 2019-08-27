@@ -48,10 +48,9 @@ public class Home extends Fragment {
 
     private ViewFlipper viewflip;
     public static int ProductDetailCartCounter, commonWishlistCounter;
-    KProgressHUD hud;
+    private KProgressHUD hud;
     private Button btn_upload_prescription;
-    Main_Apps main_apps;
-    LinearLayout labTest, doctorsInformation, emergencyContacts, scheduledAppointments;
+    private LinearLayout labTest, doctorsInformation, emergencyContacts, scheduledAppointments;
     View view;
 
     //Categories
@@ -90,6 +89,7 @@ public class Home extends Fragment {
             fm.popBackStack();
         }
 
+        //Slider
         viewflip = view.findViewById(R.id.viewflip);
         int images[] = {R.drawable.banner1, R.drawable.banner2, R.drawable.banner3};
         for (int image : images) {

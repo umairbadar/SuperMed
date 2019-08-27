@@ -7,7 +7,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#D5E5CC" />
+        android:background="@color/colorPrimary" />
 
     <LinearLayout
         android:id="@+id/LL_subCat"

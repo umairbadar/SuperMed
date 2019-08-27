@@ -57,8 +57,7 @@ import static android.app.Activity.RESULT_OK;
 public class UploadPriscribtionFragment extends Fragment {
 
     View view;
-    Button submit_presc, wapp, btn_camera,
-            btn_gallery;
+    Button submit_presc, wapp, btn_camera, btn_gallery;
     ImageView imageup;
     TextView toolbar_text;
 
