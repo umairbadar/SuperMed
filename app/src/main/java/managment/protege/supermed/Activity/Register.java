@@ -79,7 +79,7 @@ public class Register extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finish();
-                startActivity(new Intent(getApplicationContext(),Login.class));
+                startActivity(new Intent(getApplicationContext(), Login.class));
             }
         });
 
@@ -100,6 +100,9 @@ public class Register extends AppCompatActivity {
                     et_email.requestFocus();
                 } else if (TextUtils.isEmpty(et_phone.getText().toString())) {
                     et_phone.setError("Please Enter Phone Number");
+                    et_phone.requestFocus();
+                } else if (et_phone.getText().length() > 11) {
+                    et_phone.setError("Phone number must be 11 digits long");
                     et_phone.requestFocus();
                 } else if (TextUtils.isEmpty(tv_dob.getText().toString())) {
                     Toast.makeText(getApplicationContext(), "Please Select Date of Birth",

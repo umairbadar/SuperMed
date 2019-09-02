@@ -3,16 +3,12 @@ package managment.protege.supermed.Fragment;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.DownloadManager;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
@@ -24,7 +20,6 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,8 +38,14 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.kaopiz.kprogresshud.KProgressHUD;
-import com.rw.loadingdialog.LoadingView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -58,61 +59,49 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
+import java.util.Map;
 
 import es.dmoral.toasty.Toasty;
-import managment.protege.supermed.Activity.Login;
 import managment.protege.supermed.Activity.Main_Apps;
 import managment.protege.supermed.Activity.Register;
 import managment.protege.supermed.Activity.WebViewActivity;
-import managment.protege.supermed.Adapter.HelpCenterAdapter;
 import managment.protege.supermed.Adapter.LabtestCartAdapter;
 import managment.protege.supermed.Constant.Constantapp;
-import managment.protege.supermed.Model.HelpCenterModel;
 import managment.protege.supermed.Model.LoadLabsModel;
 import managment.protege.supermed.Model.LoadTestModel;
 import managment.protege.supermed.Model.TestModel;
 import managment.protege.supermed.R;
-import managment.protege.supermed.Response.BookAppointmentResponse;
-import managment.protege.supermed.Response.LoadLabsResponse;
-import managment.protege.supermed.Response.LoadTestResponse;
-import managment.protege.supermed.Retrofit.API;
-import managment.protege.supermed.Retrofit.RetrofitAdapter;
 import managment.protege.supermed.Tools.GlobalHelper;
 import okhttp3.RequestBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class LabTest extends Fragment implements AdapterView.OnItemSelectedListener, AdapterView.OnItemClickListener {
+public class LabTest extends Fragment {
 
-    private TextView patientId, appointment, labTest_price;
+    private TextView appointment, labTest_price;
     private Spinner lab, labTest;
+
+    //Labs
+    private ArrayList<String> arr_lab;
+    private ArrayList<String> arr_lab_id;
+
+    //Tests
+    private ArrayList<String> arr_test;
+    private ArrayList<String> arr_test_id;
+    private ArrayList<String> arr_test_price;
+
     private EditText details, labTest_address, mr_id, patientName;
     RadioButton lt_rb_credit, plt_rb_cod;
-    List<LoadLabsModel> loadLabsModels;
-    List<LoadTestModel> loadTestModels;
     private Button submit;
     public static DatePickerDialog datePicker;
     public static JSONArray jsonArray = new JSONArray();
     String testName;
-    //    String paytype;
     JSONObject tests = new JSONObject();
 
     private DatePickerDialog datePickerDialog;
     String labId, TestId, testPrice, dates, time, problems, pay_type, address, labName;
-    public DatePickerDialog datePickers;
-    TimePickerDialog tp;
     Button add_test;
     public static List<TestModel> cataList = new ArrayList<>();
     public static LabtestCartAdapter cAdapter;
@@ -158,12 +147,58 @@ public class LabTest extends Fragment implements AdapterView.OnItemSelectedListe
         patientName = (EditText) v.findViewById(R.id.labTest_patientName);
         mr_id = (EditText) v.findViewById(R.id.mr_id);
         appointment = (TextView) v.findViewById(R.id.labTest_Appointment);
-        lab = (Spinner) v.findViewById(R.id.labTest_lab);
+        labTest_price = (TextView) v.findViewById(R.id.labTest_price);
+
+        //Test
         labTest = (Spinner) v.findViewById(R.id.labTest_Test);
+        arr_test_id = new ArrayList<>();
+        arr_test = new ArrayList<>();
+        arr_test.add("Select Test");
+        arr_test_price = new ArrayList<>();
+        labTest.setAdapter(new ArrayAdapter<>(getContext(),
+                android.R.layout.simple_spinner_dropdown_item, arr_test));
+        labTest.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (labTest.getSelectedItemPosition() == 0) {
+                    labTest_price.setText("");
+                } else {
+                    TestId = arr_test_id.get(i);
+                    testPrice = arr_test_price.get(i);
+                    labTest_price.setText(arr_test_price.get(i));
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        //Labs
+        lab = (Spinner) v.findViewById(R.id.labTest_lab);
+        arr_lab = new ArrayList<>();
+        arr_lab_id = new ArrayList<>();
+        getLabs();
+        lab.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                labId = arr_lab_id.get(i);
+                labName = arr_lab.get(i);
+                if (lab.getSelectedItemPosition() != 0) {
+                    getTests(labId);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
         details = (EditText) v.findViewById(R.id.labTest_Details);
         labTest_address = (EditText) v.findViewById(R.id.labTest_address);
         submit = (Button) v.findViewById(R.id.labTest_btn_submit);
-        labTest_price = (TextView) v.findViewById(R.id.labTest_price);
         lt_rb_credit = (RadioButton) v.findViewById(R.id.lt_rb_credit);
         plt_rb_cod = (RadioButton) v.findViewById(R.id.plt_rb_cod);
         plt_rb_cod.setChecked(true);
@@ -209,7 +244,6 @@ public class LabTest extends Fragment implements AdapterView.OnItemSelectedListe
     public static void delete(List<TestModel> data) {
         cataList = data;
         cAdapter.notifyDataSetChanged();
-
     }
 
     private void prepareCataData() {
@@ -267,10 +301,6 @@ public class LabTest extends Fragment implements AdapterView.OnItemSelectedListe
 
     private void spinnerFunctions() {
 
-        loadLabsSpinner(lab, getContext());
-        SelectLabId(lab);
-        SelectTestId(labTest);
-
 
         //Appointment Date and Time
         appointment.setOnClickListener(new View.OnClickListener() {
@@ -321,137 +351,99 @@ public class LabTest extends Fragment implements AdapterView.OnItemSelectedListe
         });
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+    public void getLabs() {
 
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-    }
-
-    //loading labs api function
-    public void loadLabsSpinner(final Spinner le_salesperson, final Context context) {
-        Main_Apps.hud.show();
-
-        API api = RetrofitAdapter.createAPI();
-        Call<LoadLabsResponse> loadLabsResponseCall = api.LOAD_LABS_RESPONSE_CALL();
-        loadLabsResponseCall.enqueue(new Callback<LoadLabsResponse>() {
-            @Override
-            public void onResponse(Call<LoadLabsResponse> call, Response<LoadLabsResponse> response) {
-                Main_Apps.hud.dismiss();
-                if (response != null) {
-                    if (response.body().getStatus()) {
-                        loadLabsModels = response.body().getLabs();
-                        setLabs(response.body().getLabs(), le_salesperson, context);
-
-                    } else {
-                        Log.e("Leads", "sales team spinner" + response.body().getMessage());
+        labHud.show();
+        String URL = "https://www.supermed.pk/api/api/list_lab";
+        StringRequest req = new StringRequest(Request.Method.GET, URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            labHud.dismiss();
+                            arr_lab.add("Select Lab");
+                            arr_lab_id.add("0");
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray jsonArray = jsonObject.getJSONArray("labs");
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject object = jsonArray.getJSONObject(i);
+                                String labId = object.getString("labId");
+                                String labName = object.getString("labName");
+                                arr_lab_id.add(labId);
+                                arr_lab.add(labName);
+                            }
+                            lab.setAdapter(new ArrayAdapter<>(getContext(),
+                                    android.R.layout.simple_spinner_dropdown_item, arr_lab));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<LoadLabsResponse> call, Throwable t) {
-                Main_Apps.hud.dismiss();
-                Log.e("Leads", "sales team spinner on failure" + t.getMessage());
-            }
-        });
-    }
-
-    static private void setLabs(List<LoadLabsModel> loadLabsModels, Spinner le_salesteam, Context context) {
-        List<String> listSpinner = new ArrayList<String>();
-        listSpinner.clear();
-        for (int i = 0; i < loadLabsModels.size(); i++) {
-            listSpinner.add(loadLabsModels.get(i).getLabName());
-            ArrayAdapter<String> csAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, listSpinner);
-            csAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            le_salesteam.setAdapter(csAdapter);
-        }
-    }
-
-    // selecting lab id
-    public void SelectLabId(Spinner spinner) {
-        spinner.setOnItemSelectedListener(this);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> obj, View view, int position, long id) {
-                labId = loadLabsModels.get(position).getLabId();
-                labName = loadLabsModels.get(position).getLabName();
-                LoadTests(labId, labTest, getContext());
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-    }
-
-    //Loading test Api
-    public void LoadTests(String lab_id, final Spinner le_salesperson, final Context context) {
-        Main_Apps.hud.show();
-        API api = RetrofitAdapter.createAPI();
-        Call<LoadTestResponse> loadTestResponseCall = api.LOAD_TEST_RESPONSE_CALL(lab_id);
-        loadTestResponseCall.enqueue(new Callback<LoadTestResponse>() {
-            @Override
-            public void onResponse(Call<LoadTestResponse> call, Response<LoadTestResponse> response) {
-                Main_Apps.hud.dismiss();
-                if (response != null) {
-                    if (response.body().getStatus()) {
-                        loadTestModels = response.body().getTests();
-                        setTests(response.body().getTests(), le_salesperson, context);
-                    } else {
-                        Log.e("Leads", "sales team spinner" + response.body().getMessage());
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        labHud.dismiss();
+                        Toast.makeText(getContext(), error.getMessage(),
+                                Toast.LENGTH_LONG).show();
                     }
-                }
-            }
+                });
 
-            @Override
-            public void onFailure(Call<LoadTestResponse> call, Throwable t) {
-                Main_Apps.hud.dismiss();
-
-                Log.e("Leads", "sales team spinner on failure" + t.getMessage());
-            }
-        });
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        requestQueue.add(req);
     }
 
-    static private void setTests(List<LoadTestModel> loadTestModels, Spinner le_salesteam, Context context) {
-        List<String> listSpinner = new ArrayList<String>();
-        listSpinner.clear();
-        //listSpinner.add("Select Test");
-        for (int i = 0; i < loadTestModels.size(); i++) {
-            listSpinner.add(loadTestModels.get(i).getTestName());
-            ArrayAdapter<String> csAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, listSpinner);
-            csAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            le_salesteam.setAdapter(csAdapter);
-        }
+    public void getTests(final String LabID) {
+        labHud.show();
+        String URL = "https://www.supermed.pk/api/api/list_test";
+        StringRequest req = new StringRequest(Request.Method.POST, URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            labHud.dismiss();
+                            arr_test.clear();
+                            arr_test_id.add("0");
+                            arr_test.add("Select Test");
+                            arr_test_price.add("0");
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray jsonArray = jsonObject.getJSONArray("tests");
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject object = jsonArray.getJSONObject(i);
+                                String testId = object.getString("testId");
+                                String testName = object.getString("testName");
+                                String testPrice = object.getString("testPrice");
+                                arr_test_id.add(testId);
+                                arr_test.add(testName);
+                                arr_test_price.add(testPrice);
+                            }
+                            labTest.setAdapter(new ArrayAdapter<>(getContext(),
+                                    android.R.layout.simple_spinner_dropdown_item, arr_test));
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        labHud.dismiss();
+                        Toast.makeText(getContext(), error.getMessage(),
+                                Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("lab_id", LabID);
+                return map;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        requestQueue.add(req);
     }
 
-    // selecting test id
-    public void SelectTestId(Spinner spinner) {
-        spinner.setOnItemSelectedListener(this);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> obj, View view, int position, long id) {
-                TestId = loadTestModels.get(position).getTestId();
-                labTest_price.setText(loadTestModels.get(position).getTestPrice());
-                testPrice = loadTestModels.get(position).getTestPrice();
-                testName = loadTestModels.get(position).getTestName();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-    }
 
     // payment by card popup
     public static void cardDetailDialog(final Context context, final RadioButton rb1) {
@@ -512,8 +504,6 @@ public class LabTest extends Fragment implements AdapterView.OnItemSelectedListe
                                           int monthOfYear, int dayOfMonth) {
                         // set date of month , month and year value in the edit text
                         editText.setText((monthOfYear + 1) + "/" + year);
-//                        date = dateEditText.getText().toString();
-//                        LoadAttendance();
 
                     }
                 }, mYear, mMonth, mDay);

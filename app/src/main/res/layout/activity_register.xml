@@ -36,7 +36,7 @@
             android:fontFamily="@font/lato_regular"
             android:hint="@string/fname"
             android:imeOptions="actionNext"
-            android:inputType="text"
+            android:inputType="text|textCapWords"
             android:padding="15dp" />
 
         <EditText
@@ -48,8 +48,9 @@
             android:background="@drawable/et_bg"
             android:fontFamily="@font/lato_regular"
             android:hint="@string/lname"
-            android:inputType="text"
-            android:padding="15dp" />
+            android:inputType="text|textCapWords"
+            android:padding="15dp"
+            android:imeOptions="actionNext"/>
 
     </LinearLayout>
 
@@ -65,7 +66,8 @@
         android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:padding="15dp"/>
+        android:padding="15dp"
+        android:imeOptions="actionNext"/>
 
     <EditText
         android:id="@+id/et_phone"
@@ -79,7 +81,8 @@
         android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:padding="15dp"/>
+        android:padding="15dp"
+        android:imeOptions="actionNext"/>
 
     <TextView
         android:id="@+id/tv_dob"
@@ -96,7 +99,8 @@
         android:textSize="14sp"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"/>
+        android:layout_marginRight="20dp"
+        android:imeOptions="actionNext"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -113,7 +117,8 @@
             android:layout_height="match_parent"
             android:fontFamily="@font/lato_bold"
             android:padding="15dp"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:imeOptions="actionNext"/>
 
     </LinearLayout>
 
@@ -132,7 +137,8 @@
             android:layout_height="match_parent"
             android:fontFamily="@font/lato_bold"
             android:padding="15dp"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:imeOptions="actionNext"/>
 
     </LinearLayout>
 
@@ -148,7 +154,8 @@
         android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:padding="15dp"/>
+        android:padding="15dp"
+        android:imeOptions="actionNext"/>
 
     <EditText
         android:id="@+id/et_cpassword"
@@ -162,7 +169,8 @@
         android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:padding="15dp"/>
+        android:padding="15dp"
+        android:imeOptions="actionDone"/>
 
     <Button
         android:id="@+id/btn_signup"

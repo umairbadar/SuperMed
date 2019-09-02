@@ -32,8 +32,10 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/et_bg"
                 android:hint="Mr ID (Optional)"
-                android:inputType="text"
-                android:paddingLeft="15dp"/>
+                android:inputType="text|textCapWords"
+                android:paddingLeft="15dp"
+                android:imeOptions="actionNext"
+                android:textColor="@color/black"/>
 
             <EditText
                 android:id="@+id/labTest_patientName"
@@ -42,8 +44,10 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/et_bg"
                 android:hint="Patient Name"
-                android:inputType="text"
-                android:paddingLeft="15dp"/>
+                android:inputType="text|textCapWords"
+                android:paddingLeft="15dp"
+                android:imeOptions="actionNext"
+                android:textColor="@color/black"/>
 
 
             <LinearLayout
@@ -88,9 +92,10 @@
                 android:background="@drawable/et_bg"
                 android:fontFamily="@font/lato_bold"
                 android:textSize="18sp"
-                android:textStyle="bold"
                 android:paddingLeft="15dp"
-                android:gravity="center|left"/>
+                android:gravity="center|left"
+                android:hint="Price"
+                android:textColor="@color/black"/>
 
             <TextView
                 android:id="@+id/labTest_Appointment"
@@ -103,7 +108,8 @@
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
                 android:textSize="16sp"
-                android:gravity="center|left"/>
+                android:gravity="center|left"
+                android:textColor="@color/black"/>
 
 
             <EditText
@@ -113,8 +119,10 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/et_bg"
                 android:hint="Address"
-                android:inputType="text"
-                android:paddingLeft="15dp"/>
+                android:inputType="text|textCapWords"
+                android:paddingLeft="15dp"
+                android:imeOptions="actionNext"
+                android:textColor="@color/black"/>
 
             <EditText
                 android:id="@+id/labTest_Details"
@@ -127,7 +135,8 @@
                 android:paddingLeft="15dp"
                 android:paddingTop="10dp"
                 android:gravity="top"
-                android:inputType="textCapSentences|textAutoCorrect"/>
+                android:inputType="textCapSentences|textAutoCorrect"
+                android:textColor="@color/black"/>
 
             <Button
                 android:id="@+id/add_test"
