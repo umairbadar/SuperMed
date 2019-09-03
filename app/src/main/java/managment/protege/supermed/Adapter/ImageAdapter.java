@@ -41,7 +41,10 @@ public class ImageAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int position) {
         ImageView imageView = new ImageView(context);
         imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-        Picasso.with(context).load(data.get(0).replaceAll(" ", "%20"))
+        Picasso.get()
+                .load(data.get(0).replaceAll(" ", "%20"))
+                .resize(80, 80)
+                .centerCrop()
                 .placeholder(R.drawable.tab_miss)
                 .into(imageView);
         ((ViewPager) container).addView(imageView, 0);

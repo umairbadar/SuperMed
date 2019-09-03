@@ -99,8 +99,11 @@ public class Edit_Profile extends Fragment implements IPickResult, View.OnClickL
         Main_Apps.getMainActivity().addToolbarBack(getContext(), getString(R.string.edit_profile), v);
         putDataOnLoad();
         String imageUrl = GlobalHelper.getUserProfile(getContext()).getProfile().getImage();
-        Picasso.with(getContext()).load(imageUrl).placeholder(R.drawable.edit_profile_icon)
+        Picasso.get()
+                .load(imageUrl)
                 .resize(80, 80)
+                .centerCrop()
+                .placeholder(R.drawable.edit_profile_icon)
                 .into(CircularImage);
         onClickFunction();
         setonclick();

@@ -57,7 +57,10 @@ public class AlternativeListAdapter extends RecyclerView.Adapter<AlternativeList
         holder.title.setText(Pro.getProductName());
         holder.price.setText("Rs" + Pro.getProductPrice());
         holder.priceoff.setText("Rs" + Pro.getProductOldPrice());
-        Picasso.with(context).load(Pro.getProductImage().replaceAll(" ", "%20"))
+        Picasso.get()
+                .load(Pro.getProductImage().replaceAll(" ", "%20"))
+                .resize(80, 80)
+                .centerCrop()
                 .placeholder(R.drawable.tab_miss)
                 .into(holder.iv);
         holder.detail.setOnClickListener(new View.OnClickListener() {

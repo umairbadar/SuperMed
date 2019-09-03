@@ -60,8 +60,10 @@ public class SearchProductAdapter extends RecyclerView.Adapter<SearchProductAdap
         holder.title.setText(Pro.getProductName());
         double original_price = Double.parseDouble(Pro.getProductPrice());
         holder.price.setText(String.format("Rs %.0f",original_price));
-
-        Picasso.with(context).load(Pro.getProductImage().replaceAll(" ", "%20"))
+        Picasso.get()
+                .load(Pro.getProductImage().replaceAll(" ", "%20"))
+                .resize(80, 80)
+                .centerCrop()
                 .placeholder(R.drawable.tab_miss)
                 .into(holder.iv);
         holder.detail.setOnClickListener(new View.OnClickListener() {

@@ -139,7 +139,10 @@ public class cartAdapter extends RecyclerView.Adapter<cartAdapter.MyViewHolder> 
                 }
             }
         });
-        Picasso.with(ct).load(cata.getProductImage().replaceAll(" ", "%20"))
+        Picasso.get()
+                .load(cata.getProductImage().replaceAll(" ", "%20"))
+                .resize(80, 80)
+                .centerCrop()
                 .placeholder(R.drawable.tab_miss)
                 .into(holder.iv);
         Log.e("ds", cata.getProductPrice());

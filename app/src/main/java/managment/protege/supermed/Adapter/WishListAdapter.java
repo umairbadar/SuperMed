@@ -78,7 +78,10 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.MyView
                 }
             }
         });
-        Picasso.with(context).load(Pro.getProductImage())
+        Picasso.get()
+                .load(Pro.getProductImage().replaceAll(" ", "%20"))
+                .resize(80, 80)
+                .centerCrop()
                 .placeholder(R.drawable.tab_miss)
                 .into(holder.iv);
         holder.tv_subcatname.setText(Pro.getSubCatName());

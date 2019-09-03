@@ -243,7 +243,13 @@ public class Main_Apps extends AppCompatActivity implements NavigationView.OnNav
         if (GlobalHelper.getUserProfile(context) != null && GlobalHelper.getUserProfile(context).getProfile() != null) {
             if (GlobalHelper.getUserProfile(context).getProfile().getImage() != null) {
                 images = GlobalHelper.getUserProfile(context).getProfile().getImage();
-                Picasso.with(context).load(images).resize(80, 80)
+                /*Picasso.with(context).load(images).resize(80, 80)
+                        .placeholder(R.drawable.edit_profile_icon)
+                        .into(nav_image);*/
+                Picasso.get()
+                        .load(images)
+                        .resize(80, 80)
+                        .centerCrop()
                         .placeholder(R.drawable.edit_profile_icon)
                         .into(nav_image);
             }

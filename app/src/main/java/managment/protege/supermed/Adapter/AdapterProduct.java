@@ -13,11 +13,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
 import managment.protege.supermed.Activity.Main_Apps;
 import managment.protege.supermed.Fragment.ProductDetail;
 import managment.protege.supermed.Model.GetProductsModel;
@@ -54,32 +56,39 @@ public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHold
 
         String ImageLink = Pro.getProductImage();
         ImageLink = ImageLink.replaceAll(" ", "%20");
-        Picasso.with(context).load(ImageLink).placeholder(R.drawable.tab_miss).into(holder.iv);
+        Picasso.get()
+                .load(ImageLink)
+                .resize(80, 80)
+                .centerCrop()
+                .placeholder(R.drawable.tab_miss)
+                .into(holder.iv);
         if (Pro.getProductQty().equals("0")) {
             holder.detail.setEnabled(false);
             holder.detail.setText("OUT OF STOCK");
         }
-        if (Pro.getProductPrice().equals("0.00")) {
+        else if (Pro.getProductPrice().equals("0.00")) {
             holder.detail.setEnabled(false);
             holder.detail.setTextColor(context.getResources().getColor(R.color.cartCouponText));
         } else {
             holder.detail.setEnabled(true);
             holder.detail.setTextColor(context.getResources().getColor(R.color.white));
+            holder.detail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Main_Apps.status = false;
+                    ProductDetail.cartAction(Pro.getProductID(), GlobalHelper.getUserProfile(context).getProfile().getId(), "1", "0", context, holder.detail);
+
+                    Log.e("cart counter", String.valueOf(ProductDetailCartCounter));
+                    Toasty.success(context, "Item Added to Cart",
+                            Toast.LENGTH_SHORT, true).show();
+                }
+            });
         }
-        holder.detail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Main_Apps.status = false;
-                ProductDetail.cartAction(Pro.getProductID(), GlobalHelper.getUserProfile(context).getProfile().getId(), "1", "0", context, holder.detail);
-
-                Log.e("cart counter", String.valueOf(ProductDetailCartCounter));
-            }
-        });
 
         String price = Pro.getProductPrice();
         double p = Double.parseDouble(price) + 113.99;
-        holder.priceoff.setText(String.valueOf(p));
+        holder.priceoff.setText(String.format("Rs %.0f",p));
         holder.priceoff.setPaintFlags(holder.priceoff.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         holder.tv_subcatname.setText(Pro.getSubCatName());
 
