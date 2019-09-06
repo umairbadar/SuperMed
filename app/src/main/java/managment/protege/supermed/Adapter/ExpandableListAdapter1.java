@@ -106,6 +106,12 @@ public class ExpandableListAdapter1 extends BaseExpandableListAdapter {
         lblListHeader.setTypeface(null, Typeface.BOLD);
         lblListHeader.setText(headerTitle);
 
+        if (isExpanded) {
+            lblListHeader.setCompoundDrawablesWithIntrinsicBounds(0, 0,  R.drawable.ic_arrow_up, 0);
+        } else {
+            lblListHeader.setCompoundDrawablesWithIntrinsicBounds( 0, 0, R.drawable.ic_arrow_down, 0);
+        }
+
         return convertView;
     }
 
