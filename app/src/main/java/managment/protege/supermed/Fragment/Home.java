@@ -161,11 +161,11 @@ public class Home extends Fragment {
         labTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (GlobalHelper.getUserProfile(getContext()).getProfile().getFirstName().trim().toLowerCase().equals("guest")) {
+                /*if (GlobalHelper.getUserProfile(getContext()).getProfile().getFirstName().trim().toLowerCase().equals("guest")) {
                     Main_Apps.getMainActivity().forgotPasswordDialog(getContext());
                 } else {
                     Main_Apps.getMainActivity().backfunction(new LabTest());
-                }
+                }*/
             }
         });
         doctorsInformation.setOnClickListener(new View.OnClickListener() {
@@ -185,7 +185,7 @@ public class Home extends Fragment {
                 if (GlobalHelper.getUserProfile(getContext()).getProfile().getFirstName().trim().toLowerCase().equals("guest")) {
                     Main_Apps.getMainActivity().forgotPasswordDialog(getContext());
                 } else {
-                    Main_Apps.getMainActivity().backfunction(new Appointment_Fragment());
+                    Main_Apps.getMainActivity().backfunction(new LabTest());
                 }
             }
         });

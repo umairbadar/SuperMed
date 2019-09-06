@@ -47,7 +47,7 @@ public class TermAndCondition extends Fragment {
 
         view = inflater.inflate(R.layout.fragment_term_and_condition, container, false);
 
-        toolbar_text = (TextView) view.findViewById(R.id.toolbar_text);
+       /* toolbar_text = (TextView) view.findViewById(R.id.toolbar_text);
         textView = (TextView) view.findViewById(R.id.text);
         addressOne = view.findViewById(R.id.addressOne);
         addressTwo = view.findViewById(R.id.addressTwo);
@@ -59,16 +59,16 @@ public class TermAndCondition extends Fragment {
         view.findViewById(R.id.secondaryHeading).setVisibility(View.GONE);
         view.findViewById(R.id.mobHeading).setVisibility(View.GONE);
         view.findViewById(R.id.whatsapHeading).setVisibility(View.GONE);
-        view.findViewById(R.id.emailHeading).setVisibility(View.GONE);
+        view.findViewById(R.id.emailHeading).setVisibility(View.GONE);*/
 
 
-        addressOne.setVisibility(View.GONE);
+        /*addressOne.setVisibility(View.GONE);
         addressTwo.setVisibility(View.GONE);
         mobile.setVisibility(View.GONE);
         whatsap.setVisibility(View.GONE);
-        email.setVisibility(View.GONE);
+        email.setVisibility(View.GONE);*/
 
-        LoadApi();
+        //LoadApi();
 
         return view;
     }
@@ -81,7 +81,7 @@ public class TermAndCondition extends Fragment {
         Main_Apps.getMainActivity().addToolbarBack(getContext(), getString(R.string.terms_conditions), view);
     }
 
-    public void LoadApi() {
+    /*public void LoadApi() {
         API api = RetrofitAdapter.createAPI();
         Main_Apps.hud.show();
 
@@ -107,6 +107,6 @@ public class TermAndCondition extends Fragment {
             }
         });
 
-    }
+    }*/
 
 }

@@ -41,9 +41,12 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import managment.protege.supermed.Fragment.AlternativeListFragment;
+import managment.protege.supermed.Fragment.Appointment_Fragment;
 import managment.protege.supermed.Fragment.Cart;
 import managment.protege.supermed.Fragment.Category;
 import managment.protege.supermed.Fragment.ContactUsFragment;
+import managment.protege.supermed.Fragment.Fragment_AboutUs;
+import managment.protege.supermed.Fragment.Fragment_DeliveryInformation;
 import managment.protege.supermed.Fragment.HelpCenterFragment;
 import managment.protege.supermed.Fragment.JoinUs;
 import managment.protege.supermed.Fragment.OrderHistory;
@@ -350,6 +353,14 @@ public class Main_Apps extends AppCompatActivity implements NavigationView.OnNav
                 backfunction(new OrderHistory());
             }
         }
+        if (id == R.id.nav_appointmentHistory) {
+
+            backfunction(new Appointment_Fragment());
+        }
+        if (id == R.id.nav_deliveryInformation) {
+
+            backfunction(new Fragment_DeliveryInformation());
+        }
         if (id == R.id.nav_alternateMedicine) {
 
             backfunction(new AlternativeListFragment());
@@ -366,6 +377,9 @@ public class Main_Apps extends AppCompatActivity implements NavigationView.OnNav
         }
         if (id == R.id.nav_join) {
             backfunction(new JoinUs());
+        }
+        if (id == R.id.nav_about_us) {
+            backfunction(new Fragment_AboutUs());
         }
         if (id == R.id.nav_placeOrder) {
             backfunction(new Cart());

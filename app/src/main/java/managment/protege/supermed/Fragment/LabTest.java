@@ -121,7 +121,7 @@ public class LabTest extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_lab_test, container, false);
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
-        Main_Apps.getMainActivity().addToolbarBack(getContext(), "LAB & TEST", v);
+        Main_Apps.getMainActivity().addToolbarBack(getContext(), "Book an Appointment", v);
         initializations(v);
 
         labTest_address.setText(GlobalHelper.getUserProfile(getContext()).getProfile().getAddress());

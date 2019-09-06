@@ -25,6 +25,12 @@
             android:id="@+id/nav_orderHistory"
             android:title="ORDER HISTORY" />
         <item
+            android:id="@+id/nav_appointmentHistory"
+            android:title="APPOINTMENT HISTORY" />
+        <item
+            android:id="@+id/nav_deliveryInformation"
+            android:title="DELIVERY INFORMATION" />
+        <item
             android:id="@+id/nav_settings"
             android:title="SETTINGS" />
        <!-- <item
@@ -32,7 +38,7 @@
             android:title="NEWSLETTERS" />-->
         <item
             android:id="@+id/nav_helpCenter"
-            android:title="HELP CENTER" />
+            android:title="FAQ" />
 
         <!--<item
             android:id="@+id/terms"
@@ -43,6 +49,9 @@
         <item
             android:id="@+id/nav_join"
             android:title="JOIN US" />
+        <item
+            android:id="@+id/nav_about_us"
+            android:title="ABOUT US" />
         <item
             android:id="@+id/nav_logout"
             android:title="LOG OUT" />

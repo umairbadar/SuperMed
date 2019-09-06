@@ -63,9 +63,11 @@
     <string name="cart">CART</string>
     <string name="place_order">PLACE ORDER</string>
     <string name="join_us">JOIN US</string>
+    <string name="about_us">ABOUT US</string>
     <string name="fb_link">https://www.facebook.com/</string>
     <string name="linkedin_link">https://www.linkedin.com/</string>
     <string name="contact_us">CONTACT US</string>
+    <string name="delivery_info">DELIVERY INFORMATION</string>
     <string name="terms_conditions">TERMS AND CONDITIONS</string>
     <string name="news_letter">Newsletter</string>
     <string name="settings">SETTINGS</string>
@@ -100,4 +102,7 @@
     <string name="lab_test">Lab Test</string>
     <string name="todo">TODO</string>
     <string name="upload_your_prescription">Upload Your Prescription</string>
+    <string name="about_us_content">Supermed is part of an evolving industry of e-pharmacy. Our aim is to make the arduous task of getting your prescription filled more convenient. With so many impostors selling counterfeit medicine from behind the veil of the Internet, we have made dealing with genuine products excluding a core guiding principle of our business. Regardless of the ailment, you suffer from, or the medicine you need, we are never short on stock.\n\nWhether you are bedridden due to an illness or are unable to leave your house for some other reason, with Supermed, you can use a lab test facility from anywhere in Karachi from the comfort of your home. To cut on the hours one has to wait to undergo a lab test, Supermed has partnered with a number of laboratories in the city that send professionals to your home to collect a specimen and deliver the test results within three business days.\n\nTo get your prescription filled, just visit our website and upload your prescription to our website. Supermed professionals will confirm the details on your prescription with your doctor and begin processing your order right away. In case your prescribed medicines are unaffordable, we have generic drugs available that contain the same active chemicals as branded ones and thus work the same way.\n\nRather than just sell medicine, Supermed has information available on a range of drugs, their dosage, side effects, and usage. Taking advantage of the information on our website, you can better understand the role each of your pills plays in keeping you healthy. Furthermore, using resources on our website, you can learn more about your illness and ways you can manage it to live a healthier and happier life.</string>
+    <string name="delivery_head">We at Supermed know medication is one product you need in your hands instantly after placing your order. For your convenience, we have allocated 3 delivery time slots. Note, delivery time will be around, and mostly before, the specified delivery time below.</string>
+    <string name="delivery_text">Your order will be packaged and sealed with care and delivered under safe and hygienic conditions by our trained riders. Delivery Charges:</string>
 </resources>

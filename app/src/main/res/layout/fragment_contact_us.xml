@@ -1,200 +1,123 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context="managment.protege.supermed.Fragment.ContactUsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#DDDDDD"
         android:orientation="vertical">
 
-        <include
-            android:id="@+id/toolbar"
-            layout="@layout/toolbar_back"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <include
+                android:id="@+id/toolbar"
+                layout="@layout/toolbar_back"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-        <TextView
-            android:id="@+id/text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/lato_regular"
-            android:padding="10dp"
-            android:textSize="15sp"
-            android:typeface="serif" />
+            <ExpandableListView
+                android:id="@+id/lvExp"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"
+                android:cacheColorHint="#00000000"
+                android:childDivider="@android:color/transparent"
+                android:divider="#d4d4d4"
+                android:dividerHeight="1dp"
+                android:scrollbars="vertical|horizontal"
+                android:groupIndicator="@null"
+                android:nestedScrollingEnabled="true" />
+
+
+            <EditText
+                android:id="@+id/et_name"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/et_bg"
+                android:fontFamily="@font/lato_regular"
+                android:hint="Your Name"
+                android:inputType="text"
+                android:padding="15dp" />
+
+
+            <EditText
+                android:id="@+id/et_email"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/et_bg"
+                android:fontFamily="@font/lato_regular"
+                android:hint="Your Email"
+                android:inputType="textEmailAddress"
+                android:padding="15dp" />
+
+
+            <EditText
+                android:id="@+id/et_contact"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/et_bg"
+                android:fontFamily="@font/lato_regular"
+                android:hint="Your Subject"
+                android:inputType="phone"
+                android:padding="15dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="gone">
+            android:layout_height="50dp"
+            android:background="@drawable/et_bg"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="15dp">
 
-            <TextView
-                android:id="@+id/addressHeading"
+            <Spinner
+                android:id="@+id/spn_subject"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/lato_bold"
-                android:padding="10dp"
-                android:text="Address"
-                android:textSize="14sp"
-                android:typeface="sans" />
+                android:layout_height="match_parent"
+                android:padding="10dp"/>
 
-            <TextView
-                android:id="@+id/addressOne"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/lato_regular"
-                android:padding="10dp"
-                android:text=""
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/secondaryHeading"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/lato_bold"
-                android:padding="10dp"
-                android:text="Secondary Address"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/addressTwo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/lato_regular"
-                android:padding="10dp"
-                android:text=""
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/mobHeading"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/lato_bold"
-                android:padding="10dp"
-                android:text="Mobile No"
-                android:textSize="14sp"
-                android:typeface="sans" />
-
-            <TextView
-                android:id="@+id/mobileno"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/lato_regular"
-                android:padding="10dp"
-                android:text=""
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/whatsapHeading"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/lato_bold"
-                android:padding="10dp"
-                android:text="Whatsapp"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/whatsap"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/lato_regular"
-                android:padding="10dp"
-                android:text=""
-                android:textSize="14sp"
-                android:typeface="sans" />
-
-            <TextView
-                android:id="@+id/emailHeading"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/lato_bold"
-                android:padding="10dp"
-                android:text="Email"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/lato_regular"
-                android:padding="10dp"
-                android:text=""
-                android:textSize="14sp" />
 
         </LinearLayout>
 
+            <EditText
+                android:id="@+id/et_inquiry"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/et_bg"
+                android:fontFamily="@font/lato_regular"
+                android:gravity="left|top"
+                android:hint="Address"
+                android:inputType="text"
+                android:padding="15dp" />
 
-        <EditText
-            android:id="@+id/et_name"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="15dp"
-            android:background="@drawable/et_bg"
-            android:fontFamily="@font/lato_regular"
-            android:hint="Enter Name"
-            android:inputType="text"
-            android:padding="15dp" />
-
-        <EditText
-            android:id="@+id/et_email"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="15dp"
-            android:background="@drawable/et_bg"
-            android:fontFamily="@font/lato_regular"
-            android:hint="@string/email"
-            android:inputType="textEmailAddress"
-            android:padding="15dp" />
-
-        <EditText
-            android:id="@+id/et_contact"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="15dp"
-            android:background="@drawable/et_bg"
-            android:fontFamily="@font/lato_regular"
-            android:hint="Enter Phone"
-            android:inputType="phone"
-            android:padding="15dp" />
-
-        <EditText
-            android:id="@+id/et_inquiry"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="15dp"
-            android:background="@drawable/et_bg"
-            android:fontFamily="@font/lato_regular"
-            android:gravity="left|top"
-            android:hint="Enter Message"
-            android:inputType="text"
-            android:padding="15dp" />
-
-        <Button
-            android:id="@+id/btn_submit"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="15dp"
-            android:background="@drawable/buttonbg"
-            android:fontFamily="@font/lato_bold"
-            android:text="Submit"
-            android:textColor="@color/white"
-            android:textStyle="bold" />
-
+            <Button
+                android:id="@+id/btn_submit"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/buttonbg"
+                android:fontFamily="@font/lato_bold"
+                android:text="Submit"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
     </LinearLayout>
-
 
 </ScrollView>
