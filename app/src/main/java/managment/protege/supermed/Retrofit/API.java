@@ -214,7 +214,7 @@ public interface API {
 
     @FormUrlEncoded
     @POST("socialLogin")
-    Call<LoginResponse> SOCIAL_LOGIN_RESPONSE_CALL(@Field("socia    lmediaid") String socialmediaid,
+    Call<LoginResponse> SOCIAL_LOGIN_RESPONSE_CALL(@Field("socialmediaid") String socialmediaid,
                                                    @Field("email") String email,
                                                    @Field("username") String username);
 }

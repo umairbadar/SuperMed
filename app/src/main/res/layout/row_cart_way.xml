@@ -40,7 +40,6 @@
                 android:fontFamily="@font/lato_bold"
                 android:padding="10dp"
                 android:text="Sugar Test"
-
                 android:textColor="@color/black"
                 android:textSize="15dp" />
 
@@ -52,7 +51,6 @@
                 android:fontFamily="@font/lato_bold"
                 android:padding="10dp"
                 android:text="Topic A"
-
                 android:textColor="@color/colorAccent"
                 android:textSize="15dp" />
 

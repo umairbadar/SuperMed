@@ -166,6 +166,7 @@ public class LabTest extends Fragment {
                     TestId = arr_test_id.get(i);
                     testPrice = arr_test_price.get(i);
                     labTest_price.setText(arr_test_price.get(i));
+                    testName = arr_test.get(i);
                 }
             }
 

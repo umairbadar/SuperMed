@@ -39,6 +39,7 @@ import retrofit2.Response;
  * A simple {@link Fragment} subclass.
  */
 public class ProductList extends Fragment {
+
     RecyclerView recyclerView;
     private ProductAdapter mAdapter;
     private List<GetProductsModel> proList = new ArrayList<>();
