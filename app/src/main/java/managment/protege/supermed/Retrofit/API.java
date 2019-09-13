@@ -60,12 +60,12 @@ import retrofit2.http.Query;
 public interface API {
 
     @FormUrlEncoded
-    @POST("getUserByEmailandPass")
+    @POST("user-login")
     Call<LoginResponse> Login(@Field("email") String Email,
                               @Field("password") String Password);
 
     @FormUrlEncoded
-    @POST("forgotPass")
+    @POST("user-forget-password")
     Call<ForgotPassword> forgotPass(@Field("email") String Email);
 
     @GET("getCategories")

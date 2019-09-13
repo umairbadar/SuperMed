@@ -81,12 +81,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
                 @Override
                 public void onClick(View view) {
 
-                    Main_Apps.status = false;
+                    /*Main_Apps.status = false;
                     ProductDetail.cartAction(Pro.getProductID(), GlobalHelper.getUserProfile(context).getProfile().getId(), "1", "0", context, holder.detail);
 
                     Log.e("cart counter", String.valueOf(ProductDetailCartCounter));
                     Toasty.success(context, "Item Added to Cart",
-                            Toast.LENGTH_SHORT, true).show();
+                            Toast.LENGTH_SHORT, true).show();*/
                 }
             });
         }

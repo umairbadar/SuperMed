@@ -9,170 +9,55 @@ import com.google.gson.annotations.SerializedName;
 
 public class WishlistModel {
 
-    @SerializedName("CatId")
-    @Expose
-    private String catId;
-    @SerializedName("CatName")
-    @Expose
-    private String catName;
-    @SerializedName("CatBriefIntro")
-    @Expose
-    private String catBriefIntro;
-    @SerializedName("SubCatId")
-    @Expose
-    private String subCatId;
-    @SerializedName("SubCatName")
-    @Expose
-    private String subCatName;
-    @SerializedName("SubCatBriefIntro")
-    @Expose
-    private String subCatBriefIntro;
-    @SerializedName("ProductID")
-    @Expose
-    private String productID;
-    @SerializedName("ProductName")
-    @Expose
+    private String productId;
     private String productName;
-    @SerializedName("ProductImage")
-    @Expose
     private String productImage;
-    @SerializedName("ProductDescription")
-    @Expose
     private String productDescription;
-    @SerializedName("ProductSku")
-    @Expose
-    private String productSku;
-    @SerializedName("ProductPrice")
-    @Expose
-    private String productPrice;
-    @SerializedName("ProductOldPrice")
-    @Expose
-    private String productOldPrice;
-    @SerializedName("ProductQty")
-    @Expose
-    private String productQty;
-    @SerializedName("ProductTags")
-    @Expose
-    private String productTags;
+    private String wishlistId;
+    private String qty;
+    private String price;
+    private String subcateName;
 
-    public String getCatId() {
-        return catId;
+    public WishlistModel(String productId, String productName, String productImage, String productDescription, String wishlistId, String qty, String price, String subcateName) {
+        this.productId = productId;
+        this.productName = productName;
+        this.productImage = productImage;
+        this.productDescription = productDescription;
+        this.wishlistId = wishlistId;
+        this.qty = qty;
+        this.price = price;
+        this.subcateName = subcateName;
     }
 
-    public void setCatId(String catId) {
-        this.catId = catId;
+    public String getSubcateName() {
+        return subcateName;
     }
 
-    public String getCatName() {
-        return catName;
-    }
-
-    public void setCatName(String catName) {
-        this.catName = catName;
-    }
-
-    public String getCatBriefIntro() {
-        return catBriefIntro;
-    }
-
-    public void setCatBriefIntro(String catBriefIntro) {
-        this.catBriefIntro = catBriefIntro;
-    }
-
-    public String getSubCatId() {
-        return subCatId;
-    }
-
-    public void setSubCatId(String subCatId) {
-        this.subCatId = subCatId;
-    }
-
-    public String getSubCatName() {
-        return subCatName;
-    }
-
-    public void setSubCatName(String subCatName) {
-        this.subCatName = subCatName;
-    }
-
-    public String getSubCatBriefIntro() {
-        return subCatBriefIntro;
-    }
-
-    public void setSubCatBriefIntro(String subCatBriefIntro) {
-        this.subCatBriefIntro = subCatBriefIntro;
-    }
-
-    public String getProductID() {
-        return productID;
-    }
-
-    public void setProductID(String productID) {
-        this.productID = productID;
+    public String getProductId() {
+        return productId;
     }
 
     public String getProductName() {
         return productName;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
     public String getProductImage() {
         return productImage;
-    }
-
-    public void setProductImage(String productImage) {
-        this.productImage = productImage;
     }
 
     public String getProductDescription() {
         return productDescription;
     }
 
-    public void setProductDescription(String productDescription) {
-        this.productDescription = productDescription;
+    public String getWishlistId() {
+        return wishlistId;
     }
 
-    public String getProductSku() {
-        return productSku;
+    public String getQty() {
+        return qty;
     }
 
-    public void setProductSku(String productSku) {
-        this.productSku = productSku;
+    public String getPrice() {
+        return price;
     }
-
-    public String getProductPrice() {
-        return productPrice;
-    }
-
-    public void setProductPrice(String productPrice) {
-        this.productPrice = productPrice;
-    }
-
-    public String getProductOldPrice() {
-        return productOldPrice;
-    }
-
-    public void setProductOldPrice(String productOldPrice) {
-        this.productOldPrice = productOldPrice;
-    }
-
-    public String getProductQty() {
-        return productQty;
-    }
-
-    public void setProductQty(String productQty) {
-        this.productQty = productQty;
-    }
-
-    public String getProductTags() {
-        return productTags;
-    }
-
-    public void setProductTags(String productTags) {
-        this.productTags = productTags;
-    }
-
 }

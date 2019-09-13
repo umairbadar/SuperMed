@@ -11,7 +11,7 @@ public class Constantapp {
     //public static String WEB_URL = "https://protegeglobal.com/inventoryM/supermed/api/api/";
    // public static String WEB_URL = "https://www.protegeglobal.com/supermed/ecommerce/api/api/";
 //    public static String WEB_URL = "https://www.supermed.pk/beta/api/api/";
-    public static String WEB_URL = "https://www.supermed.pk/api/api/";
+    public static String WEB_URL = "https://www.supermed.pk/supermedNew/api/";
     /* [ IMPORTANT ] be careful when edit this security code */
     /* This string must be same with security code at Server, if its different android unable to submit order */
 

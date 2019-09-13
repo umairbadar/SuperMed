@@ -2,6 +2,8 @@ package managment.protege.supermed.Fragment;
 
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -16,22 +18,37 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.kaopiz.kprogresshud.KProgressHUD;
+import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 
 import es.dmoral.toasty.Toasty;
 import managment.protege.supermed.Activity.Main_Apps;
+import managment.protege.supermed.Activity.Register;
 import managment.protege.supermed.Adapter.ImageAdapter;
 import managment.protege.supermed.Adapter.ProductAdapter;
 import managment.protege.supermed.Adapter.TopCatagorieAdapter;
@@ -49,7 +66,6 @@ import managment.protege.supermed.Retrofit.RetrofitAdapter;
 import managment.protege.supermed.Tools.GlobalHelper;
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Response;
 
 import static managment.protege.supermed.Activity.Main_Apps.cart_toolbarapps;
 import static managment.protege.supermed.Activity.Main_Apps.getMainActivity;
@@ -74,7 +90,12 @@ public class ProductDetail extends Fragment {
     SearchModel objSearch;
     Search objNativeSearch;
     TextView pname, oldrate, price, detail, qty, productStock;
-    public String checkValue;
+    public String checkValue, product_ID, wishlistProductId = "";
+    ImageView product_Image;
+    ImageButton btn_add_to_wishlist;
+    boolean isPlay;
+
+    private String userid;
 
     public ProductDetail() {
         // Required empty public constructor
@@ -87,6 +108,9 @@ public class ProductDetail extends Fragment {
         Main_Apps.status = false;
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
         Main_Apps.getMainActivity().addToolbar(getContext(), "Product Detail", view);
+
+        userid = GlobalHelper.getUserProfile(getContext()).getProfile().getId();
+
         cart_toolbarapps = (ImageView) view.findViewById(R.id.carts);
         nobatch_products = (TextView) view.findViewById(R.id.nobatch_product);
         if (ProductDetailCartCounter > 0) {
@@ -95,317 +119,141 @@ public class ProductDetail extends Fragment {
         } else {
             nobatch_products.setVisibility(View.INVISIBLE);
         }
-        initWidget();
-        onclick();
+
+        if (getArguments() != null) {
+            product_ID = getArguments().getString("ProductID");
+        }
+
+        initViews();
+        getProductDetail(product_ID);
         return view;
     }
 
-    private void onclick() {
-        carts.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    public void initViews() {
 
-                Main_Apps.getMainActivity().backfunction(new Cart());
+        pname = view.findViewById(R.id.pname);
+        price = view.findViewById(R.id.price);
+        productStock = view.findViewById(R.id.productStock);
+        detail = view.findViewById(R.id.detail);
+        product_Image = view.findViewById(R.id.product_Image);
+        btn_add_to_wishlist = view.findViewById(R.id.btn_add_to_wishlist);
 
-            }
-        });
-        addToCart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Log.e("ds", GlobalHelper.getUserProfile(getContext()).getProfile().getId().toString());
-
-                if (checkValue == "1") {
-                    cartActionProductDetail(obj.getProductID(), GlobalHelper.getUserProfile(getContext()).getProfile().getId().toString(), qty.getText().toString(), "0", getContext(), addToCart);
-
-                } else if (checkValue == "2") {
-                    cartActionProductDetail(objSearch.getProductID(), GlobalHelper.getUserProfile(getContext()).getProfile().getId().toString(), qty.getText().toString(), "0", getContext(), addToCart);
-
-                } else if (checkValue == "3") {
-                    cartActionProductDetail(objNativeSearch.getProductID(), GlobalHelper.getUserProfile(getContext()).getProfile().getId().toString(), qty.getText().toString(), "0", getContext(), addToCart);
-                }
-
-
-            }
-        });
-        wishlistProduct.setOnClickListener(new View.OnClickListener() {
+        btn_add_to_wishlist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (checkWishlist.equals("1")) {
-                    if (checkValue == "1") {
-                        DeleteProduct(obj.getProductID(), GlobalHelper.getUserProfile(getContext()).getProfile().getId().toString(), getContext());
-
-                    } else if (checkValue == "2") {
-                        DeleteProduct(objSearch.getProductID(), GlobalHelper.getUserProfile(getContext()).getProfile().getId().toString(), getContext());
-
-                    } else if (checkValue == "3") {
-                        DeleteProduct(objNativeSearch.getProductID(), GlobalHelper.getUserProfile(getContext()).getProfile().getId().toString(), getContext());
-
-                    }
-
-                    checkWishlist = "0";
-                } else {
-                    if (checkValue == "1") {
-                        ProductWishList(obj.getProductID(), GlobalHelper.getUserProfile(getContext()).getProfile().getId().toString(), "1", getContext());
-
-                    } else if (checkValue == "2") {
-                        ProductWishList(objSearch.getProductID(), GlobalHelper.getUserProfile(getContext()).getProfile().getId().toString(), "1", getContext());
-
-                    } else if (checkValue == "3") {
-                        ProductWishList(objNativeSearch.getProductID(), GlobalHelper.getUserProfile(getContext()).getProfile().getId().toString(), "1", getContext());
-
-                    }
-                    checkWishlist = "1";
-                }
-
-            }
-        });
-        plus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                qty.setText(String.valueOf(Integer.parseInt(qty.getText().toString()) + Integer.parseInt("1")));
-            }
-        });
-        min.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!qty.getText().equals("1")) {
-                    qty.setText(String.valueOf(Integer.parseInt(qty.getText().toString()) - Integer.parseInt("1")));
-                } else {
-                }
+                AddtoWishList();
+                view.setBackgroundResource(R.drawable.wishlist_product_green);
+                btn_add_to_wishlist.setEnabled(false);
             }
         });
 
-
-    }
-
-    private void initWidget() {
-        carts = (ImageView) view.findViewById(R.id.carts);
-        plus = (ImageView) view.findViewById(R.id.plus);
-        min = (ImageView) view.findViewById(R.id.min);
-        pname = (TextView) view.findViewById(R.id.pname);
-        qty = (TextView) view.findViewById(R.id.qty);
-        addToCart = (Button) view.findViewById(R.id.add_cart);
-        detail = (TextView) view.findViewById(R.id.detail);
-        oldrate = (TextView) view.findViewById(R.id.oldrate);
-        price = (TextView) view.findViewById(R.id.price);
-        productStock = (TextView) view.findViewById(R.id.productStock);
-        ArrayList<String> articleList = getArticleData();
-        Bundle bundle = getArguments();
-        if (bundle.containsKey("your_obj")) {
-            checkValue = "1"; // if check value is 1 then perfom task for simple product view
-            obj = (GetProductsModel) bundle.getSerializable("your_obj");
-            checkWishlist = obj.getIsWish();
-            oldrate.setText("Rs" + obj.getProductOldPrice());
-            productStock.setText("Quantity Left: " + obj.getProductQty());
-            if (obj.getProductQty().equals("0")) {
-                addToCart.setText("Out Of Stock");
-                addToCart.setEnabled(false);
-                addToCart.setBackgroundColor(getResources().getColor(R.color.sale));
-            }
-            if (obj.getProductPrice().equals("0")) {
-                addToCart.setEnabled(false);
-                addToCart.setBackgroundColor(getResources().getColor(R.color.cartCouponText));
-            }
-            oldrate.setPaintFlags(oldrate.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            pname.setText(obj.getProductName());
-            price.setText("Rs" + obj.getProductPrice());
-            detail.setText(Html.fromHtml(obj.getProductDescription()));
-            articleList.clear();
-            articleList.add(obj.getProductImage());
-        } else if (bundle.containsKey("your_obj_2")) {
-            checkValue = "2"; // if check value is 1 then perfom task for simple search product view
-            objSearch = (SearchModel) bundle.getSerializable("your_obj_2");
-            checkWishlist = objSearch.getIsWish();
-            oldrate.setText("Rs" + objSearch.getProductOldPrice());
-            productStock.setText("Quantity Left: " + objSearch.getProductQty());
-            if (objSearch.getProductQty().equals("0")) {
-                addToCart.setText("Out Of Stock");
-                addToCart.setEnabled(false);
-                addToCart.setBackgroundColor(getResources().getColor(R.color.sale));
-            }
-            if (objSearch.getProductPrice().equals("0")) {
-                addToCart.setEnabled(false);
-                addToCart.setBackgroundColor(getResources().getColor(R.color.cartCouponText));
-            }
-            oldrate.setPaintFlags(oldrate.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            pname.setText(objSearch.getProductName());
-            price.setText("Rs" + objSearch.getProductPrice());
-            detail.setText(Html.fromHtml(objSearch.getProductDescription()));
-            articleList.clear();
-            articleList.add(objSearch.getProductImage());
-        } else if (bundle.containsKey("your_obj_3")) {
-            checkValue = "3"; // if check value is 1 then perfom task for simple search product view
-            objNativeSearch = (Search) bundle.getSerializable("your_obj_3");
-            checkWishlist = objNativeSearch.getIsWish();
-            oldrate.setText("Rs" + objNativeSearch.getProductOldPrice());
-
-            oldrate.setPaintFlags(oldrate.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            pname.setText(objNativeSearch.getProductName());
-            price.setText("Rs" + objNativeSearch.getProductPrice());
-            detail.setText(Html.fromHtml(objNativeSearch.getProductDescription()));
-            productStock.setText("Quantity Left: " + objNativeSearch.getProductQty());
-            if (objNativeSearch.getProductQty().equals("0")) {
-                addToCart.setText("Out Of Stock");
-                addToCart.setEnabled(false);
-                addToCart.setBackgroundColor(getResources().getColor(R.color.sale));
-            }
-            if (objNativeSearch.getProductPrice().equals("0")) {
-                addToCart.setEnabled(false);
-                addToCart.setBackgroundColor(getResources().getColor(R.color.cartCouponText));
-
-            }
-            articleList.clear();
-            articleList.add(objNativeSearch.getProductImage());
+        if (isPlay){
+            btn_add_to_wishlist.setBackgroundResource(R.drawable.wishlist_product_green);
+        } else {
+            btn_add_to_wishlist.setBackgroundResource(R.drawable.wishlist_product);
         }
 
 
         hud = KProgressHUD.create(getContext())
                 .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
-                .setCancellable(false);
-        viewPager = (ViewPager) view.findViewById(R.id.pager);
-        wishlistProduct = (ImageView) view.findViewById(R.id.wishlist_product);
+                .setCancellable(false)
+                .setWindowColor(Color.parseColor("#5D910B"))
+                .show();
 
-        TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tab_layout);
-        tabLayout.setupWithViewPager(viewPager, true);
-        if (checkWishlist.equals("1")) {
-            wishlistProduct.setBackgroundResource(R.drawable.wishlist_product_green);
-        } else {
-            wishlistProduct.setBackgroundResource(R.drawable.wishlist_product);
-        }
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int pos, float positionOffset, int positionOffsetPixels) {
-            }
-
-            @Override
-            public void onPageSelected(int pos) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-            }
-        });
-
-        ImageAdapter adapter = new ImageAdapter(getContext(), articleList);
-        viewPager.setAdapter(adapter);
     }
 
+    public void getProductDetail(String product_ID) {
 
-    private ArrayList<String> getArticleData() {
-        ArrayList<String> articleList = new ArrayList<String>(Arrays.asList(ImageData.articles));
-
-
-        return articleList;
-    }
-
-
-    public static void cartAction(String pid, String uid, String qty, String action, final Context context, final Button button) {
-        Main_Apps.hud.show();
-        API api = RetrofitAdapter.createAPI();
-        Call<CartActionResponse> callBackCall = api.cart_action(pid, uid, qty, action);
-        callBackCall.enqueue(new Callback<CartActionResponse>() {
-            @Override
-            public void onResponse(Call<CartActionResponse> call, final Response<CartActionResponse> response) {
-                if (response != null) {
-                    if (response.body().getStatus()) {
-                        ProductDetailCartCounter = ProductDetailCartCounter + 1;
-                        Main_Apps.nobatch.setVisibility(View.VISIBLE);
-                        Main_Apps.nobatch.setText(String.valueOf(ProductDetailCartCounter));
-                    } else {
+        String URL = Register.Base_URL + "single-products/" + product_ID;
+        StringRequest req = new StringRequest(Request.Method.GET, URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            hud.dismiss();
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONObject object = jsonObject.getJSONObject("data");
+                            String productId = object.getString("productId");
+                            String ImageLink = object.getString("productImage");
+                            if (!ImageLink.equals("")) {
+                                ImageLink = ImageLink.replaceAll(" ", "%20");
+                                Picasso.get()
+                                        .load(ImageLink)
+                                        .resize(80, 80)
+                                        .centerCrop()
+                                        .placeholder(R.drawable.tab_miss)
+                                        .into(product_Image);
+                            }
+                            pname.setText(object.getString("productName"));
+                            price.setText("Rs. " + object.getString("price"));
+                            productStock.setText("Quantity Left: " + object.getString("qty") + " pcs");
+                            detail.setText(object.getString("productDescription"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
-                }
-                Main_Apps.hud.dismiss();
-            }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        hud.dismiss();
+                        Toast.makeText(getContext(), error.getMessage(),
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
 
-            @Override
-            public void onFailure(Call<CartActionResponse> call, Throwable t) {
-                Log.e("cart", "Error is " + t.getMessage());
-                Main_Apps.hud.dismiss();
-            }
-        });
-
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        requestQueue.add(req);
     }
 
-    public static void cartActionProductDetail(String pid, String uid, String qty, String action, final Context context, final Button button) {
-        Main_Apps.hud.show();
-        API api = RetrofitAdapter.createAPI();
-        Call<CartActionResponse> callBackCall = api.cart_action(pid, uid, qty, action);
-        callBackCall.enqueue(new Callback<CartActionResponse>() {
-            @Override
-            public void onResponse(Call<CartActionResponse> call, final Response<CartActionResponse> response) {
-                if (response != null) {
-                    if (response.body().getStatus() == true) {
-                        ProductDetailCartCounter = ProductDetailCartCounter + 1;
-                        Main_Apps.nobatch_products.setText(String.valueOf(ProductDetailCartCounter));
-                        Main_Apps.getMainActivity().backfunction(new Cart());
-                    } else {
+    public void AddtoWishList() {
+
+        hud.show();
+        String URL = Register.Base_URL + "add-to-wishlist";
+        StringRequest req = new StringRequest(Request.Method.POST, URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            boolean status = jsonObject.getBoolean("status");
+                            String message = jsonObject.getString("message");
+                            if (status) {
+                                hud.dismiss();
+                                JSONObject object = jsonObject.getJSONObject("data");
+                                wishlistProductId = object.getString("wishlistId");
+                                isPlay = true;
+                                Toast.makeText(getContext(), message,
+                                        Toast.LENGTH_LONG).show();
+                            } else {
+                                hud.dismiss();
+                                Toast.makeText(getContext(), message,
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
-                }
-                Main_Apps.hud.dismiss();
-            }
-
-            @Override
-            public void onFailure(Call<CartActionResponse> call, Throwable t) {
-                Log.e("cart", "Error is " + t.getMessage());
-                Main_Apps.hud.dismiss();
-            }
-        });
-
-    }
-
-    public static void ProductWishList(String pid, String uid, String qty, final Context context) {
-
-        API api = RetrofitAdapter.createAPI();
-        Call<AddProductWishlistResponse> addProductWishlistResponseCall = api.ADD_PRODUCT_WISHLIST_RESPONSE_CALL(pid, uid, qty);
-        addProductWishlistResponseCall.enqueue(new Callback<AddProductWishlistResponse>() {
-            @Override
-            public void onResponse(Call<AddProductWishlistResponse> call, final Response<AddProductWishlistResponse> response) {
-                if (response != null) {
-                    if (response.body().getStatus()) {
-                        wishlistProduct.setBackgroundResource(R.drawable.wishlist_product_green);
-                        Log.e("log", response.body().getMessage());
-                        Log.e("log", response.body().getStatus().toString());
-                    } else {
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        hud.dismiss();
+                        Toast.makeText(getContext(), error.getMessage(),
+                                Toast.LENGTH_LONG).show();
                     }
-
-                }
-            }
-
+                }) {
             @Override
-            public void onFailure(Call<AddProductWishlistResponse> call, Throwable t) {
-                Log.e("wishlist product add", "Error is " + t.getMessage());
-
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("userId", userid);
+                map.put("productId", product_ID);
+                return map;
             }
-        });
+        };
 
-    }
-
-    public void DeleteProduct(String pid, String uid, final Context context) {
-
-        API api = RetrofitAdapter.createAPI();
-        Call<DeleteWishlist> deleteWishlistCall = api.DELETE_WISHLIST_CALL(pid, uid);
-        deleteWishlistCall.enqueue(new Callback<DeleteWishlist>() {
-            @Override
-            public void onResponse(Call<DeleteWishlist> call, final Response<DeleteWishlist> response) {
-                if (response != null) {
-                    if (response.body().getStatus().equals(true)) {
-                        wishlistProduct.setBackgroundResource(R.drawable.wishlist_product);
-                    } else {
-                    }
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<DeleteWishlist> call, Throwable t) {
-//                Toast.makeText(context, "incorrect", Toast.LENGTH_SHORT).show();
-                Log.e("wishlist product del", "Error is " + t.getMessage());
-
-            }
-        });
-
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        requestQueue.add(req);
     }
 
 

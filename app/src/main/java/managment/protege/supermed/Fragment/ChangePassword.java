@@ -13,6 +13,20 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import es.dmoral.toasty.Toasty;
 import managment.protege.supermed.Activity.Main_Apps;
 import managment.protege.supermed.Activity.Register;
@@ -24,7 +38,6 @@ import managment.protege.supermed.Tools.GlobalHelper;
 import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -79,33 +92,53 @@ public class ChangePassword extends Fragment {
         });
     }
 
-    public void UpdatePassword(final String userid, String old_pass, String new_pass, String con_pass) {
+    public void UpdatePassword(final String userid, final String old_pass, final String new_pass, final String con_pass) {
         Main_Apps.hud.show();
-        API api = RetrofitAdapter.createAPI();
-        Call<ChangePasswordResponse> changePasswordResponseCall = api.CHANGE_PASSWORD_RESPONSE_CALL(userid, old_pass, new_pass, con_pass);
-        changePasswordResponseCall.enqueue(new Callback<ChangePasswordResponse>() {
-            @Override
-            public void onResponse(Call<ChangePasswordResponse> call, Response<ChangePasswordResponse> response) {
-                Main_Apps.hud.dismiss();
-                if (response != null) {
-                    if (response.body().getStatus()) {
-
-                        Toasty.success(getContext(), "Password Changed successfully", Toast.LENGTH_SHORT, true).show();
-
-                    } else {
-                        Toasty.error(getContext(), "Password cant be changed because " + response.body().getMessage(), Toast.LENGTH_SHORT, true).show();
-
+        String URL = Register.Base_URL + "user-update-password/" + userid;
+        StringRequest req = new StringRequest(Request.Method.POST, URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            boolean status = jsonObject.getBoolean("status");
+                            String message = jsonObject.getString("message");
+                            if (status){
+                                Main_Apps.hud.dismiss();
+                                Toast.makeText(getContext(), message,
+                                        Toast.LENGTH_LONG).show();
+                                oldPassword.setText("");
+                                newPassword.setText("");
+                                againNewPassword.setText("");
+                            } else {
+                                Main_Apps.hud.dismiss();
+                                Toast.makeText(getContext(), message,
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
-                }
-            }
-
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Main_Apps.hud.dismiss();
+                        Toast.makeText(getContext(), error.getMessage(),
+                                Toast.LENGTH_LONG).show();
+                    }
+                }){
             @Override
-            public void onFailure(Call<ChangePasswordResponse> call, Throwable t) {
-                Main_Apps.hud.dismiss();
-                Toasty.error(getContext(), "Error " + t.getMessage(), Toast.LENGTH_SHORT, true).show();
-
-                Log.e("Change Password", "error" + t.getMessage());
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("old_password", old_pass);
+                map.put("password", new_pass);
+                map.put("confirm_password", con_pass);
+                return map;
             }
-        });
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        requestQueue.add(req);
     }
 }

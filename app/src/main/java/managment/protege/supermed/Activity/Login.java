@@ -24,6 +24,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -49,7 +55,9 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import es.dmoral.toasty.Toasty;
 import managment.protege.supermed.Fragment.Home;
@@ -243,7 +251,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
                     //going to other activity by signing in
                     AssignValuesOnValidation();
                     //LoginApi(email,password);
-                    LoginApi(login_email.getText().toString() + "", login_password.getText().toString() + "");
+                    LoginApi(login_email.getText().toString(), login_password.getText().toString());
                 } else {
                     login_password.setError("Password Should be more than 5 characters");
                 }
@@ -280,7 +288,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
             case R.id.login_google:
                 signIn();
                 break;
-
             case R.id.login_tv_forgot:
                 forgotPasswordDialog(this);
         }
@@ -346,11 +353,13 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
                         intent.putExtra("mylist", (Serializable) listforbanner);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
-                    } else if (response.body().getMessage().equals("password incorrect")) {
-                        login_password.setError("The password you have entered for this email is incorrect");
-                    } else if (response.body().getMessage().equals("email and password are both incorrect")) {
+                    } else if (response.body().getMessage().equals("Invalid Password Or Email Address.")) {
+                        //login_password.setError("The password you have entered for this email is incorrect");
+                        Toast.makeText(getApplicationContext(),"Please Enter valid Email and Password",
+                                Toast.LENGTH_LONG).show();
+                    }/* else if (response.body().getMessage().equals("email and password are both incorrect")) {
                         login_email.setError("The Email is not associated with any account");
-                    }
+                    }*/
                 }
             }
 

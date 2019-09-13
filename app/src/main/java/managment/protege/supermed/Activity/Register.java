@@ -46,6 +46,7 @@ public class Register extends AppCompatActivity {
     private DatePickerDialog datePicker;
     public static KProgressHUD hud;
     private TextView tv_already_account;
+    public static String Base_URL = "https://www.supermed.pk/supermedNew/api/";
 
 
     @Override
@@ -194,15 +195,15 @@ public class Register extends AppCompatActivity {
 
     private void getCities() {
 
-        String URL = "https://www.supermed.pk/api/api/getCities";
-        StringRequest req = new StringRequest(Request.Method.POST, URL,
+        String URL = Base_URL + "city-list";
+        StringRequest req = new StringRequest(Request.Method.GET, URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try {
                             arr_city.add("Select City");
                             JSONObject jsonObject = new JSONObject(response);
-                            JSONArray jsonArray = jsonObject.getJSONArray("cities");
+                            JSONArray jsonArray = jsonObject.getJSONArray("data");
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject jsonObject1 = jsonArray.getJSONObject(i);
                                 arr_city.add(jsonObject1.getString("name"));
@@ -247,7 +248,7 @@ public class Register extends AppCompatActivity {
     }
 
     private void RegisterUser() {
-        String URL = "https://www.supermed.pk/api/api/signupUser";
+        String URL = Base_URL + "user-signup";
         StringRequest req = new StringRequest(Request.Method.POST, URL,
                 new Response.Listener<String>() {
                     @Override

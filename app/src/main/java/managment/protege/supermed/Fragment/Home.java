@@ -1,6 +1,8 @@
 package managment.protege.supermed.Fragment;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -37,10 +39,12 @@ import java.util.List;
 import java.util.Map;
 
 import managment.protege.supermed.Activity.Main_Apps;
+import managment.protege.supermed.Activity.Register;
 import managment.protege.supermed.Adapter.AdapterCategories;
 import managment.protege.supermed.Adapter.AdapterProduct;
 import managment.protege.supermed.Model.GetProductsModel;
 import managment.protege.supermed.Model.ModelCategories;
+import managment.protege.supermed.Model.Model_PopularProducts;
 import managment.protege.supermed.R;
 import managment.protege.supermed.Tools.GlobalHelper;
 
@@ -61,12 +65,14 @@ public class Home extends Fragment {
     //New Arrivals
     private RecyclerView recyclerViewNewArrivals;
     private AdapterProduct newArrivalsAdapter;
-    private List<GetProductsModel> newArrivalsList;
+    private List<Model_PopularProducts> newArrivalsList;
 
     //Popular Products
     private RecyclerView recyclerViewPopularProducts;
     private AdapterProduct popularProductsAdapter;
-    private List<GetProductsModel> popularProductsList;
+    private List<Model_PopularProducts> popularProductsList;
+
+    private String userid;
 
     public Home() {
         Main_Apps.status = true;
@@ -79,6 +85,8 @@ public class Home extends Fragment {
         initWidget();
         ((AppCompatActivity) getActivity()).getSupportActionBar().show();
         Main_Apps.showToolBarItems("HOME");
+
+        userid = GlobalHelper.getUserProfile(getContext()).getProfile().getId();
 
         onClickFunctions();
         Main_Apps.nobatch.setVisibility(View.GONE);
@@ -269,50 +277,41 @@ public class Home extends Fragment {
     }
 
     public void getNewArrivals() {
-        String URL = "https://www.supermed.pk/api/api/getProducts";
-        StringRequest req = new StringRequest(Request.Method.POST, URL,
+        String URL = Register.Base_URL + "latest-products";
+        StringRequest req = new StringRequest(Request.Method.GET, URL,
                 new com.android.volley.Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
 
                         try {
+                            hud.dismiss();
                             JSONObject jsonObject = new JSONObject(response);
-                            JSONArray jsonArray = jsonObject.getJSONArray("products");
+                            JSONArray jsonArray = jsonObject.getJSONArray("data");
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject object = jsonArray.getJSONObject(i);
-                                String CatId = object.getString("CatId");
-                                String CatName = object.getString("CatName");
-                                String CatBriefIntro = object.getString("CatBriefIntro");
-                                String SubCatId = object.getString("SubCatId");
-                                String SubCatName = object.getString("SubCatName");
-                                String SubCatBriefIntro = object.getString("SubCatBriefIntro");
-                                String ProductID = object.getString("ProductID");
-                                String ProductName = object.getString("ProductName");
-                                String ProductDescription = object.getString("ProductDescription");
-                                String ProductSku = object.getString("ProductSku");
-                                String ProductImage = object.getString("ProductImage");
-                                String ProductPrice = object.getString("ProductPrice");
-                                String ProductQty = object.getString("ProductQty");
-                                String ProductTags = object.getString("ProductTags");
-                                String is_wish = object.getString("is_wish");
-                                String is_cart = object.getString("is_cart");
-                                GetProductsModel item = new GetProductsModel(
-                                        CatId,
+                                String cateSlug = object.getString("cateSlug");
+                                String CatName = object.getString("cateName");
+                                String subcateSlug = object.getString("subcateSlug");
+                                String SubCatName = object.getString("subcateName");
+                                String productId = object.getString("productId");
+                                String productName = object.getString("productName");
+                                String productDescription = object.getString("productDescription");
+                                String productImage = object.getString("productImage").trim();
+                                String price = object.getString("price");
+                                String qty = object.getString("qty");
+                                String productTags = object.getString("productTags");
+                                Model_PopularProducts item = new Model_PopularProducts(
+                                        cateSlug,
                                         CatName,
-                                        CatBriefIntro,
-                                        SubCatId,
+                                        subcateSlug,
                                         SubCatName,
-                                        SubCatBriefIntro,
-                                        ProductID,
-                                        ProductName,
-                                        ProductImage,
-                                        ProductDescription,
-                                        ProductSku,
-                                        ProductPrice,
-                                        ProductQty,
-                                        ProductTags,
-                                        is_wish,
-                                        is_cart
+                                        productId,
+                                        productName,
+                                        productDescription,
+                                        productImage,
+                                        price,
+                                        qty,
+                                        productTags
                                 );
                                 newArrivalsList.add(item);
                             }
@@ -333,7 +332,7 @@ public class Home extends Fragment {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<String, String>();
-                map.put("userid", "12");
+                map.put("userid", userid);
                 return map;
             }
         };
@@ -344,8 +343,8 @@ public class Home extends Fragment {
     }
 
     public void getPopularProducts() {
-        String URL = "https://www.supermed.pk/api/api/getProducts";
-        StringRequest req = new StringRequest(Request.Method.POST, URL,
+        String URL = Register.Base_URL + "popular-products";
+        StringRequest req = new StringRequest(Request.Method.GET, URL,
                 new com.android.volley.Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -353,42 +352,32 @@ public class Home extends Fragment {
                         try {
                             hud.dismiss();
                             JSONObject jsonObject = new JSONObject(response);
-                            JSONArray jsonArray = jsonObject.getJSONArray("products");
+                            JSONArray jsonArray = jsonObject.getJSONArray("data");
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject object = jsonArray.getJSONObject(i);
-                                String CatId = object.getString("CatId");
-                                String CatName = object.getString("CatName");
-                                String CatBriefIntro = object.getString("CatBriefIntro");
-                                String SubCatId = object.getString("SubCatId");
-                                String SubCatName = object.getString("SubCatName");
-                                String SubCatBriefIntro = object.getString("SubCatBriefIntro");
-                                String ProductID = object.getString("ProductID");
-                                String ProductName = object.getString("ProductName");
-                                String ProductDescription = object.getString("ProductDescription");
-                                String ProductSku = object.getString("ProductSku");
-                                String ProductImage = object.getString("ProductImage");
-                                String ProductPrice = object.getString("ProductPrice");
-                                String ProductQty = object.getString("ProductQty");
-                                String ProductTags = object.getString("ProductTags");
-                                String is_wish = object.getString("is_wish");
-                                String is_cart = object.getString("is_cart");
-                                GetProductsModel item = new GetProductsModel(
-                                        CatId,
+                                String cateSlug = object.getString("cateSlug");
+                                String CatName = object.getString("cateName");
+                                String subcateSlug = object.getString("subcateSlug");
+                                String SubCatName = object.getString("subcateName");
+                                String productId = object.getString("productId");
+                                String productName = object.getString("productName");
+                                String productDescription = object.getString("productDescription");
+                                String productImage = object.getString("productImage").trim();
+                                String price = object.getString("price");
+                                String qty = object.getString("qty");
+                                String productTags = object.getString("productTags");
+                                Model_PopularProducts item = new Model_PopularProducts(
+                                        cateSlug,
                                         CatName,
-                                        CatBriefIntro,
-                                        SubCatId,
+                                        subcateSlug,
                                         SubCatName,
-                                        SubCatBriefIntro,
-                                        ProductID,
-                                        ProductName,
-                                        ProductImage,
-                                        ProductDescription,
-                                        ProductSku,
-                                        ProductPrice,
-                                        ProductQty,
-                                        ProductTags,
-                                        is_wish,
-                                        is_cart
+                                        productId,
+                                        productName,
+                                        productDescription,
+                                        productImage,
+                                        price,
+                                        qty,
+                                        productTags
                                 );
                                 popularProductsList.add(item);
                             }
@@ -409,7 +398,7 @@ public class Home extends Fragment {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<String, String>();
-                map.put("userid", "12");
+                map.put("userid", userid);
                 return map;
             }
         };

@@ -64,7 +64,7 @@ import static managment.protege.supermed.Activity.Main_Apps.navigationHeaderUser
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Edit_Profile extends Fragment implements IPickResult, View.OnClickListener, AdapterView.OnItemSelectedListener, AdapterView.OnItemClickListener {
+public class Edit_Profile extends Fragment{
 
     Spinner sp_country, sp_city;
     RequestBody typedFile;
@@ -94,23 +94,23 @@ public class Edit_Profile extends Fragment implements IPickResult, View.OnClickL
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_edit__profile, container, false);
-        initailize();
+        //initailize();
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
         Main_Apps.getMainActivity().addToolbarBack(getContext(), getString(R.string.edit_profile), v);
-        putDataOnLoad();
-        String imageUrl = GlobalHelper.getUserProfile(getContext()).getProfile().getImage();
+        //putDataOnLoad();
+       /* String imageUrl = GlobalHelper.getUserProfile(getContext()).getProfile().getImage();
         Picasso.get()
                 .load(imageUrl)
                 .resize(80, 80)
                 .centerCrop()
                 .placeholder(R.drawable.edit_profile_icon)
-                .into(CircularImage);
-        onClickFunction();
-        setonclick();
+                .into(CircularImage);*/
+        /*onClickFunction();
+        setonclick();*/
         return v;
     }
 
-    private void putDataOnLoad() {
+    /*private void putDataOnLoad() {
 
         address.setText(GlobalHelper.getUserProfile(getContext()).getProfile().getAddress());
         firstname.setText(GlobalHelper.getUserProfile(getContext()).getProfile().getFirstName());
@@ -436,5 +436,5 @@ public class Edit_Profile extends Fragment implements IPickResult, View.OnClickL
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-    }
+    }*/
 }
