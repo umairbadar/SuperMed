@@ -78,8 +78,10 @@ public class DoctorInformation extends Fragment {
     private Spinner spn_type, spn_hospital, spn_speclization, spn_speclization1, spn_hospital1;
     private ArrayList<String> arr_type;
     private ArrayList<String> arr_specialites;
+    private ArrayList<String> arr_specialites_slug;
     private ArrayList<String> arr_specialites_id;
     private ArrayList<String> arr_hospitals;
+    private ArrayList<String> arr_hospitals_slug;
     private ArrayList<String> arr_hospitals_id;
     private ArrayList<String> arr_hospitals1;
     private ArrayList<String> arr_hospitals1_id;
@@ -170,9 +172,11 @@ public class DoctorInformation extends Fragment {
                 android.R.layout.simple_spinner_dropdown_item, arr_type));
 
         arr_specialites = new ArrayList<>();
+        arr_specialites_slug = new ArrayList<>();
         arr_specialites_id = new ArrayList<>();
 
         arr_hospitals = new ArrayList<>();
+        arr_hospitals_slug = new ArrayList<>();
         arr_hospitals_id = new ArrayList<>();
 
         arr_hospitals1 = new ArrayList<>();
@@ -346,9 +350,12 @@ public class DoctorInformation extends Fragment {
     private void getAllSpecialites() {
 
         hud.show();
+        arr_specialites.clear();
+        arr_specialites_id.clear();
+        arr_specialites_slug.clear();
 
-        String URL = "https://www.supermed.pk/api/api/list_of_specialities";
-        StringRequest req = new StringRequest(Request.Method.POST, URL,
+        String URL = Register.Base_URL + "listing-for/specialization-list";
+        StringRequest req = new StringRequest(Request.Method.GET, URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -357,11 +364,12 @@ public class DoctorInformation extends Fragment {
                             arr_specialites.add("Select Specialization");
                             arr_specialites_id.add("0");
                             JSONObject jsonObject = new JSONObject(response);
-                            JSONArray jsonArray = jsonObject.getJSONArray("specialities");
+                            JSONArray jsonArray = jsonObject.getJSONArray("data");
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject innerObj = jsonArray.getJSONObject(i);
                                 arr_specialites.add(innerObj.getString("name"));
                                 arr_specialites_id.add(innerObj.getString("id"));
+                                arr_specialites_slug.add(innerObj.getString("slug"));
                             }
                             spn_speclization.setAdapter(new ArrayAdapter<>(getContext(),
                                     android.R.layout.simple_spinner_dropdown_item, arr_specialites));
@@ -386,8 +394,13 @@ public class DoctorInformation extends Fragment {
     private void getAllHospitals() {
 
         hud.show();
-        String URL = "https://www.supermed.pk/api/api/list_of_hospital";
-        StringRequest req = new StringRequest(Request.Method.POST, URL,
+
+        arr_hospitals.clear();
+        arr_hospitals_id.clear();
+        arr_hospitals_slug.clear();
+
+        String URL = Register.Base_URL + "listing-for/hospital-list";
+        StringRequest req = new StringRequest(Request.Method.GET, URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -396,11 +409,12 @@ public class DoctorInformation extends Fragment {
                             arr_hospitals.add("Select Hospital");
                             arr_hospitals_id.add("0");
                             JSONObject jsonObject = new JSONObject(response);
-                            JSONArray jsonArray = jsonObject.getJSONArray("hospitals");
+                            JSONArray jsonArray = jsonObject.getJSONArray("data");
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject innerObj = jsonArray.getJSONObject(i);
                                 arr_hospitals.add(innerObj.getString("name"));
                                 arr_hospitals_id.add(innerObj.getString("id"));
+                                arr_hospitals_slug.add(innerObj.getString("slug"));
                             }
                             spn_hospital.setAdapter(new ArrayAdapter<>(getContext(),
                                     android.R.layout.simple_spinner_dropdown_item, arr_hospitals));
@@ -425,8 +439,12 @@ public class DoctorInformation extends Fragment {
     private void getAllHospitals1() {
 
         hud.show();
-        String URL = "https://www.supermed.pk/api/api/list_of_hospital";
-        StringRequest req = new StringRequest(Request.Method.POST, URL,
+
+        arr_hospitals1.clear();
+        arr_hospitals1_id.clear();
+
+        String URL = Register.Base_URL + "listing-for/hospital-list";
+        StringRequest req = new StringRequest(Request.Method.GET, URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -435,7 +453,7 @@ public class DoctorInformation extends Fragment {
                             arr_hospitals1.add("Select Hospital");
                             arr_hospitals1_id.add("0");
                             JSONObject jsonObject = new JSONObject(response);
-                            JSONArray jsonArray = jsonObject.getJSONArray("hospitals");
+                            JSONArray jsonArray = jsonObject.getJSONArray("data");
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject innerObj = jsonArray.getJSONObject(i);
                                 arr_hospitals1.add(innerObj.getString("name"));
@@ -464,7 +482,11 @@ public class DoctorInformation extends Fragment {
     private void getAllSpecialitesWithHospWise() {
 
         hud.show();
-        String URL = "https://www.supermed.pk/api/api/list_of_specialities";
+
+        arr_specialites1.clear();
+        arr_specialites1_id.clear();
+
+        String URL = Register.Base_URL + "specialities";
         StringRequest req = new StringRequest(Request.Method.POST, URL,
                 new Response.Listener<String>() {
                     @Override
@@ -474,11 +496,11 @@ public class DoctorInformation extends Fragment {
                             arr_specialites1.add("Select Specialization");
                             arr_specialites1_id.add("0");
                             JSONObject jsonObject = new JSONObject(response);
-                            JSONArray jsonArray = jsonObject.getJSONArray("specialities");
+                            JSONArray jsonArray = jsonObject.getJSONArray("data");
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject innerObj = jsonArray.getJSONObject(i);
-                                arr_specialites1.add(innerObj.getString("name"));
-                                arr_specialites1_id.add(innerObj.getString("id"));
+                                arr_specialites1.add(innerObj.getString("s_name"));
+                                arr_specialites1_id.add(innerObj.getString("s_id"));
                             }
                             spn_speclization1.setAdapter(new ArrayAdapter<>(getContext(),
                                     android.R.layout.simple_spinner_dropdown_item, arr_specialites1));
@@ -510,7 +532,7 @@ public class DoctorInformation extends Fragment {
     private void getSpecialityDoctor() {
 
         hud.show();
-        String URL = "https://www.supermed.pk/api/api/list_of_doctors";
+        String URL = Register.Base_URL + "doctor-info";
         StringRequest req = new StringRequest(Request.Method.POST, URL,
                 new Response.Listener<String>() {
                     @Override
@@ -521,16 +543,18 @@ public class DoctorInformation extends Fragment {
                             Boolean status = jsonObject.getBoolean("status");
                             if (status.equals(true)) {
                                 tv_error.setVisibility(View.GONE);
-                                JSONArray jsonArray = jsonObject.getJSONArray("Doctors");
+                                JSONArray jsonArray = jsonObject.getJSONArray("data");
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject innerObj = jsonArray.getJSONObject(i);
-                                    String doc_name = innerObj.getString("first_name");
-                                    String doc_designation = innerObj.getString("designation");
-                                    String doc_time = innerObj.getString("daystime");
+                                    String doc_name = innerObj.getString("d_name");
+                                    String doc_designation = innerObj.getString("d_qualification");
+                                    String doc_time = innerObj.getString("d_daysAndTime");
+                                    String gender = innerObj.getString("d_gender");
                                     ModelSpecialityDoctor item = new ModelSpecialityDoctor(
                                             doc_name,
                                             doc_designation,
-                                            doc_time
+                                            doc_time,
+                                            gender
                                     );
                                     arr_list_speciality_doctor.add(item);
                                 }
@@ -555,7 +579,8 @@ public class DoctorInformation extends Fragment {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<String, String>();
-                map.put("specailityId", specialization_id);
+                map.put("global_id", specialization_id);
+                map.put("type", "speciality-wise");
                 return map;
             }
         };
@@ -567,8 +592,8 @@ public class DoctorInformation extends Fragment {
     private void getAllDoctors() {
 
         hud.show();
-        String URL = "https://www.supermed.pk/api/api/list_of_doctors";
-        StringRequest req = new StringRequest(Request.Method.POST, URL,
+        String URL = Register.Base_URL + "listing-for/doctor-list";
+        StringRequest req = new StringRequest(Request.Method.GET, URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -578,16 +603,18 @@ public class DoctorInformation extends Fragment {
                             Boolean status = jsonObject.getBoolean("status");
                             if (status.equals(true)) {
                                 tv_error.setVisibility(View.GONE);
-                                JSONArray jsonArray = jsonObject.getJSONArray("Doctors");
+                                JSONArray jsonArray = jsonObject.getJSONArray("data");
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject innerObj = jsonArray.getJSONObject(i);
-                                    String doc_name = innerObj.getString("first_name");
-                                    String doc_designation = innerObj.getString("designation");
-                                    String doc_time = innerObj.getString("daystime");
+                                    String doc_name = innerObj.getString("name");
+                                    String doc_designation = innerObj.getString("qualification");
+                                    String doc_time = innerObj.getString("daysAndTime");
+                                    String gender = innerObj.getString("gender");
                                     ModelSpecialityDoctor item = new ModelSpecialityDoctor(
                                             doc_name,
                                             doc_designation,
-                                            doc_time
+                                            doc_time,
+                                            gender
                                     );
                                     arr_list_all_doctors.add(item);
                                 }
@@ -617,7 +644,7 @@ public class DoctorInformation extends Fragment {
     private void getAllDoctorsHospitalWise() {
 
         hud.show();
-        String URL = "https://www.supermed.pk/api/api/list_of_doctors";
+        String URL = Register.Base_URL + "doctor-info";
         StringRequest req = new StringRequest(Request.Method.POST, URL,
                 new Response.Listener<String>() {
                     @Override
@@ -628,16 +655,18 @@ public class DoctorInformation extends Fragment {
                             Boolean status = jsonObject.getBoolean("status");
                             if (status.equals(true)) {
                                 tv_error.setVisibility(View.GONE);
-                                JSONArray jsonArray = jsonObject.getJSONArray("Doctors");
+                                JSONArray jsonArray = jsonObject.getJSONArray("data");
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject innerObj = jsonArray.getJSONObject(i);
-                                    String doc_name = innerObj.getString("first_name");
-                                    String doc_designation = innerObj.getString("designation");
-                                    String doc_time = innerObj.getString("daystime");
+                                    String doc_name = innerObj.getString("d_name");
+                                    String doc_designation = innerObj.getString("d_qualification");
+                                    String doc_time = innerObj.getString("d_daysAndTime");
+                                    String gender = innerObj.getString("d_gender");
                                     ModelSpecialityDoctor item = new ModelSpecialityDoctor(
                                             doc_name,
                                             doc_designation,
-                                            doc_time
+                                            doc_time,
+                                            gender
                                     );
                                     arr_list_doctor_hospital_wise.add(item);
                                 }
@@ -660,7 +689,8 @@ public class DoctorInformation extends Fragment {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<String, String>();
-                map.put("hospitalId", hospital_id);
+                map.put("global_id", hospital_id);
+                map.put("type", "hospital-wise");
                 return map;
             }
         };
@@ -672,7 +702,7 @@ public class DoctorInformation extends Fragment {
     private void getAllDoctorsWithHospitalAndSpecialityWise() {
 
         hud.show();
-        String URL = "https://www.supermed.pk/api/api/list_of_doctors";
+        String URL = Register.Base_URL + "doctor-info";
         StringRequest req = new StringRequest(Request.Method.POST, URL,
                 new Response.Listener<String>() {
                     @Override
@@ -683,16 +713,18 @@ public class DoctorInformation extends Fragment {
                             Boolean status = jsonObject.getBoolean("status");
                             if (status.equals(true)) {
                                 tv_error.setVisibility(View.GONE);
-                                JSONArray jsonArray = jsonObject.getJSONArray("Doctors");
+                                JSONArray jsonArray = jsonObject.getJSONArray("data");
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject innerObj = jsonArray.getJSONObject(i);
-                                    String doc_name = innerObj.getString("first_name");
-                                    String doc_designation = innerObj.getString("designation");
-                                    String doc_time = innerObj.getString("daystime");
+                                    String doc_name = innerObj.getString("d_name");
+                                    String doc_designation = innerObj.getString("d_qualification");
+                                    String doc_time = innerObj.getString("d_daysAndTime");
+                                    String gender = innerObj.getString("d_gender");
                                     ModelSpecialityDoctor item = new ModelSpecialityDoctor(
                                             doc_name,
                                             doc_designation,
-                                            doc_time
+                                            doc_time,
+                                            gender
                                     );
                                     arr_list_doctor_hospital_and_speciality_wise.add(item);
                                 }
@@ -718,8 +750,9 @@ public class DoctorInformation extends Fragment {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<String, String>();
-                map.put("hospitalId", hospital1_id);
-                map.put("specailityId", specialization1_id);
+                map.put("getHospitalId", hospital1_id);
+                map.put("global_id", specialization1_id);
+                map.put("type", "hospital-and-speciality-wise");
                 return map;
             }
         };

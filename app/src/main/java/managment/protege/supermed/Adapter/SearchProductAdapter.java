@@ -58,7 +58,7 @@ public class SearchProductAdapter extends RecyclerView.Adapter<SearchProductAdap
 
         final SearchModel Pro = Prolist.get(position);
         holder.title.setText(Pro.getProductName());
-        double original_price = Double.parseDouble(Pro.getProductPrice());
+        double original_price = Double.parseDouble(Pro.getPrice());
         holder.price.setText(String.format("Rs %.0f",original_price));
         Picasso.get()
                 .load(Pro.getProductImage().replaceAll(" ", "%20"))
@@ -70,11 +70,11 @@ public class SearchProductAdapter extends RecyclerView.Adapter<SearchProductAdap
             @Override
             public void onClick(View view) {
                 Main_Apps.status = false;
-                AlternativeListFragment.cartActionSearch(Pro.getProductID(), GlobalHelper.getUserProfile(context).getProfile().getId(), "1", "0", context, holder.detail);
+                AlternativeListFragment.cartActionSearch(Pro.getProductId(), GlobalHelper.getUserProfile(context).getProfile().getId(), "1", "0", context, holder.detail);
                 Log.e("cart counter", String.valueOf(ProductDetailCartCounter));
             }
         });
-        holder.ll_cardView.setOnClickListener(new View.OnClickListener() {
+        /*holder.ll_cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle args = new Bundle();
@@ -83,18 +83,18 @@ public class SearchProductAdapter extends RecyclerView.Adapter<SearchProductAdap
 
                 Main_Apps.getMainActivity().backfunctions(new ProductDetail(), args);
             }
-        });
+        });*/
 
-        if (Pro.getProductQty().equals("0")) {
+        if (Pro.getQty().equals("0")) {
             holder.detail.setEnabled(false);
             holder.detail.setText("OUT OF STOCK");
         }
 
-        String price = Pro.getProductPrice();
+        String price = Pro.getPrice();
         double p = Double.parseDouble(price) + 113.99;
         holder.priceoff.setText(String.format("Rs %.2f",p));
         holder.priceoff.setPaintFlags(holder.priceoff.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        holder.tv_subcatname.setText(Pro.getSubCatName());
+        holder.tv_subcatname.setText(Pro.getSubcateName());
     }
 
     @Override

@@ -18,6 +18,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/et_bg"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
+
+            <Spinner
+                android:id="@+id/spinner_category"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/lato_bold"
+                android:padding="15dp"
+                android:textSize="14sp"
+                android:imeOptions="actionNext"/>
+
+        </LinearLayout>
+
         <EditText
             android:id="@+id/searchpro"
             android:layout_width="match_parent"
@@ -65,12 +84,12 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/LL_sp_rc"
+        android:id="@+id/layout1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/LL_sp_top"
         android:orientation="vertical"
-        android:visibility="invisible">
+        android:visibility="gone">
         <!-- TODO: Update blank fragment layout -->
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler"
@@ -80,12 +99,12 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/LL_sp_tv"
+        android:id="@+id/layout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/LL_sp_top"
         android:orientation="vertical"
-        android:visibility="invisible">
+        android:visibility="gone">
         <!-- TODO: Update blank fragment layout -->
         <TextView
             android:layout_width="match_parent"
@@ -98,6 +117,6 @@
             android:text="No Results Found."
             android:textColor="@color/cartCouponText"
             android:textColorHint="@color/cartCouponText"
-            android:textSize="20dp" />
+            android:textSize="20sp" />
     </LinearLayout>
 </RelativeLayout>

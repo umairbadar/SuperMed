@@ -19,8 +19,8 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_arrow_up" />
-                            <entry key="sourceFile" value="C:\Users\developer\Downloads\chevron-arrow-up.svg" />
+                            <entry key="outputName" value="ic_image" />
+                            <entry key="sourceFile" value="C:\Users\developer\Downloads\image.svg" />
                           </map>
                         </option>
                       </PersistentState>

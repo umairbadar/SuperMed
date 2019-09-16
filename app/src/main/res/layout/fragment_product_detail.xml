@@ -1,239 +1,264 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbarapp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar">
+        android:orientation="vertical">
 
-        <ScrollView
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbarapp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/toolbar"
-            android:layout_marginTop="2dp">
+            android:layout_height="wrap_content" />
 
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                xmlns:tools="http://schemas.android.com/tools"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/toolbar">
+
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                tools:context="managment.protege.supermed.Fragment.ProductDetail">
+                android:layout_height="match_parent"
+                android:layout_below="@+id/toolbar"
+                android:layout_marginTop="2dp">
 
-                <ImageView
-                    android:id="@+id/product_Image"
-                    android:layout_width="match_parent"
-                    android:layout_height="180dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="25dp"
-                    android:layout_marginRight="25dp"
-                    android:background="@color/white"
-                    android:src="@drawable/tab_miss">
-
-                </ImageView>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="25dp" />
-
-                <android.support.design.widget.TabLayout
-                    android:id="@+id/tab_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_marginLeft="25dp"
-                    android:layout_marginRight="25dp"
-                    app:tabBackground="@drawable/tab_selector"
-                    app:tabGravity="center"
-                    app:tabIndicatorHeight="0dp" />
-
-                <View
-                    android:layout_width="wrap_content"
-                    android:layout_height="15dp" />
-
-                <LinearLayout
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    xmlns:tools="http://schemas.android.com/tools"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp">
+                    android:orientation="vertical"
+                    tools:context="managment.protege.supermed.Fragment.ProductDetail">
+
+                    <ImageView
+                        android:id="@+id/product_Image"
+                        android:layout_width="match_parent"
+                        android:layout_height="180dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginRight="25dp"
+                        android:background="@color/white"
+                        android:src="@drawable/tab_miss">
+
+                    </ImageView>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp" />
+
+                    <android.support.design.widget.TabLayout
+                        android:id="@+id/tab_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginRight="25dp"
+                        app:tabBackground="@drawable/tab_selector"
+                        app:tabGravity="center"
+                        app:tabIndicatorHeight="0dp" />
+
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="15dp" />
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".2"
-                        android:orientation="vertical"
-                        android:paddingLeft="20dp">
-
-                        <TextView
-                            android:id="@+id/pname"
-                            android:layout_width="200dp"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/lato_bold"
-                            android:text="Herbal"
-                            android:textColor="@color/colorPrimary"
-                            android:textSize="20dp" />
+                        android:layout_marginTop="10dp">
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:padding="5dp">
+                            android:layout_weight=".2"
+                            android:orientation="vertical"
+                            android:paddingLeft="20dp">
 
                             <TextView
-                                android:id="@+id/price"
-                                android:layout_width="wrap_content"
+                                android:id="@+id/pname"
+                                android:layout_width="200dp"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lato_bold"
-                                android:text="$50"
+                                android:text="Herbal"
+                                android:textColor="@color/colorPrimary"
                                 android:textSize="20dp" />
 
-                            <TextView
-                                android:id="@+id/oldrate"
+                            <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
+                                android:padding="5dp">
+
+                                <TextView
+                                    android:id="@+id/price"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/lato_bold"
+                                    android:text="$50"
+                                    android:textSize="20dp" />
+
+                                <TextView
+                                    android:id="@+id/oldrate"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="5dp"
+                                    android:fontFamily="@font/lato_bold"
+                                    android:text="$70(33%off)"
+                                    android:textColor="@color/google_btn"
+                                    android:textSize="15dp"
+                                    android:visibility="invisible" />
+
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/productStock"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
                                 android:fontFamily="@font/lato_bold"
-                                android:text="$70(33%off)"
-                                android:textColor="@color/google_btn"
-                                android:textSize="15dp"
-                                android:visibility="invisible" />
+                                android:text="Quantity Left: 10 pcs"
+                                android:textSize="20dp" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="10dp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight=".03"
+                            android:orientation="vertical">
+
+                            <ImageButton
+                                android:id="@+id/btn_add_to_wishlist"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:src="@drawable/wishlist_product"
+                                android:background="@color/white"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="10dp"
+                                android:text="Wishlist" />
 
                         </LinearLayout>
 
-                        <TextView
-                            android:id="@+id/productStock"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/lato_bold"
-                            android:text="Quantity Left: 10 pcs"
-                            android:textSize="20dp" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="10dp" />
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:layout_weight=".03"
-                        android:orientation="vertical">
-
-                        <ImageButton
-                            android:id="@+id/btn_add_to_wishlist"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:src="@drawable/wishlist_product"
-                            android:background="@color/white"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="10dp"
-                            android:text="Wishlist" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-                <android.support.v7.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="25dp"
-                    android:layout_marginRight="25dp">
-
-                    <TextView
-                        android:id="@+id/detail"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="10dp"
-                        android:text="Home - Products - See all our products ... CALPOL Infant Suspension (Contains paracetamol). For babies and ... CALCOUGH Infant Syrup (Contains glycerol)." />
-
-                </android.support.v7.widget.CardView>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center">
-
-                    <LinearLayout
+                    <android.support.v7.widget.CardView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_weight=".4">
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginRight="25dp">
 
                         <TextView
+                            android:id="@+id/detail"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="20dp"
-                            android:fontFamily="@font/lato_regular"
-                            android:gravity="center_vertical"
-                            android:text="Quantity"
-                            android:textSize="20dp" />
+                            android:padding="10dp"
+                            android:text="Home - Products - See all our products ... CALPOL Infant Suspension (Contains paracetamol). For babies and ... CALCOUGH Infant Syrup (Contains glycerol)." />
 
-                    </LinearLayout>
+                    </android.support.v7.widget.CardView>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".9">
+                        android:layout_marginTop="10dp"
+                        android:gravity="center">
 
-                        <ImageView
-                            android:id="@+id/min"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:background="@drawable/min"
-                            android:padding="15dp" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_weight=".4">
 
-                        <TextView
-                            android:id="@+id/qty"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/lato_regular"
-                            android:padding="15dp"
-                            android:text="1"
-                            android:textColor="@color/colorPrimary"
-                            android:textSize="20dp" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="20dp"
+                                android:fontFamily="@font/lato_regular"
+                                android:gravity="center_vertical"
+                                android:text="Quantity"
+                                android:textSize="20dp" />
 
-                        <ImageView
-                            android:id="@+id/plus"
-                            android:layout_width="wrap_content"
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginRight="10dp"
-                            android:background="@drawable/plus"
-                            android:padding="15dp" />
+                            android:layout_weight=".9">
+
+                            <ImageView
+                                android:id="@+id/min"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:background="@drawable/min"
+                                android:padding="15dp" />
+
+                            <TextView
+                                android:id="@+id/qty"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/lato_regular"
+                                android:padding="15dp"
+                                android:text="1"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="20dp" />
+
+                            <ImageView
+                                android:id="@+id/plus"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginRight="10dp"
+                                android:background="@drawable/plus"
+                                android:padding="15dp" />
+                        </LinearLayout>
+
                     </LinearLayout>
 
+                    <Button
+                        android:id="@+id/add_cart"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="25dp"
+                        android:layout_marginBottom="20dp"
+                        android:background="@drawable/buttonbg"
+                        android:text="Add To Cart"
+                        android:textColor="@color/white" />
+
                 </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
 
-                <Button
-                    android:id="@+id/add_cart"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginStart="25dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="25dp"
-                    android:layout_marginBottom="20dp"
-                    android:background="@drawable/buttonbg"
-                    android:text="Add To Cart"
-                    android:textColor="@color/white" />
 
-            </LinearLayout>
-        </ScrollView>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/bg_new_arrivals"
+            android:contentDescription="@string/todo"
+            android:layout_marginTop="10dp"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerViewRelatedProducts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="25dp"
+            android:nestedScrollingEnabled="true" />
+
     </LinearLayout>
 
-
-</RelativeLayout>
+</ScrollView>

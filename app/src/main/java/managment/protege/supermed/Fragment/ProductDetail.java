@@ -12,6 +12,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -44,17 +46,20 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import es.dmoral.toasty.Toasty;
 import managment.protege.supermed.Activity.Main_Apps;
 import managment.protege.supermed.Activity.Register;
+import managment.protege.supermed.Adapter.AdapterProduct;
 import managment.protege.supermed.Adapter.ImageAdapter;
 import managment.protege.supermed.Adapter.ProductAdapter;
 import managment.protege.supermed.Adapter.TopCatagorieAdapter;
 import managment.protege.supermed.Model.CartActionResponse;
 import managment.protege.supermed.Model.GetProductsModel;
 import managment.protege.supermed.Model.ImageData;
+import managment.protege.supermed.Model.Model_PopularProducts;
 import managment.protege.supermed.Model.Search;
 import managment.protege.supermed.Model.SearchModel;
 import managment.protege.supermed.R;
@@ -94,6 +99,12 @@ public class ProductDetail extends Fragment {
     ImageView product_Image;
     ImageButton btn_add_to_wishlist;
     boolean isPlay;
+    String cateSlug;
+
+    //Related Products
+    private RecyclerView recyclerViewRelatedProducts;
+    private AdapterProduct relatedProductsAdapter;
+    private List<Model_PopularProducts> relatedProductsList;
 
     private String userid;
 
@@ -122,10 +133,19 @@ public class ProductDetail extends Fragment {
 
         if (getArguments() != null) {
             product_ID = getArguments().getString("ProductID");
+            cateSlug = getArguments().getString("cateslug");
         }
 
         initViews();
         getProductDetail(product_ID);
+
+        //Categories
+        recyclerViewRelatedProducts = view.findViewById(R.id.recyclerViewRelatedProducts);
+        recyclerViewRelatedProducts.setLayoutManager(new LinearLayoutManager(getContext(),
+                LinearLayoutManager.HORIZONTAL, false));
+        relatedProductsList = new ArrayList<>();
+        getRelatedProducts();
+
         return view;
     }
 
@@ -170,7 +190,7 @@ public class ProductDetail extends Fragment {
                     @Override
                     public void onResponse(String response) {
                         try {
-                            hud.dismiss();
+
                             JSONObject jsonObject = new JSONObject(response);
                             JSONObject object = jsonObject.getJSONObject("data");
                             String productId = object.getString("productId");
@@ -254,6 +274,66 @@ public class ProductDetail extends Fragment {
 
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         requestQueue.add(req);
+    }
+
+    public void getRelatedProducts(){
+
+        String URL = Register.Base_URL + "related-products/" + cateSlug;
+        StringRequest req = new StringRequest(Request.Method.GET, URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            hud.dismiss();
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray jsonArray = jsonObject.getJSONArray("data");
+                            for (int i = 0; i < jsonArray.length(); i++){
+                                JSONObject object = jsonArray.getJSONObject(i);
+                                String cateSlug = object.getString("cateSlug");
+                                String CatName = object.getString("cateName");
+                                String subcateSlug = object.getString("subcateSlug");
+                                String SubCatName = object.getString("subcateName");
+                                String productId = object.getString("productId");
+                                String productName = object.getString("productName");
+                                String productDescription = object.getString("productDescription");
+                                String productImage = object.getString("productImage").trim();
+                                String price = object.getString("price");
+                                String qty = object.getString("qty");
+                                String productTags = object.getString("productTags");
+                                Model_PopularProducts item = new Model_PopularProducts(
+                                        cateSlug,
+                                        CatName,
+                                        subcateSlug,
+                                        SubCatName,
+                                        productId,
+                                        productName,
+                                        productDescription,
+                                        productImage,
+                                        price,
+                                        qty,
+                                        productTags
+                                );
+                                relatedProductsList.add(item);
+                            }
+                            relatedProductsAdapter = new AdapterProduct(relatedProductsList, getContext());
+                            recyclerViewRelatedProducts.setAdapter(relatedProductsAdapter);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        hud.dismiss();
+                        Toast.makeText(getContext(), error.getMessage(),
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        requestQueue.add(req);
+
     }
 
 

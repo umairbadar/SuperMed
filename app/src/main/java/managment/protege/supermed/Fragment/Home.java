@@ -1,8 +1,6 @@
 package managment.protege.supermed.Fragment;
 
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -24,6 +22,7 @@ import android.widget.ViewFlipper;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -42,8 +41,9 @@ import managment.protege.supermed.Activity.Main_Apps;
 import managment.protege.supermed.Activity.Register;
 import managment.protege.supermed.Adapter.AdapterCategories;
 import managment.protege.supermed.Adapter.AdapterProduct;
-import managment.protege.supermed.Model.GetProductsModel;
+import managment.protege.supermed.Adapter.Adapter_Brand;
 import managment.protege.supermed.Model.ModelCategories;
+import managment.protege.supermed.Model.Model_Brand;
 import managment.protege.supermed.Model.Model_PopularProducts;
 import managment.protege.supermed.R;
 import managment.protege.supermed.Tools.GlobalHelper;
@@ -71,6 +71,16 @@ public class Home extends Fragment {
     private RecyclerView recyclerViewPopularProducts;
     private AdapterProduct popularProductsAdapter;
     private List<Model_PopularProducts> popularProductsList;
+
+    //Brands
+    private RecyclerView recyclerViewBrands;
+    private Adapter_Brand adapterBrand;
+    private List<Model_Brand> brandList;
+
+    //RecentlyViewed Products
+    private RecyclerView recyclerViewRecentProducts;
+    private AdapterProduct recentProductsAdapter;
+    private List<Model_PopularProducts> recentProductsList;
 
     private String userid;
 
@@ -126,6 +136,20 @@ public class Home extends Fragment {
         popularProductsList = new ArrayList<>();
         getPopularProducts();
 
+        //Brands
+        recyclerViewBrands = view.findViewById(R.id.recyclerViewBrands);
+        recyclerViewBrands.setLayoutManager(new LinearLayoutManager(getContext(),
+                LinearLayoutManager.HORIZONTAL, false));
+        brandList = new ArrayList<>();
+        getBrands();
+
+        //Recently Viewed Products
+        recyclerViewRecentProducts = view.findViewById(R.id.recyclerViewRecentProducts);
+        recyclerViewRecentProducts.setLayoutManager(new LinearLayoutManager(getContext(),
+                LinearLayoutManager.HORIZONTAL, false));
+        recentProductsList = new ArrayList<>();
+        getRecentProducts();
+
         return view;
     }
 
@@ -169,11 +193,11 @@ public class Home extends Fragment {
         labTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*if (GlobalHelper.getUserProfile(getContext()).getProfile().getFirstName().trim().toLowerCase().equals("guest")) {
-                    Main_Apps.getMainActivity().forgotPasswordDialog(getContext());
-                } else {
-                    Main_Apps.getMainActivity().backfunction(new LabTest());
-                }*/
+                Fragment fragment = new Fragment_Labs();
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.content_main, fragment);
+                ft.addToBackStack(null);
+                ft.commit();
             }
         });
         doctorsInformation.setOnClickListener(new View.OnClickListener() {
@@ -274,6 +298,63 @@ public class Home extends Fragment {
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         requestQueue.add(req);
 
+    }
+
+    public void getRecentProducts(){
+
+        String URL = Register.Base_URL + "recently-viewed-products";
+        StringRequest req = new StringRequest(Request.Method.GET, URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray jsonArray = jsonObject.getJSONArray("data");
+                            for (int i = 0; i < jsonArray.length(); i++){
+                                JSONObject object = jsonArray.getJSONObject(i);
+                                String cateSlug = object.getString("cateSlug");
+                                String CatName = object.getString("cateName");
+                                String subcateSlug = object.getString("subcateSlug");
+                                String SubCatName = object.getString("subcateName");
+                                String productId = object.getString("productId");
+                                String productName = object.getString("productName");
+                                String productDescription = object.getString("productDescription");
+                                String productImage = object.getString("productImage").trim();
+                                String price = object.getString("price");
+                                String qty = object.getString("qty");
+                                String productTags = object.getString("productTags");
+                                Model_PopularProducts item = new Model_PopularProducts(
+                                        cateSlug,
+                                        CatName,
+                                        subcateSlug,
+                                        SubCatName,
+                                        productId,
+                                        productName,
+                                        productDescription,
+                                        productImage,
+                                        price,
+                                        qty,
+                                        productTags
+                                );
+                                recentProductsList.add(item);
+                            }
+                            recentProductsAdapter = new AdapterProduct(recentProductsList, getContext());
+                            recyclerViewRecentProducts.setAdapter(recentProductsAdapter);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getContext(), error.getMessage(),
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        requestQueue.add(req);
     }
 
     public void getNewArrivals() {
@@ -391,6 +472,7 @@ public class Home extends Fragment {
                 new com.android.volley.Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        hud.dismiss();
                         Toast.makeText(getContext(), error.getMessage(),
                                 Toast.LENGTH_LONG).show();
                     }
@@ -402,6 +484,53 @@ public class Home extends Fragment {
                 return map;
             }
         };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        requestQueue.add(req);
+
+    }
+
+    public void getBrands(){
+
+        String URL = Register.Base_URL + "brands";
+        StringRequest req = new StringRequest(Request.Method.GET, URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray jsonArray = jsonObject.getJSONArray("data");
+                            for (int i = 0; i < jsonArray.length(); i++){
+                                JSONObject jsonObject1 = jsonArray.getJSONObject(i);
+                                String id = jsonObject1.getString("id");
+                                String name = jsonObject1.getString("name");
+                                String slug = jsonObject1.getString("slug");
+                                String image = jsonObject1.getString("image");
+
+                                Model_Brand item = new Model_Brand(
+                                        id,
+                                        name,
+                                        slug,
+                                        image
+                                );
+
+                                brandList.add(item);
+                            }
+
+                            adapterBrand = new Adapter_Brand(brandList, getContext());
+                            recyclerViewBrands.setAdapter(adapterBrand);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getContext(), error.getMessage(),
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
 
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         requestQueue.add(req);

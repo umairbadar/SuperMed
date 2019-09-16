@@ -86,8 +86,8 @@ public interface API {
 
     @FormUrlEncoded
     @POST("searchMed")
-    Call<SearchResponse> search(@Field("search") String search,
-                                @Field("user_id") String user_id);
+    Call<SearchResponse> search(@Field("keywords") String keywords,
+                                @Field("category") String category);
 
     @FormUrlEncoded
     @POST("cart_action")

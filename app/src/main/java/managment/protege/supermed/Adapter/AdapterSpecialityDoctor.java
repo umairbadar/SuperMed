@@ -6,7 +6,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -39,6 +42,12 @@ public class AdapterSpecialityDoctor extends RecyclerView.Adapter<AdapterSpecial
         holder.tv_doc_name.setText(item.getDoc_name());
         holder.tv_doc_designation.setText(item.getDoc_designation());
         holder.tv_doc_timing.setText(item.getDoc_time());
+
+        if (item.getGender().equals("Male") || item.getGender().equals("male")){
+            holder.img_doc.setImageResource(R.drawable.male_doc);
+        } else {
+            holder.img_doc.setImageResource(R.drawable.female_doc);
+        }
     }
 
     @Override
@@ -48,11 +57,13 @@ public class AdapterSpecialityDoctor extends RecyclerView.Adapter<AdapterSpecial
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
+        ImageView img_doc;
         TextView tv_doc_name, tv_doc_designation, tv_doc_timing;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
+            img_doc = itemView.findViewById(R.id.img_doc);
             tv_doc_name = itemView.findViewById(R.id.tv_doc_name);
             tv_doc_designation = itemView.findViewById(R.id.tv_doc_designation);
             tv_doc_timing = itemView.findViewById(R.id.tv_doc_timing);

@@ -104,6 +104,7 @@ public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHold
                 ProductDetail myFragment = new ProductDetail();
                 Bundle args = new Bundle();
                 args.putString("ProductID", Pro.getProductId());
+                args.putString("cateslug", Pro.getCateSlug());
                 myFragment.setArguments(args);
                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.content_main, myFragment).addToBackStack(null).commit();
             }
