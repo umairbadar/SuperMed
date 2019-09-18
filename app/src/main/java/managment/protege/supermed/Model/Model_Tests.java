@@ -1,15 +1,15 @@
 package managment.protege.supermed.Model;
 
-public class Model_Labs {
+public class Model_Tests {
 
     private String id;
     private String name;
-    private String image;
+    private String price;
 
-    public Model_Labs(String id, String name, String image) {
+    public Model_Tests(String id, String name, String price) {
         this.id = id;
         this.name = name;
-        this.image = image;
+        this.price = price;
     }
 
     public String getId() {
@@ -20,7 +20,7 @@ public class Model_Labs {
         return name;
     }
 
-    public String getImage() {
-        return image;
+    public String getPrice() {
+        return price;
     }
 }

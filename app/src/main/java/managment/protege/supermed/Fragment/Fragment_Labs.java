@@ -63,7 +63,7 @@ public class Fragment_Labs extends Fragment {
                 .setCancellable(false);
 
         recyclerViewLabs = view.findViewById(R.id.recyclerViewLabs);
-        recyclerViewLabs.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        recyclerViewLabs.setLayoutManager(new GridLayoutManager(getContext(), 1));
         labsList = new ArrayList<>();
         getLabs();
     }
@@ -84,10 +84,12 @@ public class Fragment_Labs extends Fragment {
                                 JSONObject object = jsonArray.getJSONObject(i);
                                 String id = object.getString("id");
                                 String name = object.getString("name");
+                                String image = object.getString("image");
 
                                 Model_Labs item = new Model_Labs(
                                         id,
-                                        name
+                                        name,
+                                        image
                                 );
 
                                 labsList.add(item);

@@ -1,15 +1,23 @@
 package managment.protege.supermed.Adapter;
 
 import android.content.Context;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import managment.protege.supermed.Fragment.Fragment_Tests;
 import managment.protege.supermed.Model.Model_Brand;
 import managment.protege.supermed.Model.Model_Labs;
 import managment.protege.supermed.R;
@@ -33,8 +41,30 @@ public class Adapter_Labs extends RecyclerView.Adapter<Adapter_Labs.ViewHolder> 
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Model_Labs item = list.get(position);
-        holder.tv_name.setText(item.getName());
+        final Model_Labs item = list.get(position);
+
+        String ImageLink = item.getImage();
+        if (!ImageLink.equals("")) {
+            ImageLink = ImageLink.replaceAll(" ", "%20");
+            Picasso.get()
+                    .load(ImageLink)
+                    .fit()
+                    .into(holder.img_lab);
+        }
+
+        holder.card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AppCompatActivity activity = (AppCompatActivity) v.getContext();
+                Fragment myFragment = new Fragment_Tests();
+                Bundle args = new Bundle();
+                args.putString("LabID", item.getId());
+                myFragment.setArguments(args);
+                activity.getSupportFragmentManager().beginTransaction().replace(R.id.content_main, myFragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
 
     }
 
@@ -45,14 +75,14 @@ public class Adapter_Labs extends RecyclerView.Adapter<Adapter_Labs.ViewHolder> 
 
     class ViewHolder extends RecyclerView.ViewHolder{
 
-        TextView tv_name;
         ImageView img_lab;
+        CardView card;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
-            tv_name = itemView.findViewById(R.id.tv_name);
             img_lab = itemView.findViewById(R.id.img_lab);
+            card = itemView.findViewById(R.id.card);
         }
     }
 }

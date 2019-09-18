@@ -287,7 +287,7 @@ public class Register extends AppCompatActivity {
                 map.put("last_name", et_lname.getText().toString());
                 map.put("contact", et_phone.getText().toString());
                 map.put("dob", tv_dob.getText().toString());
-                map.put("city", spn_city.getSelectedItem().toString());
+                map.put("city", String.valueOf(spn_city.getSelectedItemPosition()));
                 map.put("email", et_email.getText().toString());
                 map.put("password", et_password.getText().toString());
                 map.put("gender", spn_gender.getSelectedItem().toString());

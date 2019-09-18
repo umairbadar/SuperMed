@@ -641,7 +641,7 @@ public class DoctorInformation extends Fragment {
         requestQueue.add(req);
     }
 
-    private void getAllDoctorsHospitalWise() {
+    private void getAllDoctorsHospitalWise(){
 
         hud.show();
         String URL = Register.Base_URL + "doctor-info";
