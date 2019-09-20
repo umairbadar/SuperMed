@@ -63,6 +63,8 @@ public class Fragment_Tests extends Fragment {
         recyclerViewTests = view.findViewById(R.id.recyclerViewTests);
         recyclerViewTests.setLayoutManager(new GridLayoutManager(getContext(), 1));
         testsList = new ArrayList<>();
+        testsAdapter = new Adapter_Tests(testsList, getContext());
+        recyclerViewTests.setAdapter(testsAdapter);
         getTests(currentPage);
 
         recyclerViewTests.addOnScrollListener(new RecyclerScrollChangeListener() {
@@ -100,8 +102,8 @@ public class Fragment_Tests extends Fragment {
 
                                     testsList.add(item);
                                 }
-                                testsAdapter = new Adapter_Tests(testsList, getContext());
-                                recyclerViewTests.setAdapter(testsAdapter);
+                                testsAdapter.notifyDataSetChanged();
+
                             } else {
                                 Toast.makeText(getContext(), message,
                                         Toast.LENGTH_LONG).show();
