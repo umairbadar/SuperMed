@@ -10,8 +10,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import managment.protege.supermed.Fragment.LabTest;
-import managment.protege.supermed.Model.HelpCenterModel;
+import managment.protege.supermed.Fragment.Fragment_Book_an_Appointment;
 import managment.protege.supermed.Model.TestModel;
 import managment.protege.supermed.R;
 
@@ -43,16 +42,16 @@ public class LabtestCartAdapter extends RecyclerView.Adapter<LabtestCartAdapter.
         holder.title.setText(Pro.getLabname());
         holder.testname.setText(Pro.getTest_name());
         holder.price.setText(Pro.getPrice());
-        holder.iv.setOnClickListener(new View.OnClickListener() {
+   /*     holder.iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 list.remove(position);
-                LabTest.delete(list);
-                LabTest.jsonArray.remove(position);
+                Fragment_Book_an_Appointment.delete(list);
+                Fragment_Book_an_Appointment.jsonArray.remove(position);
 
 
             }
-        });
+        });*/
     }
 
     @Override

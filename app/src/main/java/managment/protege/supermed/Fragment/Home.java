@@ -217,7 +217,7 @@ public class Home extends Fragment {
                 if (GlobalHelper.getUserProfile(getContext()).getProfile().getFirstName().trim().toLowerCase().equals("guest")) {
                     Main_Apps.getMainActivity().forgotPasswordDialog(getContext());
                 } else {
-                    Main_Apps.getMainActivity().backfunction(new LabTest());
+                    Main_Apps.getMainActivity().backfunction(new Fragment_Book_an_Appointment());
                 }
             }
         });

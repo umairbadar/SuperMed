@@ -1,0 +1,215 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context="managment.protege.supermed.Fragment.Fragment_Book_an_Appointment">
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#E9E9E9"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar_back"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/et_patient_name"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/et_bg"
+                android:hint="Patient Name"
+                android:inputType="text|textCapWords"
+                android:paddingLeft="15dp"
+                android:imeOptions="actionNext"
+                android:textColor="@color/black"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_marginTop="10dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="50dp"
+                    android:background="@drawable/et_bg"
+                    android:orientation="vertical"
+                    android:layout_marginRight="2.5dp">
+
+                    <Spinner
+                        android:id="@+id/spn_gender"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/lato_bold"
+                        android:paddingLeft="15dp"
+                        android:textColor="@color/placeOrderText"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_dob"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="50dp"
+                    android:background="@drawable/et_bg"
+                    android:layout_marginLeft="2.5dp"
+                    android:drawableEnd="@drawable/dropdown"
+                    android:paddingEnd="3dp"
+                    android:gravity="center|left"
+                    android:textSize="18sp"
+                    android:paddingLeft="15dp"
+                    android:paddingStart="15dp"
+                    android:textColor="@color/black"
+                    android:hint="dd/mm/yyyy"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/tv_country"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="50dp"
+                    android:background="@drawable/et_bg"
+                    android:text="Pakistan"
+                    android:gravity="center|left"
+                    android:textSize="18sp"
+                    android:paddingLeft="15dp"
+                    android:layout_marginRight="2.5dp"
+                    android:textColor="@color/black"/>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="50dp"
+                    android:background="@drawable/et_bg"
+                    android:orientation="vertical"
+                    android:layout_marginRight="2.5dp">
+
+                    <Spinner
+                        android:id="@+id/spn_city"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/lato_bold"
+                        android:paddingLeft="15dp"
+                        android:textColor="@color/placeOrderText"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/et_address"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/et_bg"
+                android:hint="Address"
+                android:gravity="left|top"
+                android:paddingTop="10dp"
+                android:inputType="text|textCapWords"
+                android:paddingLeft="15dp"
+                android:imeOptions="actionDone"
+                android:textColor="@color/black"/>
+
+            <LinearLayout
+                android:id="@+id/mainLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_marginTop="10dp">
+
+                <Button
+                    android:id="@+id/btn_add_test"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/buttonbg"
+                    android:fontFamily="@font/lato_bold"
+                    android:text="Add Test"
+                    android:textColor="@color/white"
+                    android:layout_marginRight="2.5dp"/>
+
+                <Button
+                    android:id="@+id/btn_remove"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="50dp"
+                    android:background="@drawable/buttonbg"
+                    android:fontFamily="@font/lato_bold"
+                    android:text="Remove Last Section"
+                    android:textColor="@color/white"
+                    android:layout_marginLeft="2.5dp"
+                    android:visibility="gone"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/et_bg"
+                android:orientation="vertical"
+                android:layout_marginTop="10dp">
+
+                <Spinner
+                    android:id="@+id/spn_payment_method"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/lato_bold"
+                    android:paddingLeft="15dp"
+                    android:textColor="@color/placeOrderText"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+
+            <Button
+                android:id="@+id/btn_submit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/buttonbg"
+                android:fontFamily="@font/lato_bold"
+                android:text="SUBMIT"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

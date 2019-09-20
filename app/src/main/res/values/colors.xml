@@ -5,7 +5,7 @@
     <!--<color name="green">#73BF45</color>-->
 
     <color name="colorAccent">#5D910B</color>
-    <color name="LoginTextHint">#0D7E3E</color>
+    <color name="LoginTextHint">#5D910B</color>
     <color name="white">#ffffff</color>
     <color name="green">#65b843</color>
     <color name="divider_green">#dcefd0</color>
@@ -23,8 +23,8 @@
     <color name="changePasswordTextColor">#afafaf</color>
     <color name="placeOrderText">#3f3f3f</color>
     <color name="placeOrderEditText">#7f7f7f</color>
-    <color name="placeOrderTotalPayable">#0e7e3f</color>
-    <color name="upperBar">#0e7e3f</color>
+    <color name="placeOrderTotalPayable">#5D910B</color>
+    <color name="upperBar">#5D910B</color>
     <color name="medicalSolutionList">#545454</color>
 
 

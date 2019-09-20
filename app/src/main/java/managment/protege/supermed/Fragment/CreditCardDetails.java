@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import managment.protege.supermed.Activity.Main_Apps;
 import managment.protege.supermed.Activity.Register;
@@ -41,7 +40,7 @@ public class CreditCardDetails extends Fragment {
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
         Main_Apps.getMainActivity().addToolbarBack(getContext(), getString(R.string.card_details), v);
         ProceedFunction();
-        onclickFunctions();
+        //onclickFunctions();
         return v;
     }
 
@@ -56,16 +55,16 @@ public class CreditCardDetails extends Fragment {
 
     }
 
-    private void onclickFunctions() {
+   /* private void onclickFunctions() {
         expiryDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LabTest.showDate(getContext(), expiryDate);
+                Fragment_Book_an_Appointment.showDate(getContext(), expiryDate);
             }
         });
-        cardNumber.addTextChangedListener(new LabTest.FourDigitCardFormatWatcher());
+        cardNumber.addTextChangedListener(new Fragment_Book_an_Appointment.FourDigitCardFormatWatcher());
 
-    }
+    }*/
 
     public void ProceedFunction() {
         // save information button

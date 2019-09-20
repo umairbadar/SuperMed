@@ -24,6 +24,7 @@
                 android:id="@+id/viewflip"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:adjustViewBounds="true" />
@@ -206,7 +207,7 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/bg_new_arrivals"
+            android:src="@drawable/bg_recently_viewed"
             android:contentDescription="@string/todo"/>
 
         <android.support.v7.widget.RecyclerView
@@ -258,7 +259,7 @@
             android:layout_height="40dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
-            android:src="@drawable/bg_popular_products"
+            android:src="@drawable/bg_popular_brands"
             android:contentDescription="@string/todo"/>
 
         <android.support.v7.widget.RecyclerView

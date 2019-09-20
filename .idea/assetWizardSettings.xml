@@ -19,8 +19,8 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_image" />
-                            <entry key="sourceFile" value="C:\Users\developer\Downloads\image.svg" />
+                            <entry key="outputName" value="ic_time" />
+                            <entry key="sourceFile" value="C:\Users\developer\Downloads\time.svg" />
                           </map>
                         </option>
                       </PersistentState>
