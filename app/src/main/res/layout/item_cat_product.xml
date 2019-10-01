@@ -2,11 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
     android:orientation="vertical"
-    android:padding="8dp"
-    android:background="#E9E9E9">
+    android:padding="8dp">
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
@@ -24,7 +23,7 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/iv"
+                android:id="@+id/img"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:layout_gravity="center_horizontal"
@@ -37,7 +36,7 @@
                 android:background="#D8D8D8" />
 
             <TextView
-                android:id="@+id/title"
+                android:id="@+id/tv_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
@@ -65,7 +64,7 @@
                 android:weightSum="2">
 
                 <TextView
-                    android:id="@+id/price"
+                    android:id="@+id/tv_price"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_horizontal"
@@ -77,7 +76,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/priceoff"
+                    android:id="@+id/tv_old_price"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -89,17 +88,10 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="2">
-
                 <Button
-                    android:id="@+id/wl_atc"
-                    android:layout_width="0dp"
+                    android:id="@+id/btn_add_cart"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.5"
                     android:drawableLeft="@drawable/ic_shopping_cart"
                     android:background="@drawable/btn_product"
                     android:fontFamily="@font/lato_bold"
@@ -108,16 +100,7 @@
                     android:text="Add To Cart"
                     android:textColor="@color/white" />
 
-                <ImageView
-                    android:id="@+id/del_wishlist"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.5"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/del"
-                    android:layout_gravity="right"
-                    android:padding="10dp"/>
 
-            </LinearLayout>
 
         </LinearLayout>
     </android.support.v7.widget.CardView>

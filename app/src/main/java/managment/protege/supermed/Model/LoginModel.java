@@ -44,6 +44,17 @@ public class LoginModel  {
     @SerializedName("cartCounter")
     @Expose
     private int cartCounter;
+    @SerializedName("isGuest")
+    @Expose
+    private String isGuest;
+
+    public String getIsGuest() {
+        return isGuest;
+    }
+
+    public void setIsGuest(String isGuest) {
+        this.isGuest = isGuest;
+    }
 
     public String getId() {
         return id;

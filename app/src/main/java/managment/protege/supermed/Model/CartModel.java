@@ -1,186 +1,44 @@
 package managment.protege.supermed.Model;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
 public class CartModel {
 
-
-    @SerializedName("CatId")
-    @Expose
-    private String catId;
-    @SerializedName("CatName")
-    @Expose
-    private String catName;
-    @SerializedName("CatBriefIntro")
-    @Expose
-    private String catBriefIntro;
-    @SerializedName("SubCatId")
-    @Expose
-    private String subCatId;
-    @SerializedName("SubCatName")
-    @Expose
-    private String subCatName;
-    @SerializedName("SubCatBriefIntro")
-    @Expose
-    private String subCatBriefIntro;
-    @SerializedName("ProductID")
-    @Expose
     private String productID;
-    @SerializedName("ProductName")
-    @Expose
     private String productName;
-    @SerializedName("ProductImage")
-    @Expose
-    private String productImage;
-    @SerializedName("ProductDescription")
-    @Expose
-    private String productDescription;
-    @SerializedName("ProductSku")
-    @Expose
-    private String productSku;
-    @SerializedName("ProductPrice")
-    @Expose
     private String productPrice;
-    @SerializedName("ProductOldPrice")
-    @Expose
-    private String productOldPrice;
-    @SerializedName("ProductQty")
-    @Expose
     private String productQty;
-    @SerializedName("ProductTags")
-    @Expose
-    private String productTags;
-    @SerializedName("UserQty")
-    @Expose
-    private String userQty;
+    private String productImage;
+    private String cartID;
 
-    public String getCatId() {
-        return catId;
-    }
-
-    public void setCatId(String catId) {
-        this.catId = catId;
-    }
-
-    public String getCatName() {
-        return catName;
-    }
-
-    public void setCatName(String catName) {
-        this.catName = catName;
-    }
-
-    public String getCatBriefIntro() {
-        return catBriefIntro;
-    }
-
-    public void setCatBriefIntro(String catBriefIntro) {
-        this.catBriefIntro = catBriefIntro;
-    }
-
-    public String getSubCatId() {
-        return subCatId;
-    }
-
-    public void setSubCatId(String subCatId) {
-        this.subCatId = subCatId;
-    }
-
-    public String getSubCatName() {
-        return subCatName;
-    }
-
-    public void setSubCatName(String subCatName) {
-        this.subCatName = subCatName;
-    }
-
-    public String getSubCatBriefIntro() {
-        return subCatBriefIntro;
-    }
-
-    public void setSubCatBriefIntro(String subCatBriefIntro) {
-        this.subCatBriefIntro = subCatBriefIntro;
+    public CartModel(String productID, String productName, String productPrice, String productQty, String productImage, String cartID) {
+        this.productID = productID;
+        this.productName = productName;
+        this.productPrice = productPrice;
+        this.productQty = productQty;
+        this.productImage = productImage;
+        this.cartID = cartID;
     }
 
     public String getProductID() {
         return productID;
     }
 
-    public void setProductID(String productID) {
-        this.productID = productID;
-    }
-
     public String getProductName() {
         return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public String getProductImage() {
-        return productImage;
-    }
-
-    public void setProductImage(String productImage) {
-        this.productImage = productImage;
-    }
-
-    public String getProductDescription() {
-        return productDescription;
-    }
-
-    public void setProductDescription(String productDescription) {
-        this.productDescription = productDescription;
-    }
-
-    public String getProductSku() {
-        return productSku;
-    }
-
-    public void setProductSku(String productSku) {
-        this.productSku = productSku;
     }
 
     public String getProductPrice() {
         return productPrice;
     }
 
-    public void setProductPrice(String productPrice) {
-        this.productPrice = productPrice;
-    }
-
-    public String getProductOldPrice() {
-        return productOldPrice;
-    }
-
-    public void setProductOldPrice(String productOldPrice) {
-        this.productOldPrice = productOldPrice;
-    }
-
     public String getProductQty() {
         return productQty;
     }
 
-    public void setProductQty(String productQty) {
-        this.productQty = productQty;
+    public String getProductImage() {
+        return productImage;
     }
 
-    public String getProductTags() {
-        return productTags;
+    public String getCartID() {
+        return cartID;
     }
-
-    public void setProductTags(String productTags) {
-        this.productTags = productTags;
-    }
-
-    public String getUserQty() {
-        return userQty;
-    }
-
-    public void setUserQty(String userQty) {
-        this.userQty = userQty;
-    }
-
 }

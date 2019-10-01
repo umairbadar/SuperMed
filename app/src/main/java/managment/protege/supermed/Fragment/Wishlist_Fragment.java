@@ -39,6 +39,7 @@ import managment.protege.supermed.Model.WishlistModel;
 import managment.protege.supermed.R;
 import managment.protege.supermed.Tools.GlobalHelper;
 
+import static managment.protege.supermed.Activity.Main_Apps.getMainActivity;
 import static managment.protege.supermed.Activity.Main_Apps.nobatch_products;
 import static managment.protege.supermed.Fragment.Home.ProductDetailCartCounter;
 
@@ -50,10 +51,9 @@ public class Wishlist_Fragment extends Fragment {
     String userid;
 
     private RecyclerView wishlist_recyclerView;
-    private WishListAdapter adapter_wishlist;
+    public static WishListAdapter adapter_wishlist;
     private List<WishlistModel> arr_wishlist;
     private LinearLayout layout1, layout2;
-    private KProgressHUD hud;
 
     public Wishlist_Fragment() {
         // Required empty public constructor
@@ -80,17 +80,13 @@ public class Wishlist_Fragment extends Fragment {
         layout1 = view.findViewById(R.id.layout1);
         layout2 = view.findViewById(R.id.layout2);
 
-        hud = KProgressHUD.create(getContext())
-                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
-                .setCancellable(false)
-                .setWindowColor(Color.parseColor("#5D910B"))
-                .show();
-
         wishlist_recyclerView = view.findViewById(R.id.wishlist_recyclerView);
         wishlist_recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         wishlist_recyclerView.setItemAnimator(new DefaultItemAnimator());
         wishlist_recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), 1));
         arr_wishlist = new ArrayList<>();
+        adapter_wishlist = new WishListAdapter(arr_wishlist, getContext());
+        wishlist_recyclerView.setAdapter(adapter_wishlist);
         getWishlist();
 
         return view;
@@ -98,7 +94,7 @@ public class Wishlist_Fragment extends Fragment {
 
     public void getWishlist(){
 
-        hud.show();
+        Main_Apps.hud.show();
         String URL = Register.Base_URL + "wishlist/" + userid;
         StringRequest req = new StringRequest(Request.Method.GET, URL,
                 new Response.Listener<String>() {
@@ -109,7 +105,7 @@ public class Wishlist_Fragment extends Fragment {
                             boolean status = jsonObject.getBoolean("status");
                             ProductDetailCartCounter = jsonObject.getInt("row_count");
                             if (status){
-                                hud.dismiss();
+                                Main_Apps.hud.dismiss();
                                 layout1.setVisibility(View.VISIBLE);
                                 layout2.setVisibility(View.GONE);
                                 JSONArray jsonArray = jsonObject.getJSONArray("data");
@@ -118,6 +114,7 @@ public class Wishlist_Fragment extends Fragment {
                                     String productId = object.getString("productId");
                                     String productName = object.getString("productName");
                                     String productImage = object.getString("productImage");
+                                    String cateSlug = object.getString("cateSlug");
                                     String productDescription = object.getString("productDescription");
                                     String wishlistId = object.getString("wishlistId");
                                     String qty = object.getString("qty");
@@ -132,14 +129,14 @@ public class Wishlist_Fragment extends Fragment {
                                             wishlistId,
                                             qty,
                                             price,
-                                            subcateName
+                                            subcateName,
+                                            cateSlug
                                     );
                                     arr_wishlist.add(item);
                                 }
-                                adapter_wishlist = new WishListAdapter(arr_wishlist, getContext());
-                                wishlist_recyclerView.setAdapter(adapter_wishlist);
+                                adapter_wishlist.notifyDataSetChanged();
                             } else {
-                                hud.dismiss();
+                                Main_Apps.hud.dismiss();
                                 layout1.setVisibility(View.GONE);
                                 layout2.setVisibility(View.VISIBLE);
                             }
@@ -151,7 +148,7 @@ public class Wishlist_Fragment extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        hud.dismiss();
+                        Main_Apps.hud.dismiss();
                         Toast.makeText(getContext(), error.getMessage(),
                                 Toast.LENGTH_LONG).show();
                     }

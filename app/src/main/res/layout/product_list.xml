@@ -99,7 +99,8 @@
                 android:textColor="@color/white"
                 android:layout_marginBottom="10dp"
                 android:layout_marginRight="5dp"
-                android:layout_marginLeft="5dp"/>
+                android:layout_marginLeft="5dp"
+                android:layout_gravity="bottom"/>
 
         </LinearLayout>
 

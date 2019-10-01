@@ -4,52 +4,55 @@ package managment.protege.supermed.Fragment;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.vansuita.pickimage.bean.PickResult;
-import com.vansuita.pickimage.bundle.PickSetup;
-import com.vansuita.pickimage.dialog.PickImageDialog;
-import com.vansuita.pickimage.listeners.IPickCancel;
-import com.vansuita.pickimage.listeners.IPickResult;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Map;
 
-import es.dmoral.toasty.Toasty;
 import managment.protege.supermed.Activity.Main_Apps;
+import managment.protege.supermed.Activity.Register;
 import managment.protege.supermed.R;
-import managment.protege.supermed.Response.UploadPrescResponse;
-import managment.protege.supermed.Retrofit.API;
-import managment.protege.supermed.Retrofit.RetrofitAdapter;
 import managment.protege.supermed.Tools.GlobalHelper;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -57,15 +60,14 @@ import static android.app.Activity.RESULT_OK;
 public class UploadPriscribtionFragment extends Fragment {
 
     View view;
-    Button submit_presc, wapp, btn_camera, btn_gallery;
-    ImageView imageup;
-    TextView toolbar_text;
 
-    File file;
+    private Button btn_gallery, btn_submit, btn_camera, btn_whatsapp;
+    private ImageView img;
+    final int CODE_GALLERY_REQUEST = 999;
 
-    private static final int CAMERA_REQUEST = 1888;
-    private static final int MY_CAMERA_PERMISSION_CODE = 100;
-    private static int RESULT_LOAD_IMAGE = 1;
+    private static final int REQUEST_WRITE_PERMISSION = 786;
+    Bitmap bitmap = null;
+    int a = 0;
 
     public UploadPriscribtionFragment() {
         // Required empty public constructor
@@ -75,282 +77,192 @@ public class UploadPriscribtionFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment.
         view = inflater.inflate(R.layout.fragment_upload_priscribtion, container, false);
-        initialize();
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
         Main_Apps.getMainActivity().addToolbarBack(getContext(), getString(R.string.upload_prescription), view);
 
-        isStoragePermissionGranted();
-        onclick();
-        return view;
-    }
-
-    private void initialize() {
-        toolbar_text = (TextView) view.findViewById(R.id.toolbar_text);
-        wapp = (Button) view.findViewById(R.id.wapp);
-        imageup = (ImageView) view.findViewById(R.id.imageup);
-        //uploadPrescription = (Button) view.findViewById(R.id.uploadimage);
-        submit_presc = (Button) view.findViewById(R.id.submit_presc);
-        btn_camera = view.findViewById(R.id.btn_camera);
         btn_gallery = view.findViewById(R.id.btn_gallery);
-    }
+        btn_whatsapp = view.findViewById(R.id.btn_whatsapp);
+        btn_camera = view.findViewById(R.id.btn_camera);
+        btn_submit = view.findViewById(R.id.btn_submit);
 
-    private void onclick() {
+        img = view.findViewById(R.id.img);
 
-        imageup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (GlobalHelper.getUserProfile(getContext()).getProfile().getFirstName().trim().toLowerCase().equals("guest")) {
-                    Main_Apps.getMainActivity().forgotPasswordDialog(getContext());
-                } else {
-                    PickImageDialog.build(new PickSetup())
-                            .setOnPickResult(new IPickResult() {
-                                @Override
-                                public void onPickResult(PickResult r) {
-                                    imageup.setImageBitmap(r.getBitmap());
-                                    file = new File(r.getPath());
-                                    //TODO: do what you have to...
-
-                                }
-                            })
-                            .setOnPickCancel(new IPickCancel() {
-                                @Override
-                                public void onCancelClick() {
-                                    //TODO: do what you have to if user clicked cancel
-
-                                }
-                            }).show(getActivity().getSupportFragmentManager());
-                }
-            }
-        });
-        wapp.setOnClickListener(new View.OnClickListener() {
+        btn_gallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                String toNumber = "923102911911"; // contains spaces.
-                toNumber = toNumber.replace("+", "").replace(" ", "");
-
-                if (file != null) {
-
-                    whatsapp(getActivity(), toNumber, file);
-
-                    Intent sendIntent = new Intent("android.intent.action.MAIN");
-                    sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
-                    sendIntent.putExtra("jid", toNumber + "@s.whatsapp.net");
-                    sendIntent.putExtra(Intent.EXTRA_TEXT, "Upload Prescription for Med Pharma");
-                    sendIntent.setAction(Intent.ACTION_SEND);
-                    sendIntent.setPackage("com.whatsapp");
-                    sendIntent.setType("image/png");
-
-                    if (sendIntent.resolveActivity(getActivity().getPackageManager()) == null) {
-                        Toast.makeText(getContext(), "Whatsapp not installed.", Toast.LENGTH_SHORT).show();
-                        return;
-                    } else {
-                        getContext().startActivity(sendIntent);
-                    }
-
-                } else {
-                    Intent sendIntent = new Intent("android.intent.action.MAIN");
-                    sendIntent.putExtra("jid", toNumber + "@s.whatsapp.net");
-                    sendIntent.putExtra(Intent.EXTRA_TEXT, "Upload Prescription for Med Pharma");
-                    sendIntent.setAction(Intent.ACTION_SEND);
-                    sendIntent.setPackage("com.whatsapp");
-                    sendIntent.setType("text/plain");
-
-
-                    if (sendIntent.resolveActivity(getActivity().getPackageManager()) == null) {
-                        Toast.makeText(getContext(), "Whatsapp not installed.", Toast.LENGTH_SHORT).show();
-                        return;
-                    } else {
-                        startActivity(sendIntent);
-                    }
-
-                    if (file == null) {
-                        Toasty.error(getContext(), "Select Image First", Toast.LENGTH_SHORT, true).show();
-                    } else {
-                        UploadPresc(GlobalHelper.getUserProfile(getContext()).getProfile().getId(), file);
-                    }
-                }
+                a = 0;
+                requestPermission();
             }
         });
 
-        submit_presc.setOnClickListener(new View.OnClickListener() {
+        btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (GlobalHelper.getUserProfile(getContext()).getProfile().getFirstName().trim().toLowerCase().equals("guest")) {
-                    Main_Apps.getMainActivity().forgotPasswordDialog(getContext());
 
+                if (bitmap != null) {
+                    sendRequest();
                 } else {
-                    if (file == null) {
-                        Toasty.error(getContext(), "Select Image First", Toast.LENGTH_SHORT, true).show();
-                    } else {
-                        UploadPresc(GlobalHelper.getUserProfile(getContext()).getProfile().getId(), file);
-                    }
+                    Toast.makeText(getContext(), "Please select image first",
+                            Toast.LENGTH_LONG).show();
                 }
             }
         });
 
         btn_camera.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View view) {
-                if (getActivity().checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                    if (getActivity().checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                        requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_PERMISSION_CODE);
-                    } else {
-                        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                        startActivityForResult(cameraIntent, CAMERA_REQUEST);
-                    }
+
+                if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA)
+                        == PackageManager.PERMISSION_DENIED) {
+                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, CODE_GALLERY_REQUEST);
+                } else {
+                    a = 1;
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(intent, 0);
                 }
             }
         });
 
-        btn_gallery.setOnClickListener(new View.OnClickListener() {
+        btn_whatsapp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(
-                        Intent.ACTION_PICK,
-                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
-                startActivityForResult(i, RESULT_LOAD_IMAGE);
+                if (bitmap != null) {
+                    String toNumber = "923102911911"; // contains spaces.
+                    toNumber = toNumber.replace("+", "").replace(" ", "");
+                    onClickApp("com.whatsapp", bitmap, toNumber);
+                } else {
+                    Toast.makeText(getContext(), "Please select image first",
+                            Toast.LENGTH_LONG).show();
+                }
             }
         });
-    }
 
-    public void isStoragePermissionGranted() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (getActivity().checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    == PackageManager.PERMISSION_GRANTED) {
-                Log.v("TAG", "Permission is granted");
-            } else {
-
-                Log.v("TAG", "Permission is revoked");
-                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-            }
-        } else {
-            //permission is automatically granted on sdk<23 upon installation
-            Log.v("TAG", "Permission is granted");
-        }
+        return view;
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            Log.v("TAG", "Permission: " + permissions[0] + "was " + grantResults[0]);
-            //resume tasks needing this permission
-            if (requestCode == MY_CAMERA_PERMISSION_CODE) {
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(getContext(), "camera permission granted", Toast.LENGTH_LONG).show();
-                    Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(cameraIntent, CAMERA_REQUEST);
-                } else {
-                    Toast.makeText(getContext(), "camera permission denied", Toast.LENGTH_LONG).show();
-                }
-            }
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == REQUEST_WRITE_PERMISSION && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            openFilePicker();
         }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK && data != null) {
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-            imageup.setImageBitmap(photo);
-            Uri tempUri = getImageUri(getContext(), photo);
-            file = new File(getRealPathFromURI(tempUri));
-        }
-        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && data != null) {
-            Uri selectedImage = data.getData();
-            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+        if (a == 1) {
+            bitmap = (Bitmap) data.getExtras().get("data");
+            img.setImageBitmap(bitmap);
+        } else {
 
-            Cursor cursor = getActivity().getContentResolver().query(selectedImage,
-                    filePathColumn, null, null, null);
-            cursor.moveToFirst();
+            if (requestCode == CODE_GALLERY_REQUEST && resultCode == RESULT_OK && data != null) {
+                Uri filePath = data.getData();
 
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            String picturePath = cursor.getString(columnIndex);
-            cursor.close();
-            imageup.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-            file = new File(picturePath);
-
-        }
-    }
-
-    public Uri getImageUri(Context inContext, Bitmap inImage) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
-        return Uri.parse(path);
-    }
-
-    public String getRealPathFromURI(Uri uri) {
-        String path = "";
-        if (getActivity().getContentResolver() != null) {
-            Cursor cursor = getActivity().getContentResolver().query(uri, null, null, null, null);
-            if (cursor != null) {
-                cursor.moveToFirst();
-                int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-                path = cursor.getString(idx);
-                cursor.close();
-            }
-        }
-        return path;
-    }
-
-    public void UploadPresc(final String userid, File file) {
-        //  file = new File(file.getPath());
-        Main_Apps.hud.show();
-
-        RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
-        Log.e("FILE ", file.getPath());
-        Log.e("filename", file.getName());
-        Log.e("request body:", String.valueOf(reqFile));
-        MultipartBody.Part body = MultipartBody.Part.createFormData("image", file.getName(), reqFile);
-        Log.e("body", String.valueOf(body));
-        API api = RetrofitAdapter.createAPI();
-        Call<UploadPrescResponse> uploadPrescResponseCall = api.UPLOAD_PRESC_RESPONSE_CALL(userid, body);
-        uploadPrescResponseCall.enqueue(new Callback<UploadPrescResponse>() {
-            @Override
-            public void onResponse(Call<UploadPrescResponse> call, Response<UploadPrescResponse> response) {
-
-                if (response != null) {
-                    Main_Apps.hud.dismiss();
-                    if (response.body().getStatus()) {
-                        Toasty.success(getContext(), "Prescription Uploaded!", Toast.LENGTH_SHORT, true).show();
-
-                    } else {
-                        Toasty.error(getContext(), "Error: " + response.body().getMessage(), Toast.LENGTH_SHORT, true).show();
-
-                    }
+                try {
+                    InputStream inputStream = getContext().getContentResolver().openInputStream(filePath);
+                    bitmap = BitmapFactory.decodeStream(inputStream);
+                    img.setImageBitmap(bitmap);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
                 }
             }
-
-            @Override
-            public void onFailure(Call<UploadPrescResponse> call, Throwable t) {
-                Main_Apps.hud.dismiss();
-
-                Log.e("Upload Prescription", "error" + t.getMessage());
-            }
-        });
-    }
-
-    @SuppressLint("NewApi")
-    public static void whatsapp(Activity activity, String phone, File file) {
-        Uri imgUri = Uri.parse(file.getAbsolutePath());
-        Intent whatsappIntent = new Intent(Intent.ACTION_SEND);
-        whatsappIntent.setType("text/plain");
-        whatsappIntent.setPackage("com.whatsapp");
-        whatsappIntent.putExtra("jid", phone + "@s.whatsapp.net");
-        whatsappIntent.putExtra(Intent.EXTRA_TEXT, "Upload Prescription for Med Pharma");
-        whatsappIntent.putExtra(Intent.EXTRA_STREAM, imgUri);
-        whatsappIntent.setType("image/jpeg");
-        whatsappIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-
-        try {
-            activity.startActivity(whatsappIntent);
-        } catch (android.content.ActivityNotFoundException ex) {
         }
     }
 
+    private void requestPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_PERMISSION);
+        } else {
+            openFilePicker();
+        }
+    }
+
+    private void openFilePicker() {
+
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(Intent.createChooser(intent, "Select Image"), CODE_GALLERY_REQUEST);
+    }
+
+    private void sendRequest() {
+        Main_Apps.hud.show();
+        String URL = Register.Base_URL + "prescription";
+        StringRequest req = new StringRequest(Request.Method.POST, URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            boolean status = jsonObject.getBoolean("status");
+                            String message = jsonObject.getString("message");
+                            if (status) {
+                                Main_Apps.hud.dismiss();
+                                Toast.makeText(getContext(), message,
+                                        Toast.LENGTH_LONG).show();
+                            } else {
+                                Main_Apps.hud.dismiss();
+                                Toast.makeText(getContext(), message,
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Main_Apps.hud.dismiss();
+                        Toast.makeText(getContext(), error.getMessage(),
+                                Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                String imageData = imagetoString(bitmap);
+                map.put("userId", GlobalHelper.getUserProfile(getContext()).getProfile().getId());
+                map.put("upload_prescription", "data:image/jpeg;base64," + imageData);
+                return map;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        requestQueue.add(req);
+    }
+
+    private String imagetoString(Bitmap bitmap) {
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+        ;
+        byte[] imageBytes = outputStream.toByteArray();
+
+        String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+        return encodedImage;
+    }
+
+    public void onClickApp(String pack, Bitmap bitmap, String phone) {
+        PackageManager pm = getActivity().getPackageManager();
+        try {
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+            String path = MediaStore.Images.Media.insertImage(getActivity().getContentResolver(), bitmap, "Title", null);
+            Uri imageUri = Uri.parse(path);
+
+            @SuppressWarnings("unused")
+            PackageInfo info = pm.getPackageInfo(pack, PackageManager.GET_META_DATA);
+
+            Intent waIntent = new Intent(Intent.ACTION_SEND);
+            waIntent.setType("image/*");
+            waIntent.setPackage(pack);
+            waIntent.putExtra(android.content.Intent.EXTRA_STREAM, imageUri);
+            waIntent.putExtra(Intent.EXTRA_TEXT, pack);
+            waIntent.putExtra("jid", phone + "@s.whatsapp.net");
+            getActivity().startActivity(waIntent);
+        } catch (Exception e) {
+            Log.e("Error on sharing", e + " ");
+            Toast.makeText(getContext(), "WhatsApp not Installed", Toast.LENGTH_SHORT).show();
+        }
+    }
 }

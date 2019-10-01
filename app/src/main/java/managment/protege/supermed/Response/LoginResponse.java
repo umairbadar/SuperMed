@@ -15,6 +15,17 @@ public class LoginResponse {
     @SerializedName("message")
     @Expose
     private String message;
+    @SerializedName("isSubscribed")
+    @Expose
+    private String isSubscribed;
+
+    public String getIsSubscribed() {
+        return isSubscribed;
+    }
+
+    public void setIsSubscribed(String isSubscribed) {
+        this.isSubscribed = isSubscribed;
+    }
 
     public Boolean getStatus() {
         return status;

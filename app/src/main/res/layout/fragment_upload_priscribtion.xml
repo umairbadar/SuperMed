@@ -16,7 +16,7 @@
         android:layout_weight="0.8"/>
 
     <ImageView
-        android:id="@+id/imageup"
+        android:id="@+id/img"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="2.2"
@@ -66,7 +66,7 @@
         android:paddingBottom="5dp"/>
 
     <Button
-        android:id="@+id/wapp"
+        android:id="@+id/btn_whatsapp"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.8"
@@ -94,7 +94,7 @@
         android:layout_marginRight="25dp"/>
 
     <Button
-        android:id="@+id/submit_presc"
+        android:id="@+id/btn_submit"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.8"

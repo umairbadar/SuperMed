@@ -12,13 +12,14 @@ public class WishlistModel {
     private String productId;
     private String productName;
     private String productImage;
+    private String cateSlug;
     private String productDescription;
     private String wishlistId;
     private String qty;
     private String price;
     private String subcateName;
 
-    public WishlistModel(String productId, String productName, String productImage, String productDescription, String wishlistId, String qty, String price, String subcateName) {
+    public WishlistModel(String productId, String productName, String productImage, String productDescription, String wishlistId, String qty, String price, String subcateName, String cateSlug) {
         this.productId = productId;
         this.productName = productName;
         this.productImage = productImage;
@@ -27,6 +28,11 @@ public class WishlistModel {
         this.qty = qty;
         this.price = price;
         this.subcateName = subcateName;
+        this.cateSlug = cateSlug;
+    }
+
+    public String getCateSlug() {
+        return cateSlug;
     }
 
     public String getSubcateName() {

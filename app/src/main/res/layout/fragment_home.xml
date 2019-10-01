@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#E9E9E9"
     android:orientation="vertical"
     tools:context="managment.protege.supermed.Fragment.Home">
@@ -17,7 +18,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="170dp"
             android:background="@color/colorPrimary">
 
             <ViewFlipper
@@ -25,8 +26,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:adjustViewBounds="true" />
 
         </LinearLayout>
@@ -71,9 +72,9 @@
                     android:fontFamily="@font/lato_bold"
                     android:text="@string/lab_test"
                     android:textAlignment="center"
-                    android:textColor="@color/medicalSolutionList"
+                    android:textColor="@color/black"
                     android:textSize="10sp"
-                    tools:ignore="SmallSp"/>
+                    tools:ignore="SmallSp" />
 
             </LinearLayout>
 
@@ -104,7 +105,7 @@
                     android:fontFamily="@font/lato_bold"
                     android:text="@string/doc"
                     android:textAlignment="center"
-                    android:textColor="@color/medicalSolutionList"
+                    android:textColor="@color/black"
                     android:textSize="10sp"
                     tools:ignore="SmallSp"/>
 
@@ -137,7 +138,7 @@
                     android:fontFamily="@font/lato_bold"
                     android:text="@string/emergency"
                     android:textAlignment="center"
-                    android:textColor="@color/medicalSolutionList"
+                    android:textColor="@color/black"
                     android:textSize="10sp"
                     tools:ignore="SmallSp"/>
 
@@ -171,7 +172,7 @@
                     android:fontFamily="@font/lato_bold"
                     android:text="@string/scheduleAppointment"
                     android:textAlignment="center"
-                    android:textColor="@color/medicalSolutionList"
+                    android:textColor="@color/black"
                     android:textSize="10sp"
                     tools:ignore="SmallSp" />
 
@@ -271,6 +272,8 @@
             android:layout_marginRight="25dp"
             android:layout_marginBottom="10dp"
             android:nestedScrollingEnabled="true" />
+
+
 
     </LinearLayout>
 

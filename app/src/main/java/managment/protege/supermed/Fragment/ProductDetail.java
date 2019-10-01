@@ -1,21 +1,12 @@
 package managment.protege.supermed.Fragment;
 
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,10 +23,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.daimajia.slider.library.Animations.DescriptionAnimation;
-import com.daimajia.slider.library.SliderLayout;
-import com.daimajia.slider.library.SliderTypes.BaseSliderView;
-import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.squareup.picasso.Picasso;
 
@@ -44,57 +31,37 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import es.dmoral.toasty.Toasty;
 import managment.protege.supermed.Activity.Main_Apps;
 import managment.protege.supermed.Activity.Register;
 import managment.protege.supermed.Adapter.AdapterProduct;
-import managment.protege.supermed.Adapter.ImageAdapter;
-import managment.protege.supermed.Adapter.ProductAdapter;
-import managment.protege.supermed.Adapter.TopCatagorieAdapter;
-import managment.protege.supermed.Model.CartActionResponse;
 import managment.protege.supermed.Model.GetProductsModel;
-import managment.protege.supermed.Model.ImageData;
 import managment.protege.supermed.Model.Model_PopularProducts;
 import managment.protege.supermed.Model.Search;
 import managment.protege.supermed.Model.SearchModel;
 import managment.protege.supermed.R;
-import managment.protege.supermed.Response.AddProductWishlistResponse;
-import managment.protege.supermed.Response.DeleteWishlist;
-import managment.protege.supermed.Response.GetAllProductsResponse;
-import managment.protege.supermed.Retrofit.API;
-import managment.protege.supermed.Retrofit.RetrofitAdapter;
 import managment.protege.supermed.Tools.GlobalHelper;
-import retrofit2.Call;
-import retrofit2.Callback;
 
 import static managment.protege.supermed.Activity.Main_Apps.cart_toolbarapps;
-import static managment.protege.supermed.Activity.Main_Apps.getMainActivity;
-import static managment.protege.supermed.Activity.Main_Apps.nobatch;
 import static managment.protege.supermed.Activity.Main_Apps.nobatch_products;
 import static managment.protege.supermed.Fragment.Home.ProductDetailCartCounter;
-import static managment.protege.supermed.Fragment.Home.commonWishlistCounter;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class ProductDetail extends Fragment {
 
-    Button addToCart;
+    Button btn_addToCart;
     View view;
     ViewPager viewPager;
     static KProgressHUD hud;
     ImageView carts, plus, min;
-    static ImageView wishlistProduct;
+    ImageView wishlistProduct;
     String checkWishlist = "0";
     GetProductsModel obj;
     SearchModel objSearch;
     Search objNativeSearch;
-    TextView pname, oldrate, price, detail, qty, productStock;
+    TextView pname, oldrate, price, detail, tv_qty, productStock;
     public String checkValue, product_ID, wishlistProductId = "";
     ImageView product_Image;
     ImageButton btn_add_to_wishlist;
@@ -151,6 +118,38 @@ public class ProductDetail extends Fragment {
 
     public void initViews() {
 
+        min = view.findViewById(R.id.min);
+        plus = view.findViewById(R.id.plus);
+        tv_qty = view.findViewById(R.id.qty);
+
+        min.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                double qty = Double.parseDouble(tv_qty.getText().toString());
+                if (qty != 1){
+                    qty = qty - 1;
+                    tv_qty.setText(String.format("%.0f",qty));
+                }
+            }
+        });
+
+        plus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                double qty = Double.parseDouble(tv_qty.getText().toString());
+                qty = qty + 1;
+                tv_qty.setText(String.format("%.0f",qty));
+            }
+        });
+
+        btn_addToCart = view.findViewById(R.id.btn_add_cart);
+        btn_addToCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addToCart(product_ID, tv_qty.getText().toString());
+            }
+        });
+
         pname = view.findViewById(R.id.pname);
         price = view.findViewById(R.id.price);
         productStock = view.findViewById(R.id.productStock);
@@ -177,7 +176,6 @@ public class ProductDetail extends Fragment {
         hud = KProgressHUD.create(getContext())
                 .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
                 .setCancellable(false)
-                .setWindowColor(Color.parseColor("#5D910B"))
                 .show();
 
     }
@@ -203,6 +201,18 @@ public class ProductDetail extends Fragment {
                                         .centerCrop()
                                         .placeholder(R.drawable.tab_miss)
                                         .into(product_Image);
+                            }
+                            String Price = object.getString("price");
+                            String qty = object.getString("qty");
+                            if (Price.equals("0.00")){
+                                btn_addToCart.setText("OUT OF STOCK");
+                                btn_addToCart.setEnabled(false);
+                            } else if (qty.equals("null")){
+                                btn_addToCart.setText("OUT OF STOCK");
+                                btn_addToCart.setEnabled(false);
+                            } else{
+                                btn_addToCart.setText("Add to Cart");
+                                btn_addToCart.setEnabled(true);
                             }
                             pname.setText(object.getString("productName"));
                             price.setText("Rs. " + object.getString("price"));
@@ -336,5 +346,50 @@ public class ProductDetail extends Fragment {
 
     }
 
+    public void addToCart(final String productId, final String qty){
+        Main_Apps.hud.show();
+        String URL = Register.Base_URL + "add-to-cart";
+        StringRequest req = new StringRequest(Request.Method.POST, URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            boolean status = jsonObject.getBoolean("status");
+                            String msg = jsonObject.getString("msg");
+                            if (status){
+                                Main_Apps.hud.dismiss();
+                                Toast.makeText(getContext(), msg,
+                                        Toast.LENGTH_LONG).show();
+                            } else {
+                                Main_Apps.hud.dismiss();
+                                Toast.makeText(getContext(), msg,
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Main_Apps.hud.dismiss();
+                        Toast.makeText(getContext(), error.getMessage(),
+                                Toast.LENGTH_LONG).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("productId", productId);
+                map.put("productQTY", qty);
+                map.put("userId", GlobalHelper.getUserProfile(getContext()).getProfile().getId());
+                return map;
+            }
+        };
 
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        requestQueue.add(req);
+    }
 }

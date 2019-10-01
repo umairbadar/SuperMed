@@ -1,49 +1,50 @@
 package managment.protege.supermed.Fragment;
 
-
-import android.content.Intent;
-import android.net.Uri;
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.LinearSmoothScroller;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.kaopiz.kprogresshud.KProgressHUD;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import managment.protege.supermed.Activity.Main_Apps;
+import managment.protege.supermed.Activity.Register;
 import managment.protege.supermed.Adapter.EmergencyAdapter;
 import managment.protege.supermed.Model.EmergencyModel;
 import managment.protege.supermed.R;
-import managment.protege.supermed.Response.EmergencyResponse;
-import managment.protege.supermed.Retrofit.API;
-import managment.protege.supermed.Retrofit.RetrofitAdapter;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class EmergecyFragment extends Fragment {
 
     View view;
-    KProgressHUD hud;
-    EmergencyAdapter emergencyAdapter;
-    private List<EmergencyModel> list = new ArrayList<>();
-    TextView toolbar_text;
-    RecyclerView recyclerView;
+
+    private RecyclerView recyclerView;
+    private EmergencyAdapter adapter;
+    private List<EmergencyModel> list;
 
     public EmergecyFragment() {
         // Required empty public constructor
@@ -54,94 +55,89 @@ public class EmergecyFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_emergecy, container, false);
-        initlize(view);
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
         Main_Apps.getMainActivity().addToolbarBack(getContext(), getString(R.string.emergency_contacts), view);
-        emergencyAdapter = new EmergencyAdapter(list, getContext());
-        LoadEmergencyContacts();
-        // Inflate the layout for this fragment
+
+        recyclerView = view.findViewById(R.id.emergency_recycler);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        list = new ArrayList<>();
+        adapter = new EmergencyAdapter(list, getContext());
+        recyclerView.setAdapter(adapter);
+
+
+        requestPermission();
+
+        getEmergencyContacts();
+
         return view;
     }
 
-    private void initlize(View view) {
-        toolbar_text = (TextView) view.findViewById(R.id.toolbar_text);
-        recyclerView = (RecyclerView) view.findViewById(R.id.emergency_recycler);
-    }
-
-    private void LoadEmergencyContacts() {
-        emergencyAdapter = new EmergencyAdapter(getEmergencyList(), getContext());
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(emergencyAdapter);
-    }
-
-    private List<EmergencyModel> getEmergencyList() {
+    private void getEmergencyContacts() {
         Main_Apps.hud.show();
+        String URL = Register.Base_URL + "listing-for/emergency-contact-list";
+        StringRequest req = new StringRequest(Request.Method.GET, URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            Main_Apps.hud.dismiss();
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray jsonArray = jsonObject.getJSONArray("data");
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject object = jsonArray.getJSONObject(i);
+                                String id = object.getString("id");
+                                String name = object.getString("name");
+                                String contact = object.getString("contact");
 
-        API api = RetrofitAdapter.createAPI();
-        Call<EmergencyResponse> emergencyResponseCall = api.getEmergency();
+                                EmergencyModel item = new EmergencyModel(
+                                        id,
+                                        name,
+                                        contact
+                                );
 
-
-        emergencyResponseCall.enqueue(new Callback<EmergencyResponse>() {
-            @Override
-            public void onResponse(Call<EmergencyResponse> call, Response<EmergencyResponse> response) {
-                Main_Apps.hud.dismiss();
-
-                list.clear();
-                if (response != null) {
-                    if (response.body().getStatus()) {
-                        Log.e("date", "is " + response.body().getStatus());
-
-                        list = response.body().getEmergency();
-                        if (list == null) {
-                            list.clear();
-                            emergencyAdapter.notifyDataSetChanged();
-                        } else {
-                            if (list.get(0).getContact() == null) {
-                                list.clear();
-                                emergencyAdapter.notifyDataSetChanged();
-                            } else {
-                                setEmergencyContacts(response.body().getEmergency());
-                                emergencyAdapter.notifyDataSetChanged();
+                                list.add(item);
                             }
+                            adapter.notifyDataSetChanged();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                    } else {
-                        list.clear();
-                        emergencyAdapter.notifyDataSetChanged();
-                        Log.e("Toast", "show" + response.body().getMessage());
                     }
-                }
-            }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Main_Apps.hud.dismiss();
+                        Toast.makeText(getContext(), error.getMessage(),
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
 
-            @Override
-            public void onFailure(Call<EmergencyResponse> call, Throwable t) {
-                Main_Apps.hud.dismiss();
-            }
-        });
-        return list;
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        requestQueue.add(req);
     }
 
-    private void setEmergencyContacts(List<EmergencyModel> emergencyModels) {
-        emergencyAdapter = new EmergencyAdapter(emergencyModels, getContext());
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(mLayoutManager);
-        emergencyAdapter.setOnItemClickListener(new EmergencyAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, EmergencyModel obj) {
-                Uri number = Uri.parse(obj.getContact());
-                Log.e("Contact: ", obj.getContact());
-                try {
-                    String contact_number = String.valueOf(number);
-                    Intent callIntent = new Intent(Intent.ACTION_DIAL);
-                    callIntent.setData(Uri.parse("tel:" + contact_number));
-                    startActivity(callIntent);
-                } catch (Exception e) {
-                }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case 1: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
+                    getEmergencyContacts();
+                } else {
+                    Toast.makeText(getContext(), "Permission denied to make call",
+                            Toast.LENGTH_SHORT).show();
+                }
+                return;
             }
-        });
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(emergencyAdapter);
+        }
     }
 
+    private void requestPermission(){
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CALL_PHONE}, 1);
+        }
+    }
 }

@@ -1,74 +1,77 @@
 package managment.protege.supermed.Adapter;
 
+
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.TextView;
 
 import java.util.List;
 
 import managment.protege.supermed.Model.EmergencyModel;
 import managment.protege.supermed.R;
 
-public class EmergencyAdapter extends RecyclerView.Adapter<EmergencyAdapter.MyViewHolder> {
+public class EmergencyAdapter extends RecyclerView.Adapter<EmergencyAdapter.ViewHolder> {
+
+    List<EmergencyModel> list;
     Context context;
-    private List<EmergencyModel> emergencyModelList;
-    private OnItemClickListener onItemClickListeners;
+    final int CODE_GALLERY_REQUEST = 999;
 
-    public interface OnItemClickListener {
-        void onItemClick(View view, EmergencyModel obj);
-    }
-
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-        this.onItemClickListeners = onItemClickListener;
-    }
-
-    public class MyViewHolder extends RecyclerView.ViewHolder {
-        Button emergency_title;
-
-        public MyViewHolder(View itemView) {
-            super(itemView);
-            emergency_title = (Button) itemView.findViewById(R.id.emergency_title);
-        }
-    }
-
-    public EmergencyAdapter(List<EmergencyModel> emergencyModelList, Context context) {
-        this.emergencyModelList = emergencyModelList;
+    public EmergencyAdapter(List<EmergencyModel> list, Context context) {
+        this.list = list;
         this.context = context;
     }
 
     @Override
-    public EmergencyAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.emergency_contact_list, parent, false);
-        return new EmergencyAdapter.MyViewHolder(itemView);
+        return new ViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull EmergencyAdapter.MyViewHolder holder, int position) {
-        final EmergencyModel Pro = emergencyModelList.get(position);
-        holder.emergency_title.setText(Pro.getName() + "-" + Pro.getContact());
-        holder.emergency_title.setOnClickListener(new View.OnClickListener() {
+    public void onBindViewHolder(ViewHolder holder, int position) {
+
+        final EmergencyModel item = list.get(position);
+
+        holder.btn_emergency_title.setText(item.getName());
+
+        holder.btn_emergency_title.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("MissingPermission")
             @Override
             public void onClick(View view) {
-                if (onItemClickListeners != null) {
-                    onItemClickListeners.onItemClick(view, Pro);
-                }
+
+                    Intent intent = new Intent(Intent.ACTION_CALL);
+                    intent.setData(Uri.parse("tel:" + item.getContact()));
+                    view.getContext().startActivity(intent);
+
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return emergencyModelList.size();
+        return list.size();
     }
 
+    class ViewHolder extends RecyclerView.ViewHolder {
+
+        Button btn_emergency_title;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+
+            btn_emergency_title = itemView.findViewById(R.id.btn_emergency_title);
+        }
+    }
 
 }

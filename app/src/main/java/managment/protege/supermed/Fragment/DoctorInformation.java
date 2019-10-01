@@ -546,11 +546,13 @@ public class DoctorInformation extends Fragment {
                                 JSONArray jsonArray = jsonObject.getJSONArray("data");
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject innerObj = jsonArray.getJSONObject(i);
+                                    String doc_id = innerObj.getString("d_id");
                                     String doc_name = innerObj.getString("d_name");
                                     String doc_designation = innerObj.getString("d_qualification");
                                     String doc_time = innerObj.getString("d_daysAndTime");
                                     String gender = innerObj.getString("d_gender");
                                     ModelSpecialityDoctor item = new ModelSpecialityDoctor(
+                                            doc_id,
                                             doc_name,
                                             doc_designation,
                                             doc_time,
@@ -606,11 +608,13 @@ public class DoctorInformation extends Fragment {
                                 JSONArray jsonArray = jsonObject.getJSONArray("data");
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject innerObj = jsonArray.getJSONObject(i);
+                                    String doc_id = innerObj.getString("id");
                                     String doc_name = innerObj.getString("name");
                                     String doc_designation = innerObj.getString("qualification");
                                     String doc_time = innerObj.getString("daysAndTime");
                                     String gender = innerObj.getString("gender");
                                     ModelSpecialityDoctor item = new ModelSpecialityDoctor(
+                                            doc_id,
                                             doc_name,
                                             doc_designation,
                                             doc_time,
@@ -658,11 +662,13 @@ public class DoctorInformation extends Fragment {
                                 JSONArray jsonArray = jsonObject.getJSONArray("data");
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject innerObj = jsonArray.getJSONObject(i);
+                                    String doc_id = innerObj.getString("d_id");
                                     String doc_name = innerObj.getString("d_name");
                                     String doc_designation = innerObj.getString("d_qualification");
                                     String doc_time = innerObj.getString("d_daysAndTime");
                                     String gender = innerObj.getString("d_gender");
                                     ModelSpecialityDoctor item = new ModelSpecialityDoctor(
+                                            doc_id,
                                             doc_name,
                                             doc_designation,
                                             doc_time,
@@ -716,11 +722,13 @@ public class DoctorInformation extends Fragment {
                                 JSONArray jsonArray = jsonObject.getJSONArray("data");
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject innerObj = jsonArray.getJSONObject(i);
+                                    String doc_id = innerObj.getString("d_id");
                                     String doc_name = innerObj.getString("d_name");
                                     String doc_designation = innerObj.getString("d_qualification");
                                     String doc_time = innerObj.getString("d_daysAndTime");
                                     String gender = innerObj.getString("d_gender");
                                     ModelSpecialityDoctor item = new ModelSpecialityDoctor(
+                                            doc_id,
                                             doc_name,
                                             doc_designation,
                                             doc_time,

@@ -53,9 +53,6 @@ import retrofit2.Response;
 import static managment.protege.supermed.Activity.Main_Apps.nav_email;
 import static managment.protege.supermed.Activity.Main_Apps.nav_username;
 import static managment.protege.supermed.Activity.Main_Apps.navigationHeaderUsername;
-import static managment.protege.supermed.Fragment.Cart.cartCounter_Cart;
-import static managment.protege.supermed.Fragment.Cart.cartTotal;
-import static managment.protege.supermed.Fragment.Cart.coupanCode;
 import static managment.protege.supermed.Fragment.Home.ProductDetailCartCounter;
 
 /**
@@ -119,10 +116,10 @@ public class PlaceOrder extends Fragment implements AdapterView.OnItemSelectedLi
             placeOrder_UserName.setText(GlobalHelper.getUserProfile(getContext()).getProfile().getFirstName());
         }
 
-        placeOrder_orderSummary.setText(cartCounter_Cart + " Items");
+        /*placeOrder_orderSummary.setText(cartCounter_Cart + " Items");
         placeOrder_orderTotal.setText(cartTotal);
         placeOrder_orderTotalPayable.setText(cartTotal);
-        cartCouponDiscount.setText(disountAmountPercentage + "");
+        cartCouponDiscount.setText(disountAmountPercentage + "");*/
         onClickFunctions();
         return v;
     }
@@ -142,11 +139,11 @@ public class PlaceOrder extends Fragment implements AdapterView.OnItemSelectedLi
                             if (placeOrder_rb_credit.isChecked()) {
                                 Log.e("paytype check", "credit " + paytype);
                                 paytype = PAY_TYPE.KEENU.getValue();
-                                SubmitOrder(GlobalHelper.getUserProfile(getContext()).getProfile().getId(), number, address, ordernote, paytype, coupanCode, guestFname, guestLname, st_country, st_city, guestEmail);
+                                //SubmitOrder(GlobalHelper.getUserProfile(getContext()).getProfile().getId(), number, address, ordernote, paytype, coupanCode, guestFname, guestLname, st_country, st_city, guestEmail);
                             } else if (placeOrder_rb_cod.isChecked()) {
                                 paytype = PAY_TYPE.CASH.getValue();
                                 Log.e("paytype check", paytype);
-                                SubmitOrder(GlobalHelper.getUserProfile(getContext()).getProfile().getId(), number, address, ordernote, paytype, coupanCode, guestFname, guestLname, st_country, st_city, guestEmail);
+                                //SubmitOrder(GlobalHelper.getUserProfile(getContext()).getProfile().getId(), number, address, ordernote, paytype, coupanCode, guestFname, guestLname, st_country, st_city, guestEmail);
 
                             }
                         } else {
@@ -162,13 +159,13 @@ public class PlaceOrder extends Fragment implements AdapterView.OnItemSelectedLi
                         if (placeOrder_rb_credit.isChecked()) {
                             paytype = PAY_TYPE.KEENU.getValue();
 
-                            SubmitOrder(GlobalHelper.getUserProfile(getContext()).getProfile().getId(), number, address, ordernote, paytype, coupanCode, guestFname, guestLname, st_country, st_city, guestEmail);
+                            //SubmitOrder(GlobalHelper.getUserProfile(getContext()).getProfile().getId(), number, address, ordernote, paytype, coupanCode, guestFname, guestLname, st_country, st_city, guestEmail);
 
                         } else if (placeOrder_rb_cod.isChecked()) {
                             paytype = PAY_TYPE.CASH.getValue();
                             Log.e("paytype check", paytype);
                             ;
-                            SubmitOrder(GlobalHelper.getUserProfile(getContext()).getProfile().getId(), number, address, ordernote, paytype, coupanCode, guestFname, guestLname, st_country, st_city, guestEmail);
+                            //SubmitOrder(GlobalHelper.getUserProfile(getContext()).getProfile().getId(), number, address, ordernote, paytype, coupanCode, guestFname, guestLname, st_country, st_city, guestEmail);
                         }
 
                     } else {
@@ -260,7 +257,7 @@ public class PlaceOrder extends Fragment implements AdapterView.OnItemSelectedLi
 
                             invoiceUrl = response.body().getReceipt();
                             Log.e("invoice url", invoiceUrl);
-                            coupanCode = "";
+                            //coupanCode = "";
                             DownloadBill(getActivity());
                         } else {
                             Intent intent = new Intent(getContext(), WebViewActivity.class);

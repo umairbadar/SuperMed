@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
-        android:background="@drawable/cart_list_bg"
+        android:background="@color/white"
         android:orientation="horizontal"
         android:paddingLeft="10dp"
         android:paddingTop="10dp"

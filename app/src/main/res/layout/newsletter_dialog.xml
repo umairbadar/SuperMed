@@ -30,7 +30,7 @@
             android:gravity="center"
             android:paddingBottom="3dp"
             android:paddingLeft="3dp"
-            android:text="ALERT"
+            android:text="Enter you Email to subscribe our newsletter"
             android:textAllCaps="true"
             android:textColor="@color/colorPrimary"
             android:textSize="20dp"
@@ -40,51 +40,30 @@
             android:layout_width="match_parent"
             android:layout_height="15dp" />
 
-        <TextView
-            android:id="@+id/forgotPassword_email"
+        <EditText
+            android:id="@+id/et_newsletter_email"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:padding="15dp"
-            android:fontFamily="@font/lato_bold"
-            android:textAlignment="center"
-            android:text="Please SIGN IN or REGISTER to get access all features."
-            android:textColor="@color/changePasswordTextColor"
-            android:textSize="20dp" />
+            android:background="@drawable/et_bg"
+            android:hint="Email"
+            android:inputType="textEmailAddress"/>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="20dp"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            <Button
+                android:id="@+id/btn_newsletter_submit"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/buttonbg"
+                android:textColor="@color/white"
+                android:fontFamily="@font/lato_bold"
+                android:textSize="14dp"
+                android:text="Submit" />
 
-                <Button
-                    android:id="@+id/btn_guest_login"
-                    android:layout_weight="1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/buttonbg"
-                    android:textColor="@color/white"
-                    android:fontFamily="@font/lato_bold"
-                    android:textSize="14dp"
-                    android:text="Login" />
-
-                <View
-                    android:layout_width="10dp"
-                    android:layout_height="match_parent"/>
-                <Button
-                    android:layout_weight="1"
-                    android:id="@+id/btn_guest_register"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/buttonbg"
-                    android:textColor="@color/white"
-                    android:fontFamily="@font/lato_bold"
-                    android:textSize="14dp"
-                    android:text="Register" />
-        </LinearLayout>
         <View
             android:layout_width="match_parent"
             android:layout_height="10dp" />
@@ -92,7 +71,7 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/iv_rp_close"
+        android:id="@+id/img_newsletter_close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/error"

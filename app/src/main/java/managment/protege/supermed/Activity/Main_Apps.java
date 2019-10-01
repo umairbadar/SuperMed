@@ -125,6 +125,7 @@ public class Main_Apps extends AppCompatActivity implements NavigationView.OnNav
         if (GlobalHelper.getUserProfile(context) != null && GlobalHelper.getUserProfile(context).getProfile() != null) {
             if (GlobalHelper.getUserProfile(this).getProfile().getFirstName().trim().toLowerCase().equals("guest")) {
                 changeNavigationMenuItem("LOGIN");
+                hideNavigationMenuItem();
             } else {
                 changeNavigationMenuItem("LOGOUT");
             }
@@ -280,6 +281,19 @@ public class Main_Apps extends AppCompatActivity implements NavigationView.OnNav
         navigationView.setNavigationItemSelectedListener(this);
     }
 
+    public void hideNavigationMenuItem() {
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        Menu menu = navigationView.getMenu();
+        MenuItem menuItem1 = menu.findItem(R.id.nav_orderHistory);
+        MenuItem menuItem2 = menu.findItem(R.id.nav_appointmentHistory);
+        MenuItem menuItem3 = menu.findItem(R.id.nav_settings);
+        menuItem1.setVisible(false);
+        menuItem2.setVisible(false);
+        menuItem3.setVisible(false);
+
+        navigationView.setNavigationItemSelectedListener(this);
+    }
+
     public void drawerFunction(Toolbar toolbar) {
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerToggle = new ActionBarDrawerToggle(
@@ -339,6 +353,7 @@ public class Main_Apps extends AppCompatActivity implements NavigationView.OnNav
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+
         if (id == R.id.nav_Categories) {
             backfunction(new Category());
         }
@@ -370,7 +385,13 @@ public class Main_Apps extends AppCompatActivity implements NavigationView.OnNav
         }
 
         if (id == R.id.nav_uploadPresciption) {
-            backfunction(new UploadPriscribtionFragment());
+
+            if (GlobalHelper.getUserProfile(getApplicationContext()).getProfile().getFirstName().trim().toLowerCase().equals("guest")) {
+                forgotPasswordDialog(Main_Apps.this);
+            } else {
+                backfunction(new UploadPriscribtionFragment());
+            }
+
         }
         if (id == R.id.nav_contact) {
             backfunction(new ContactUsFragment());
@@ -439,6 +460,14 @@ public class Main_Apps extends AppCompatActivity implements NavigationView.OnNav
     }
 
     private void removeData() {
+
+        //Removing Newsletter Data
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPre", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.apply();
+        //-------------
+
         getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit().clear().apply();
         prefs2.edit().clear().apply();
         prefs3.edit().clear().apply();

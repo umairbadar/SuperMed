@@ -17,11 +17,27 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import es.dmoral.toasty.Toasty;
+import managment.protege.supermed.Activity.Main_Apps;
+import managment.protege.supermed.Activity.Register;
 import managment.protege.supermed.Fragment.Cart;
 import managment.protege.supermed.Model.CartActionResponse;
 import managment.protege.supermed.Model.CartModel;
@@ -29,9 +45,9 @@ import managment.protege.supermed.Model.cartList;
 import managment.protege.supermed.R;
 import managment.protege.supermed.Retrofit.API;
 import managment.protege.supermed.Retrofit.RetrofitAdapter;
+import managment.protege.supermed.Tools.GlobalHelper;
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by wahaj on 6/12/2018.
@@ -39,37 +55,14 @@ import retrofit2.Response;
 
 public class cartAdapter extends RecyclerView.Adapter<cartAdapter.MyViewHolder> {
 
-    Context ct;
-    private OnItemClickListener onItemClickListeners;
-    OnItemClickListenerplus OnItemClickListenerplus;
+    List<CartModel> catalist;
+    Context context;
+    double total = 0, coupon_price = 0;
 
-    public interface OnItemClickListener {
-        void onItemClick(View view, CartModel obj, String text);
-    }
-
-    public interface OnItemClickListenerplus {
-        void onItemClick(View view, CartModel obj, String text);
-    }
-
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-        this.onItemClickListeners = onItemClickListener;
-    }
-
-    public void setOnItemClickListenerplus(OnItemClickListenerplus onItemClickListenerplus) {
-        this.OnItemClickListenerplus = onItemClickListenerplus;
-    }
-
-    public cartAdapter(List<CartModel> catalist, Context contex) {
+    public cartAdapter(List<CartModel> catalist, Context context) {
         this.catalist = catalist;
-        ct = contex;
+        this.context = context;
     }
-
-    private List<CartModel> catalist;
-
-    public cartAdapter(Context context) {
-
-    }
-
 
     @NonNull
     @Override
@@ -81,76 +74,177 @@ public class cartAdapter extends RecyclerView.Adapter<cartAdapter.MyViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
 
-        final CartModel cata = catalist.get(position);
-        holder.title.setText(cata.getProductName());
-        holder.Price.setText("RS " + cata.getProductPrice());
+        final CartModel item = catalist.get(position);
 
-        holder.Sale.setText("RS " + cata.getProductOldPrice());
-        holder.Sale.setPaintFlags(holder.Sale.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        holder.cartProductQuantity.setText(cata.getUserQty());
-        holder.cartSingleProductQuantity.setText("Quantity Left: " + cata.getProductQty());
-        holder.plus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                holder.cartProductQuantity.setText(String.valueOf(Integer.parseInt(holder.cartProductQuantity.getText().toString()) + 1));
-                if (OnItemClickListenerplus != null) {
-                    OnItemClickListenerplus.onItemClick(view, cata, holder.cartProductQuantity.getText().toString());
-                }
-            }
-
-        });
-        holder.min.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View view) {
-                if (holder.cartProductQuantity.getText().equals("1")) {
-                    AlertDialog.Builder builder1 = new AlertDialog.Builder(ct);
-                    builder1.setMessage(Html.fromHtml("Are you sure you want to remove <b>" + cata.getProductName() + "</b> from cart ? "));
-
-                    builder1.setCancelable(true);
-                    builder1.setTitle(Html.fromHtml("<b>" + "Remove from Cart" + "</b>"));
-                    builder1.setPositiveButton(
-                            "Remove",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                    holder.cartProductQuantity.setText(String.valueOf(Integer.parseInt(holder.cartProductQuantity.getText().toString()) - 1));
-                                    if (onItemClickListeners != null) {
-                                        onItemClickListeners.onItemClick(view, cata, holder.cartProductQuantity.getText().toString());
-                                    }
-                                }
-                            });
-                    builder1.setNegativeButton("Cancel",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                }
-                            });
-
-                    AlertDialog alert11 = builder1.create();
-                    alert11.show();
-                } else if (!holder.cartProductQuantity.getText().equals("1")) {
-                    holder.cartProductQuantity.setText(String.valueOf(Integer.parseInt(holder.cartProductQuantity.getText().toString()) - 1));
-                    if (onItemClickListeners != null) {
-                        onItemClickListeners.onItemClick(view, cata, holder.cartProductQuantity.getText().toString());
-                    }
-                }
-            }
-        });
         Picasso.get()
-                .load(cata.getProductImage().replaceAll(" ", "%20"))
+                .load(item.getProductImage().replaceAll(" ", "%20"))
                 .resize(80, 80)
                 .centerCrop()
                 .placeholder(R.drawable.tab_miss)
                 .into(holder.iv);
-        Log.e("ds", cata.getProductPrice());
+
+        holder.title.setText(item.getProductName());
+        holder.Price.setText(item.getProductPrice());
+        holder.cartProductQuantity.setText(item.getProductQty());
+
+        holder.plus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                double qty = Double.parseDouble(holder.cartProductQuantity.getText().toString());
+                double price = Double.parseDouble(holder.Price.getText().toString());
+
+                //Getting old price
+                double sub_total1 = price * qty;
+
+                qty = qty + 1;
+                holder.cartProductQuantity.setText(String.format("%.0f",qty));
+                updateCart(item.getProductID(),holder.cartProductQuantity.getText().toString());
+
+                //Getting new price
+                double sub_total = price * qty;
+
+                double total = Double.parseDouble(Cart.tv_price.getText().toString());
+                double f_total = (total - sub_total1) + sub_total;
+                Cart.tv_price.setText(String.format("%.2f",f_total));
+                Cart.tv_total.setText(String.format("%.2f",f_total));
+            }
+        });
+
+        holder.min.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                double qty = Double.parseDouble(holder.cartProductQuantity.getText().toString());
+                double price = Double.parseDouble(holder.Price.getText().toString());
+                double total = Double.parseDouble(Cart.tv_price.getText().toString());
+
+                if (qty == 1 || qty < 1){
+                    //Delete item
+                    deleteCart(item.getCartID(), qty, price, total);
+                    catalist.remove(position);
+                    Cart.adapter.notifyDataSetChanged();
+                } else if (qty > 1){
+                    //Getting old price
+                    double sub_total1 = price * qty;
+
+                    qty = qty - 1;
+                    holder.cartProductQuantity.setText(String.format("%.0f",qty));
+                    updateCart(item.getProductID(),holder.cartProductQuantity.getText().toString());
+
+                    //Getting new price
+                    double sub_total = price * qty;
+
+                    double f_total = (total - sub_total1) + sub_total;
+                    Cart.tv_price.setText(String.format("%.2f",f_total));
+                    Cart.tv_total.setText(String.format("%.2f",f_total));
+                }
+            }
+        });
+
+        double price = Double.parseDouble(holder.Price.getText().toString());
+        double qty = Double.parseDouble(holder.cartProductQuantity.getText().toString());
+        double sub_total = price * qty;
+        total += sub_total;
+        Cart.tv_price.setText(String.format("%.2f",total));
+        Cart.tv_total.setText(String.format("%.2f",total));
     }
 
     @Override
     public int getItemCount() {
         return catalist.size();
+    }
+
+    public void updateCart(final String productId, final String qty){
+        Main_Apps.hud.show();
+        String URL = Register.Base_URL + "update-cart";
+        StringRequest req = new StringRequest(Request.Method.POST, URL,
+                new com.android.volley.Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            boolean status = jsonObject.getBoolean("status");
+                            String msg = jsonObject.getString("msg");
+                            if (status){
+                                Main_Apps.hud.dismiss();
+                                /*Toast.makeText(context, msg,
+                                        Toast.LENGTH_LONG).show();*/
+                            } else {
+                                Main_Apps.hud.dismiss();
+                                Toast.makeText(context, msg,
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Main_Apps.hud.dismiss();
+                        Toast.makeText(context, error.getMessage(),
+                                Toast.LENGTH_LONG).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("productId", productId);
+                map.put("productQTY", qty);
+                map.put("userId", GlobalHelper.getUserProfile(context).getProfile().getId());
+                return map;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(req);
+    }
+
+    public void deleteCart(final String cartId, final double qty, final double price, final double total){
+        Main_Apps.hud.show();
+        String URL = Register.Base_URL + "delete-cart/" + cartId;
+        StringRequest req = new StringRequest(Request.Method.DELETE, URL,
+                new com.android.volley.Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            boolean status = jsonObject.getBoolean("status");
+                            String msg = jsonObject.getString("message");
+                            if (status){
+                                Main_Apps.hud.dismiss();
+
+                                double sub_total1 = price * qty;
+
+                                double f_total = total - sub_total1;
+                                Cart.tv_price.setText(String.format("%.2f",f_total));
+                                Cart.tv_total.setText(String.format("%.2f",f_total));
+
+                                Toast.makeText(context, msg,
+                                        Toast.LENGTH_LONG).show();
+                            } else {
+                                Main_Apps.hud.dismiss();
+                                Toast.makeText(context, msg,
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Main_Apps.hud.dismiss();
+                        Toast.makeText(context, error.getMessage(),
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
+
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(req);
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {

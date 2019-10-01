@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -20,13 +21,28 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.gson.JsonArray;
 import com.kaopiz.kprogresshud.KProgressHUD;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import es.dmoral.toasty.Toasty;
 import managment.protege.supermed.Activity.Main_Apps;
+import managment.protege.supermed.Activity.Register;
 import managment.protege.supermed.Adapter.cartAdapter;
 import managment.protege.supermed.Model.CartActionResponse;
 import managment.protege.supermed.Model.CartModel;
@@ -38,7 +54,6 @@ import managment.protege.supermed.Retrofit.RetrofitAdapter;
 import managment.protege.supermed.Tools.GlobalHelper;
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Response;
 
 import static managment.protege.supermed.Fragment.Home.ProductDetailCartCounter;
 
@@ -46,26 +61,16 @@ import static managment.protege.supermed.Fragment.Home.ProductDetailCartCounter;
  * A simple {@link Fragment} subclass.
  */
 public class Cart extends Fragment {
-    private List<CartModel> movieList = new ArrayList<>();
-    private cartAdapter mAdapter;
+
     private RecyclerView recyclerView;
-    EditText cartApplyPromo;
-    TextView cartApplyCoupon, cartCouponDiscount, cartTotalPayable, cartDelivery;
-    Button placeOrder;
-    TextView cartPrice;
-    public static String coupanCode;
-    LinearLayout LL_cart_bottom, LL_cart_top, pricelayout;
-    String cCode = "";
-    int discountPercent;
-    KProgressHUD hud;
-    public static String cartCounter_Cart, cartTotal;
-    public static int pprice = 0;
-    Main_Apps main_apps;
-    View view;
-    TextView toolbar_text;
-    int i = 0;
-    Double total = 0.0;
-    int totalWithQty = 0;
+    public static cartAdapter adapter;
+    private List<CartModel> list;
+
+    public static TextView tv_total, tv_price, tv_coupon_price;
+    private EditText et_coupon;
+    private Button btn_apply_coupon;
+    private LinearLayout layoutCoupon;
+
 
     public Cart() {
         // Required empty public constructor
@@ -76,217 +81,157 @@ public class Cart extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_cart, container, false);
-
-        recyclerView = (RecyclerView) v.findViewById(R.id.cartRecycler);
-        initialzations(v);
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
         Main_Apps.getMainActivity().addToolbarBack(getContext(), getString(R.string.cart), v);
 
-        OnClickFunctions();
-        LoadApi(GlobalHelper.getUserProfile(getContext()).getProfile().getId().toString());
+        //Coupon
+        et_coupon = v.findViewById(R.id.et_coupon);
+        btn_apply_coupon = v.findViewById(R.id.btn_apply_coupon);
+        layoutCoupon = v.findViewById(R.id.layoutCoupon);
+
+        if (GlobalHelper.getUserProfile(getContext()).getProfile().getIsGuest().equals("No")) {
+            layoutCoupon.setVisibility(View.VISIBLE);
+        } else {
+            layoutCoupon.setVisibility(View.GONE);
+        }
+
+        btn_apply_coupon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (et_coupon.getText().toString().length() > 0) {
+
+                    applyCoupon(et_coupon.getText().toString(), tv_price.getText().toString());
+                } else {
+                    et_coupon.setError("Please enter coupon code");
+                    et_coupon.requestFocus();
+                }
+            }
+        });
+
+        tv_total = v.findViewById(R.id.tv_total);
+        tv_price = v.findViewById(R.id.tv_price);
+        tv_coupon_price = v.findViewById(R.id.tv_coupon_price);
+
+        recyclerView = v.findViewById(R.id.cartRecycler);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        list = new ArrayList<>();
+        adapter = new cartAdapter(list, getContext());
+        recyclerView.setAdapter(adapter);
+        getCartDetails();
 
         return v;
     }
 
-    private void initialzations(View v) {
-        toolbar_text = (TextView) v.findViewById(R.id.toolbar_text);
-        placeOrder = (Button) v.findViewById(R.id.btn_cartPlaceOrder);
-        cartApplyPromo = (EditText) v.findViewById(R.id.cartApplyPromo);
-        cartApplyCoupon = (TextView) v.findViewById(R.id.cartApplyCoupon);
-        cartTotalPayable = (TextView) v.findViewById(R.id.total);
-        cartDelivery = (TextView) v.findViewById(R.id.cartDelivery);
-        cartCouponDiscount = (TextView) v.findViewById(R.id.cartCouponDiscount);
-        LL_cart_bottom = (LinearLayout) v.findViewById(R.id.LL_cart_bottom);
-        LL_cart_top = (LinearLayout) v.findViewById(R.id.LL_cart_top);
-        pricelayout = v.findViewById(R.id.pricelayout);
-        hud = KProgressHUD.create(getContext())
-                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
-                .setCancellable(false);
-        cartPrice = (TextView) v.findViewById(R.id.cartPrice);
-    }
+    private void getCartDetails() {
+        Main_Apps.hud.show();
+        String URL = Register.Base_URL + "cart-list";
+        StringRequest req = new StringRequest(Request.Method.POST, URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            boolean status = jsonObject.getBoolean("status");
+                            if (status) {
+                                Main_Apps.hud.dismiss();
+                                JSONArray jsonArray = jsonObject.getJSONArray("data");
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject object = jsonArray.getJSONObject(i);
+                                    String id = object.getString("id");
+                                    String name = object.getString("name");
+                                    String qty = object.getString("qty");
+                                    String price = object.getString("price");
+                                    String cartId = object.getString("cartId");
+                                    JSONObject innerObj = object.getJSONObject("options");
+                                    String image = innerObj.getString("productImage");
 
+                                    CartModel item = new CartModel(
+                                            id,
+                                            name,
+                                            price,
+                                            qty,
+                                            image,
+                                            cartId
+                                    );
 
-    private void fillProcycle(List<CartModel> Cart) {
-        movieList = Cart;
-        mAdapter = new cartAdapter(movieList, getContext());
-        mAdapter.setOnItemClickListener(new cartAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, CartModel obj, String text) {
-
-
-                if (Integer.parseInt(text) == 0) {
-                    cartAction(obj.getProductID(), GlobalHelper.getUserProfile(getContext()).getProfile().getId().toString(), text, "2");
-                } else {
-                    cartAction(obj.getProductID(), GlobalHelper.getUserProfile(getContext()).getProfile().getId().toString(), text, "1");
-                }
-            }
-        });
-
-        mAdapter.setOnItemClickListenerplus(new cartAdapter.OnItemClickListenerplus() {
-            @Override
-            public void onItemClick(View view, CartModel obj, String text) {
-                cartAction(obj.getProductID(), GlobalHelper.getUserProfile(getContext()).getProfile().getId().toString(), text, "1");
-
-            }
-        });
-
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(mAdapter);
-        prepareMovieData();
-    }
-
-
-    public void LoadApi(String Userid) {
-        hud.show();
-        API api = RetrofitAdapter.createAPI();
-        Call<CartResponse> callBackCall = api.get_cart(Userid);
-        callBackCall.enqueue(new Callback<CartResponse>() {
-            @Override
-            public void onResponse(Call<CartResponse> call, final Response<CartResponse> response) {
-
-                if (response != null) {
-                    if (response.body().getStatus()) {
-                        ProductDetailCartCounter = response.body().getCartCounter();
-                        LL_cart_bottom.setVisibility(View.VISIBLE);
-                        pricelayout.setVisibility(View.VISIBLE);
-                        LL_cart_top.setVisibility(View.INVISIBLE);
-
-                        placeOrder.setVisibility(View.VISIBLE);
-                        total = Double.valueOf(0);
-                        totalWithQty = 0;
-                        pprice = 0;
-
-                        for (i = 0; i < response.body().getCart().size(); i++) {
-                            total = Double.valueOf(response.body().getCart().get(i).getProductPrice());
-                            totalWithQty = total.intValue() * Integer.valueOf(response.body().getCart().get(i).getUserQty());
-                            pprice = pprice + totalWithQty;
+                                    list.add(item);
+                                }
+                                adapter.notifyDataSetChanged();
+                            } else {
+                                Main_Apps.hud.dismiss();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-
-                        cartPrice.setText("RS " + pprice);
-                        cartTotalPayable.setText("RS " + String.valueOf(pprice));
-                        cartTotal = String.valueOf(pprice);
-                        cartCouponDiscount.setText("RS 0");
-
-
-                        cartDelivery.setText("Free");
-
-                        cartCounter_Cart = response.body().getCartCounter().toString();
-                        fillProcycle(response.body().getCart());
-                        Toasty.success(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT, true).show();
-                    } else {
-                        ProductDetailCartCounter = response.body().getCartCounter();
-                        LL_cart_bottom.setVisibility(View.INVISIBLE);
-                        LL_cart_top.setVisibility(View.VISIBLE);
-                        placeOrder.setVisibility(View.INVISIBLE);
-                        //Toasty.success(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT, false).show();
                     }
-                    hud.dismiss();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<CartResponse> call, Throwable t) {
-                //Toast.makeText(getContext(), "incorrect", Toast.LENGTH_SHORT).show();
-                Log.e("Login", "Error is " + t.getMessage());
-                hud.dismiss();
-            }
-        });
-    }
-
-    private void prepareMovieData() {
-        mAdapter.notifyDataSetChanged();
-    }
-
-    public void cartAction(String pid, String uid, String qty, String action) {
-        hud.show();
-        API api = RetrofitAdapter.createAPI();
-        Call<CartActionResponse> callBackCall = api.cart_action(pid, uid, qty, action);
-        callBackCall.enqueue(new Callback<CartActionResponse>() {
-            @Override
-            public void onResponse(Call<CartActionResponse> call, final Response<CartActionResponse> response) {
-                if (response != null) {
-                    if (response.body().getStatus()) {
-                        Toasty.success(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT, true).show();
-                        LoadApi(GlobalHelper.getUserProfile(getContext()).getProfile().getId().toString());
-
-
-                    } else {
-                        Toasty.success(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT, false).show();
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Main_Apps.hud.dismiss();
+                        Toast.makeText(getContext(), error.getMessage(),
+                                Toast.LENGTH_LONG).show();
                     }
-                    hud.dismiss();
-                }
-            }
-
+                }) {
             @Override
-            public void onFailure(Call<CartActionResponse> call, Throwable t) {
-                Log.e("cart", "Error is " + t.getMessage());
-                hud.dismiss();
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("userId", GlobalHelper.getUserProfile(getContext()).getProfile().getId());
+                return map;
             }
-        });
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        requestQueue.add(req);
 
     }
 
-    public void OnClickFunctions() {
-        placeOrder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+    private void applyCoupon(final String coupon_code, final String total_price) {
+        String URL = Register.Base_URL + "apply-for-coupon";
+        StringRequest req = new StringRequest(Request.Method.POST, URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
 
-                InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-
-                cCode = cartApplyPromo.getText().toString();
-                if (cCode.length() > 0) {
-                    CheckCoupon(cCode, GlobalHelper.getUserProfile(getContext()).getProfile().getId());
-                } else {
-                    Main_Apps.getMainActivity().backfunction(new PlaceOrder(cartCouponDiscount.getText().toString()));
-                }
-            }
-        });
-
-        cartApplyCoupon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                cCode = cartApplyPromo.getText().toString();
-
-
-                if (cCode.length() > 0) {
-                    CheckCoupon(cCode, GlobalHelper.getUserProfile(getContext()).getProfile().getId());
-                } else {
-                    cartApplyPromo.setError("Please Enter Promo Code First");
-                }
-            }
-        });
-    }
-
-    public void CheckCoupon(final String code, final String userid) {
-        API api = RetrofitAdapter.createAPI();
-        Call<CouponResponse> couponResponseCall = api.COUPON_RESPONSE_CALL(code, userid);
-        couponResponseCall.enqueue(new Callback<CouponResponse>() {
-            @Override
-            public void onResponse(Call<CouponResponse> call, Response<CouponResponse> response) {
-                if (response != null) {
-                    if (response.body().getStatus()) {
-                        Toasty.success(getContext(), "Coupon Applied Successfully", Toast.LENGTH_SHORT, true).show();
-                        coupanCode = code;
-                        Log.e("coupon", coupanCode);
-                        discountPercent = Integer.parseInt(response.body().getCoupon().get(0).getDiscount());
-                        String discountAmount = String.valueOf((pprice * discountPercent) / 100);
-                        cartCouponDiscount.setText(discountAmount);
-                        cartTotalPayable.setText(String.valueOf(pprice - (Integer.parseInt(discountAmount))));
-                        cartTotal = String.valueOf(pprice - (Integer.parseInt(discountAmount)));
-                        Main_Apps.getMainActivity().backfunction(new PlaceOrder(cartCouponDiscount.getText().toString()));
-                    } else {
-                        cartApplyPromo.setError("Coupon Code not valid or is already used.");
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            boolean status = jsonObject.getBoolean("status");
+                            if (status) {
+                                JSONObject innerObj = jsonObject.getJSONObject("data");
+                                tv_coupon_price.setText(innerObj.getString("discount"));
+                                tv_total.setText(innerObj.getString("discountedPrice"));
+                                Toast.makeText(getContext(), "Congratulations! Your Coupon Code is applied",
+                                        Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(getContext(), "Invalid Coupon Code",
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
-                }
-            }
-
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getContext(), error.getMessage(),
+                                Toast.LENGTH_LONG).show();
+                    }
+                }) {
             @Override
-            public void onFailure(Call<CouponResponse> call, Throwable t) {
-                Log.e("Coupon", "error" + t.getMessage());
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("userId", GlobalHelper.getUserProfile(getContext()).getProfile().getId());
+                map.put("coupon_code", coupon_code);
+                map.put("total_cart_price", total_price);
+                return map;
             }
-        });
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        requestQueue.add(req);
+
     }
 }

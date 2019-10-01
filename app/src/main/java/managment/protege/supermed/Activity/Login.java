@@ -128,7 +128,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
         btn_create_account.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LoginByGuestUser();
+                //LoginByGuestUser();
+                GuestLogin();
             }
         });
 
@@ -337,6 +338,45 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
         hud.show();
         API api = RetrofitAdapter.createAPI();
         Call<LoginResponse> callBackCall = api.Login(email, password);
+        callBackCall.enqueue(new Callback<LoginResponse>() {
+            @Override
+            public void onResponse(Call<LoginResponse> call, final Response<LoginResponse> response) {
+                hud.dismiss();
+                if (response != null) {
+                    if (response.body().getStatus()) {
+                        GlobalHelper.saveUserInLocal(getApplicationContext(), response.body(), true);
+                        SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+                        editor.putString("email", email);
+                        editor.putString("password", password);
+                        editor.putBoolean("CheckBox", true);
+                        editor.apply();
+                        Intent intent = new Intent(Login.this, Main_Apps.class);
+                        intent.putExtra("mylist", (Serializable) listforbanner);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                    } else if (response.body().getMessage().equals("Invalid Password Or Email Address.")) {
+                        //login_password.setError("The password you have entered for this email is incorrect");
+                        Toast.makeText(getApplicationContext(),"Please Enter valid Email and Password",
+                                Toast.LENGTH_LONG).show();
+                    }/* else if (response.body().getMessage().equals("email and password are both incorrect")) {
+                        login_email.setError("The Email is not associated with any account");
+                    }*/
+                }
+            }
+
+            @Override
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
+                hud.dismiss();
+                Log.e("Login", "Error is " + t.getMessage());
+            }
+        });
+    }
+
+    public void GuestLogin() {
+
+        hud.show();
+        API api = RetrofitAdapter.createAPI();
+        Call<LoginResponse> callBackCall = api.LoginGuestUser();
         callBackCall.enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, final Response<LoginResponse> response) {

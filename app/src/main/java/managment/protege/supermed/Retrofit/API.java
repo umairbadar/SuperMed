@@ -64,6 +64,10 @@ public interface API {
     Call<LoginResponse> Login(@Field("email") String Email,
                               @Field("password") String Password);
 
+
+    @GET("guest-user")
+    Call<LoginResponse> LoginGuestUser();
+
     @FormUrlEncoded
     @POST("user-forget-password")
     Call<ForgotPassword> forgotPass(@Field("email") String Email);
@@ -81,8 +85,8 @@ public interface API {
                                                 @Field("userid") String userid);
 
     @FormUrlEncoded
-    @POST("get_cart")
-    Call<CartResponse> get_cart(@Field("userid") String userid);
+    @POST("cart-list")
+    Call<CartResponse> get_cart(@Field("userId") String userid);
 
     @FormUrlEncoded
     @POST("searchMed")
@@ -101,7 +105,7 @@ public interface API {
     @GET("list_lab")
     Call<LoadLabsResponse> LOAD_LABS_RESPONSE_CALL();
 
-    @GET("getEmergency")
+    @GET("listing-for/emergency-contact-list")
     Call<EmergencyResponse> getEmergency();
 
     @GET("getBanners")
@@ -193,10 +197,9 @@ public interface API {
                                                                @Field("new_pass") String new_pass,
                                                                @Field("con_pass") String con_pass);
 
-    @Multipart
-    @POST("uploadPrescription")
-    Call<UploadPrescResponse> UPLOAD_PRESC_RESPONSE_CALL(@Part("userid") String userid,
-                                                         @Part MultipartBody.Part image);
+    @POST("prescription")
+    Call<UploadPrescResponse> UPLOAD_PRESC_RESPONSE_CALL(@Field("userId") String userid,
+                                                         @Field("upload_prescription") String upload_prescription);
 
     @FormUrlEncoded
     @POST("checkOut")
