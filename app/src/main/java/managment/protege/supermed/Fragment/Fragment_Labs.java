@@ -50,7 +50,7 @@ public class Fragment_Labs extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_labs, container, false);
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
-        Main_Apps.getMainActivity().addToolbarBack(getContext(), "Labs", v);
+        Main_Apps.getMainActivity().addToolbarBack(getContext(), "LABS", v);
         return v;
     }
 

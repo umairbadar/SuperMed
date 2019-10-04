@@ -2,6 +2,7 @@ package managment.protege.supermed.Fragment;
 
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -68,8 +69,14 @@ public class Cart extends Fragment {
 
     public static TextView tv_total, tv_price, tv_coupon_price;
     private EditText et_coupon;
-    private Button btn_apply_coupon;
+    private Button btn_apply_coupon, btn_place_order;
     private LinearLayout layoutCoupon;
+
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
+    Boolean applyCoupon;
+
+    private LinearLayout layout_data, layout_empty;
 
 
     public Cart() {
@@ -84,9 +91,16 @@ public class Cart extends Fragment {
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
         Main_Apps.getMainActivity().addToolbarBack(getContext(), getString(R.string.cart), v);
 
+        sharedPreferences = getActivity().getSharedPreferences("MyPre", Context.MODE_PRIVATE);
+        applyCoupon = sharedPreferences.getBoolean("applyCoupon", false);
+
+        layout_data = v.findViewById(R.id.layout_data);
+        layout_empty = v.findViewById(R.id.layout_empty);
+
         //Coupon
         et_coupon = v.findViewById(R.id.et_coupon);
         btn_apply_coupon = v.findViewById(R.id.btn_apply_coupon);
+        btn_place_order = v.findViewById(R.id.btn_place_order);
         layoutCoupon = v.findViewById(R.id.layoutCoupon);
 
         if (GlobalHelper.getUserProfile(getContext()).getProfile().getIsGuest().equals("No")) {
@@ -108,6 +122,20 @@ public class Cart extends Fragment {
             }
         });
 
+        btn_place_order.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                editor = sharedPreferences.edit();
+                editor.clear();
+                editor.apply();
+
+                Bundle args = new Bundle();
+                args.putString("price", tv_total.getText().toString());
+
+                Main_Apps.getMainActivity().backfunction(new Fragment_Place_Order(), args);
+            }
+        });
+
         tv_total = v.findViewById(R.id.tv_total);
         tv_price = v.findViewById(R.id.tv_price);
         tv_coupon_price = v.findViewById(R.id.tv_coupon_price);
@@ -119,12 +147,16 @@ public class Cart extends Fragment {
         list = new ArrayList<>();
         adapter = new cartAdapter(list, getContext());
         recyclerView.setAdapter(adapter);
-        getCartDetails();
+        getCartDetails(getContext(), list);
+
+        if (applyCoupon){
+            tv_coupon_price.setText(sharedPreferences.getString("couponValue", "0") + "%");
+        }
 
         return v;
     }
 
-    private void getCartDetails() {
+    public void getCartDetails(final Context context, final List<CartModel> list) {
         Main_Apps.hud.show();
         String URL = Register.Base_URL + "cart-list";
         StringRequest req = new StringRequest(Request.Method.POST, URL,
@@ -136,6 +168,9 @@ public class Cart extends Fragment {
                             boolean status = jsonObject.getBoolean("status");
                             if (status) {
                                 Main_Apps.hud.dismiss();
+                                layout_empty.setVisibility(View.GONE);
+                                layout_data.setVisibility(View.VISIBLE);
+                                btn_place_order.setVisibility(View.VISIBLE);
                                 JSONArray jsonArray = jsonObject.getJSONArray("data");
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject object = jsonArray.getJSONObject(i);
@@ -159,8 +194,20 @@ public class Cart extends Fragment {
                                     list.add(item);
                                 }
                                 adapter.notifyDataSetChanged();
+
+                                /*if (applyCoupon) {
+                                    tv_coupon_price.setText(sharedPreferences.getString("couponValue", "0") + "%");
+                                    double discount = Double.parseDouble(sharedPreferences.getString("couponValue", "0"));
+                                    *//*double price = Double.parseDouble(tv_price.getText().toString());
+                                    double total = price * discount;
+                                    tv_total.setText(String.format("%.2f", price - total));*//*
+                                }*/
+
                             } else {
                                 Main_Apps.hud.dismiss();
+                                layout_empty.setVisibility(View.VISIBLE);
+                                layout_data.setVisibility(View.GONE);
+                                btn_place_order.setVisibility(View.GONE);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -171,7 +218,7 @@ public class Cart extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Main_Apps.hud.dismiss();
-                        Toast.makeText(getContext(), error.getMessage(),
+                        Toast.makeText(context, error.getMessage(),
                                 Toast.LENGTH_LONG).show();
                     }
                 }) {
@@ -183,7 +230,7 @@ public class Cart extends Fragment {
             }
         };
 
-        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.add(req);
 
     }
@@ -198,14 +245,25 @@ public class Cart extends Fragment {
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             boolean status = jsonObject.getBoolean("status");
+                            String msg = jsonObject.getString("msg");
                             if (status) {
+                                editor = sharedPreferences.edit();
                                 JSONObject innerObj = jsonObject.getJSONObject("data");
-                                tv_coupon_price.setText(innerObj.getString("discount"));
+                                JSONObject innerObj1 = jsonObject.getJSONObject("coupon_session");
+
+                                editor.putBoolean("applyCoupon", true);
+                                editor.putString("couponValue", innerObj.getString("discount"));
+                                editor.putString("DiscountAmount", innerObj1.getString("amount"));
+                                editor.apply();
+
+
+
+                                tv_coupon_price.setText(innerObj.getString("discount") + "%");
                                 tv_total.setText(innerObj.getString("discountedPrice"));
-                                Toast.makeText(getContext(), "Congratulations! Your Coupon Code is applied",
+                                Toast.makeText(getContext(), msg,
                                         Toast.LENGTH_LONG).show();
                             } else {
-                                Toast.makeText(getContext(), "Invalid Coupon Code",
+                                Toast.makeText(getContext(), msg,
                                         Toast.LENGTH_LONG).show();
                             }
                         } catch (JSONException e) {

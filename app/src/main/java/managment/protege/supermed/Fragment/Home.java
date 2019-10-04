@@ -115,9 +115,12 @@ public class Home extends Fragment {
         sharedPreferences = getActivity().getSharedPreferences("MyPre", Context.MODE_PRIVATE);
         nlStatus = sharedPreferences.getBoolean("nlStatus", false);
 
-        if (GlobalHelper.getUserProfile(getContext()).getIsSubscribed().equals("No") && nlStatus.equals(false)){
-            newsLetterDialog(getContext());
+        if (GlobalHelper.getUserProfile(getContext()).getProfile().getIsGuest().equals("No")) {
+            if (GlobalHelper.getUserProfile(getContext()).getIsSubscribed().equals("No") && nlStatus.equals(false)) {
+                newsLetterDialog(getContext());
+            }
         }
+
 
         userid = GlobalHelper.getUserProfile(getContext()).getProfile().getId();
 
@@ -180,6 +183,8 @@ public class Home extends Fragment {
                 hud.dismiss();
             }
         }, 4000);
+
+        //Toast.makeText(getContext(), GlobalHelper.getUserProfile(getContext()).getProfile().getId(), Toast.LENGTH_LONG).show();
 
         return view;
     }
@@ -347,7 +352,7 @@ public class Home extends Fragment {
 
     }
 
-    public void getRecentProducts(){
+    public void getRecentProducts() {
         String URL = Register.Base_URL + "recently-viewed-products";
         StringRequest req = new StringRequest(Request.Method.GET, URL,
                 new Response.Listener<String>() {
@@ -356,7 +361,7 @@ public class Home extends Fragment {
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             JSONArray jsonArray = jsonObject.getJSONArray("data");
-                            for (int i = 0; i < jsonArray.length(); i++){
+                            for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject object = jsonArray.getJSONObject(i);
                                 String cateSlug = object.getString("cateSlug");
                                 String CatName = object.getString("cateName");
@@ -536,7 +541,7 @@ public class Home extends Fragment {
 
     }
 
-    public void getBrands(){
+    public void getBrands() {
         String URL = Register.Base_URL + "brands";
         StringRequest req = new StringRequest(Request.Method.GET, URL,
                 new Response.Listener<String>() {
@@ -545,7 +550,7 @@ public class Home extends Fragment {
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             JSONArray jsonArray = jsonObject.getJSONArray("data");
-                            for (int i = 0; i < jsonArray.length(); i++){
+                            for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject jsonObject1 = jsonArray.getJSONObject(i);
                                 String id = jsonObject1.getString("id");
                                 String name = jsonObject1.getString("name");
@@ -598,10 +603,10 @@ public class Home extends Fragment {
             @Override
             public void onClick(View view) {
 
-                if (TextUtils.isEmpty(et_email.getText().toString())){
+                if (TextUtils.isEmpty(et_email.getText().toString())) {
                     et_email.setError("Please enter email");
                     et_email.requestFocus();
-                } else if (!Register.isValidEmail(et_email)){
+                } else if (!Register.isValidEmail(et_email)) {
                     et_email.setError("Please enter valid email");
                     et_email.requestFocus();
                 } else {
@@ -619,7 +624,7 @@ public class Home extends Fragment {
         newsletter.show();
     }
 
-    private void sendNewsletterRequest(final String email, final Dialog dialog){
+    private void sendNewsletterRequest(final String email, final Dialog dialog) {
         Main_Apps.hud.show();
         String URL = Register.Base_URL + "subscribe-newsletter";
         StringRequest req = new StringRequest(Request.Method.POST, URL,
@@ -631,7 +636,7 @@ public class Home extends Fragment {
                             JSONObject jsonObject = new JSONObject(response);
                             boolean status = jsonObject.getBoolean("status");
                             String msg = jsonObject.getString("msg");
-                            if (status){
+                            if (status) {
                                 editor = sharedPreferences.edit();
                                 editor.putBoolean("nlStatus", true);
                                 editor.commit();
@@ -655,7 +660,7 @@ public class Home extends Fragment {
                         Toast.makeText(getContext(), error.getMessage(),
                                 Toast.LENGTH_LONG).show();
                     }
-                }){
+                }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<String, String>();

@@ -77,29 +77,6 @@ public class Fragment_Cat_Product extends Fragment {
             }
         });
 
-
-        //Reverser String
-        /*String input = "umair";
-        String reverse = "";
-
-        char[] try1 = input.toCharArray();
-
-        for (int i = try1.length - 1; i >= 0; i --){
-            reverse += try1[i];
-        }
-        Toast.makeText(getContext(), reverse, Toast.LENGTH_LONG).show();*/
-
-        //Array Largest Number
-        /*int[] arr = {10,20,40,5,50};
-
-        int max = arr[0];
-
-        for (int i = 1; i < arr.length; i++){
-            if (arr[i] > max)
-                max = arr[i];
-        }
-        Toast.makeText(getContext(), String.valueOf(max), Toast.LENGTH_LONG).show();*/
-
     }
 
     private void getProducts(final String cateslug, final int limit){

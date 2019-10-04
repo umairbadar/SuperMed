@@ -1,16 +1,11 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="managment.protege.supermed.Fragment.PlaceOrder">
+    android:layout_height="match_parent">
 
-    <!-- TODO: Update blank fragment layout -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/details"
-        android:layout_alignParentTop="true"
         android:orientation="vertical">
 
         <include
@@ -19,554 +14,198 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="10dp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="25dp"
-                    android:layout_marginRight="25dp"
-                    android:orientation="vertical">
-                    <!--address and radio button -->
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:id="@+id/LL_pc_top"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentTop="true"
-                            android:orientation="vertical"
-                            android:visibility="invisible">
-
-                            <TextView
-                                android:id="@+id/placeOrder_UserName"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/lato_bold"
-                                android:text="John Doe"
-                                android:textColor="@color/placeOrderText"
-                                android:textSize="20dp" />
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="10dp" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/lato_bold"
-                                android:text="Address"
-                                android:textColor="@color/placeOrderText"
-                                android:textSize="16dp" />
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="5dp" />
-
-                            <EditText
-                                android:id="@+id/placeOrder_address"
-                                android:layout_width="match_parent"
-                                android:layout_height="100dp"
-                                android:background="@drawable/change_password_bg"
-                                android:gravity="left"
-                                android:hint="Enter Address"
-                                android:padding="5dp"
-                                android:textColor="@color/placeOrderEditText"
-                                android:textColorHint="@color/placeOrderEditText"
-                                android:textSize="16dp" />
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="10dp" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/lato_bold"
-                                android:text="Mobile Number"
-                                android:textColor="@color/placeOrderText"
-                                android:textSize="16dp" />
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="5dp" />
-
-                            <EditText
-                                android:id="@+id/placeOrder_number"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/change_password_bg"
-                                android:gravity="left"
-                                android:hint="Enter Number"
-                                android:inputType="number"
-                                android:padding="10dp"
-                                android:textColor="@color/placeOrderEditText"
-                                android:textColorHint="@color/placeOrderEditText"
-                                android:textSize="16dp" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/LL_pc_top2"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentTop="true"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/lato_bold"
-                                android:text="Guest User"
-                                android:textColor="@color/placeOrderEditText"
-                                android:textSize="20dp" />
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="10dp" />
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-
-                                <EditText
-                                    android:id="@+id/guest_fname"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:background="@drawable/change_password_bg"
-                                    android:gravity="left"
-                                    android:hint="First Name"
-                                    android:imeOptions="actionNext"
-                                    android:inputType="textCapSentences"
-                                    android:lines="1"
-                                    android:maxLines="1"
-                                    android:padding="10dp"
-                                    android:singleLine="true"
-                                    android:textColor="@color/placeOrderEditText"
-                                    android:textColorHint="@color/placeOrderEditText"
-                                    android:textSize="16dp"
-                                    />
-
-                                <View
-                                    android:layout_width="10dp"
-                                    android:layout_height="wrap_content" />
-
-                                <EditText
-                                    android:id="@+id/guest_lname"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:background="@drawable/change_password_bg"
-                                    android:gravity="left"
-                                    android:hint="Last Name"
-                                    android:imeOptions="actionNext"
-                                    android:inputType="textCapSentences"
-                                    android:lines="1"
-                                    android:maxLines="1"
-                                    android:padding="10dp"
-                                    android:singleLine="true"
-                                    android:textColor="@color/placeOrderEditText"
-                                    android:textColorHint="@color/placeOrderEditText"
-                                    android:textSize="16dp" />
-
-                            </LinearLayout>
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="10dp" />
-
-                            <EditText
-                                android:id="@+id/guest_email"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:background="@drawable/change_password_bg"
-                                android:gravity="left"
-                                android:hint="Email"
-                                android:imeOptions="actionNext"
-                                android:inputType="textEmailAddress"
-                                android:lines="1"
-                                android:maxLines="1"
-                                android:padding="10dp"
-                                android:singleLine="true"
-                                android:textColor="@color/placeOrderEditText"
-                                android:textColorHint="@color/placeOrderEditText"
-                                android:textSize="16dp" />
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="10dp" />
-
-                            <EditText
-                                android:id="@+id/guest_mobile"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:background="@drawable/change_password_bg"
-                                android:gravity="left"
-                                android:hint="Mobile"
-                                android:imeOptions="actionNext"
-                                android:inputType="phone"
-                                android:lines="1"
-                                android:maxLines="1"
-                                android:padding="10dp"
-                                android:singleLine="true"
-                                android:textColor="@color/placeOrderEditText"
-                                android:textColorHint="@color/placeOrderEditText"
-                                android:textSize="16dp" />
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="10dp" />
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/change_password_bg"
-                                android:orientation="vertical">
-
-                                <Spinner
-                                    android:id="@+id/guest_country"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="45dp"
-                                    android:layout_marginRight="5dp"
-                                    android:fontFamily="@font/lato_bold"
-                                    android:padding="15dp"
-                                    android:textColor="@color/placeOrderText"
-                                    android:textSize="14dp" />
-                            </LinearLayout>
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="10dp" />
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/change_password_bg"
-                                android:orientation="vertical">
-
-                                <Spinner
-                                    android:id="@+id/guest_city"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="45dp"
-                                    android:layout_marginRight="5dp"
-                                    android:fontFamily="@font/lato_bold"
-                                    android:padding="15dp"
-                                    android:textColor="@color/placeOrderText"
-                                    android:textSize="14dp" />
-                            </LinearLayout>
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="10dp" />
-
-                            <EditText
-                                android:id="@+id/guest_address"
-                                android:layout_width="match_parent"
-                                android:layout_height="100dp"
-                                android:layout_weight="1"
-                                android:background="@drawable/change_password_bg"
-                                android:gravity="left"
-                                android:hint="Address"
-                                android:imeOptions="actionDone"
-                                android:inputType="text"
-                                android:lines="4"
-                                android:maxLines="4"
-                                android:padding="10dp"
-                                android:textColor="@color/placeOrderEditText"
-                                android:textColorHint="@color/placeOrderEditText"
-                                android:textSize="16dp" />
-
-                        </LinearLayout>
-
-
-                    </RelativeLayout>
-
-                    <View
-                        android:id="@+id/view_1"
-                        android:layout_width="match_parent"
-                        android:layout_height="20dp" />
-
-                    <RadioGroup
-                        android:id="@+id/LL_pc_radio"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <RadioButton
-                            android:id="@+id/placeOrder_rb_credit"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:button="@drawable/radiobuttonbck"
-                            android:checked="true"
-                            android:fontFamily="@font/lato_bold"
-                            android:paddingLeft="10dp"
-                            android:text="@string/placeOrderCreditCard"
-                            android:textColor="@color/placeOrderText"
-                            android:textSize="16dp" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="5dp" />
-
-                        <RadioButton
-                            android:id="@+id/placeOrder_rb_cod"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:button="@drawable/radiobuttonbck"
-                            android:checked="false"
-                            android:fontFamily="@font/lato_bold"
-                            android:paddingLeft="10dp"
-                            android:text="@string/placeOrdercod"
-                            android:textColor="@color/placeOrderText"
-                            android:textSize="16dp" />
-                    </RadioGroup>
-
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="20dp" />
-                    <!-- End address and radio button -->
-                </LinearLayout>
-
-            </LinearLayout>
-        </ScrollView>
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="30dp" />
-    <!-- bottom section -->
-    <LinearLayout
-        android:id="@+id/details"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="vertical"
-
-        >
-        <!-- Order Summary Section-->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="25dp"
-            android:layout_marginRight="25dp"
-            android:background="@color/white"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:fontFamily="@font/lato_regular"
-                android:text="Order Summary"
-                android:textAllCaps="true"
-                android:textColor="@color/placeOrderText"
-                android:textSize="16dp" />
-
-            <TextView
-                android:id="@+id/placeOrder_orderSummary"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:fontFamily="@font/lato_regular"
-                android:gravity="right"
-                android:text="5 Items"
-                android:textAllCaps="true"
-                android:textColor="@color/placeOrderText"
-                android:textSize="16dp" />
-
-        </LinearLayout>
-        <!--End Order Summary Section-->
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/cartAmountSection"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
-                android:layout_marginRight="25dp"
-                android:orientation="vertical">
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp" />
-                <!--Row 1 -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/lato_regular"
-                        android:text="Order Total"
-                        android:textAllCaps="false"
-                        android:textColor="@color/placeOrderText"
-                        android:textSize="16dp" />
-
-                    <TextView
-                        android:id="@+id/placeOrder_orderTotal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/lato_regular"
-                        android:gravity="right"
-                        android:text=""
-                        android:textAllCaps="true"
-                        android:textColor="@color/placeOrderText"
-                        android:textSize="16dp" />
-
-                </LinearLayout>
-                <!--End Row 1 -->
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="10dp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/lato_regular"
-                        android:text="Coupon Discount"
-                        android:textAllCaps="false"
-                        android:textColor="@color/placeOrderText"
-                        android:textSize="16dp" />
-
-                    <TextView
-                        android:id="@+id/cartCouponDiscount"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/lato_regular"
-                        android:gravity="right"
-                        android:textAllCaps="true"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="16dp" />
-
-                </LinearLayout>
-                <!--End Row 2-->
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="10dp" />
-                <!--Row 3 -->
-                <!--Row 2 -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/lato_regular"
-                        android:text="Delivery"
-                        android:textAllCaps="false"
-                        android:textColor="@color/placeOrderText"
-                        android:textSize="16dp" />
-
-                    <TextView
-                        android:id="@+id/placeOrder_orderDelivery"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/lato_regular"
-                        android:gravity="right"
-                        android:text="Free"
-                        android:textAllCaps="true"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="16dp" />
-
-                </LinearLayout>
-                <!--End Row 2-->
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="10dp" />
-                <!--Row 3 -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/lato_regular"
-                        android:text="Total Payable"
-                        android:textAllCaps="false"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="20dp" />
-
-                    <TextView
-                        android:id="@+id/placeOrder_orderTotalPayable"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/lato_bold"
-                        android:gravity="right"
-                        android:text=""
-                        android:textAllCaps="true"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="20dp" />
-
-                </LinearLayout>
-                <!--End Row 3 -->
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp" />
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <!-- Bottom Button-->
-        <Button
-            android:id="@+id/placeOrder_btn_checkout"
+        <EditText
+            android:id="@+id/et_fname"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginBottom="20dp"
-            android:layout_marginEnd="25dp"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="20dp"
+            android:background="@drawable/et_bg"
+            android:fontFamily="@font/lato_regular"
+            android:hint="First Name"
+            android:inputType="text"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:padding="15dp"
+            android:imeOptions="actionNext"/>
+
+        <EditText
+            android:id="@+id/et_lname"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/et_bg"
+            android:fontFamily="@font/lato_regular"
+            android:hint="Last Name"
+            android:inputType="text"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:padding="15dp"
+            android:imeOptions="actionNext"/>
+
+        <EditText
+            android:id="@+id/et_address"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/et_bg"
+            android:fontFamily="@font/lato_regular"
+            android:hint="Address"
+            android:inputType="text"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:padding="15dp"
+            android:imeOptions="actionNext"/>
+
+        <EditText
+            android:id="@+id/et_contact"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/et_bg"
+            android:fontFamily="@font/lato_regular"
+            android:hint="Contact"
+            android:inputType="number"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:padding="15dp"
+            android:imeOptions="actionNext"/>
+
+        <EditText
+            android:id="@+id/et_district"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/et_bg"
+            android:fontFamily="@font/lato_regular"
+            android:hint="Town"
+            android:inputType="text"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:padding="15dp"
+            android:imeOptions="actionNext"/>
+
+        <EditText
+            android:id="@+id/et_postal_code"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/et_bg"
+            android:fontFamily="@font/lato_regular"
+            android:hint="Postal Code"
+            android:inputType="text"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:padding="15dp"
+            android:imeOptions="actionNext"/>
+
+        <EditText
+            android:id="@+id/et_company"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/et_bg"
+            android:fontFamily="@font/lato_regular"
+            android:hint="Company"
+            android:inputType="text"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:padding="15dp"
+            android:imeOptions="actionNext"/>
+
+        <EditText
+            android:id="@+id/et_email"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/et_bg"
+            android:fontFamily="@font/lato_regular"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:padding="15dp"
+            android:imeOptions="actionNext"/>
+
+        <EditText
+            android:id="@+id/et_order_note"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@drawable/et_bg"
+            android:fontFamily="@font/lato_regular"
+            android:hint="Order Note"
+            android:inputType="text"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:padding="15dp"
+            android:gravity="left"
+            android:imeOptions="actionDone"/>
+
+        <TextView
+            android:id="@+id/tv_total_price"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/et_bg"
+            android:fontFamily="@font/lato_regular"
+            android:text="Order Total Price"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:padding="15dp"
+            android:textColor="@color/black"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/et_bg"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
+
+            <Spinner
+                android:id="@+id/spn_payment_method"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/lato_bold"
+                android:padding="15dp"
+                android:textSize="14sp"
+                android:imeOptions="actionNext"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/et_bg"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
+
+            <Spinner
+                android:id="@+id/spn_city"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/lato_bold"
+                android:padding="15dp"
+                android:textSize="14sp"
+                android:imeOptions="actionNext"/>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_checkout"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
             android:background="@drawable/buttonbg"
             android:fontFamily="@font/lato_bold"
             android:text="Checkout"
             android:textColor="@color/white"
-            android:textSize="20dp" />
+            android:textStyle="bold"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"/>
 
-        <!-- Bottom Button-->
     </LinearLayout>
-    <!--End bottom section -->
 
-</RelativeLayout>
+</ScrollView>
