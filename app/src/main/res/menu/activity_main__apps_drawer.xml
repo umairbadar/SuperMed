@@ -8,9 +8,9 @@
             android:id="@+id/nav_home"
             android:title="HOME" />
 
-        <item
+        <!--<item
             android:id="@+id/nav_alternateMedicine"
-            android:title="ALTERNATIVE MEDICINE" />
+            android:title="ALTERNATIVE MEDICINE" />-->
         <item
             android:id="@+id/nav_uploadPresciption"
             android:title="UPLOAD PRESCRIPTION" />

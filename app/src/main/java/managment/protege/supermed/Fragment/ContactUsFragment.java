@@ -35,19 +35,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import es.dmoral.toasty.Toasty;
 import managment.protege.supermed.Activity.Main_Apps;
 import managment.protege.supermed.Activity.Register;
 import managment.protege.supermed.Adapter.ExpandableListAdapter1;
 import managment.protege.supermed.R;
-import managment.protege.supermed.Response.ContactUsResponse;
-import managment.protege.supermed.Response.GetAllProductsResponse;
-import managment.protege.supermed.Retrofit.API;
-import managment.protege.supermed.Retrofit.RetrofitAdapter;
-import managment.protege.supermed.Tools.GlobalHelper;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class ContactUsFragment extends Fragment {
 
@@ -63,10 +54,6 @@ public class ContactUsFragment extends Fragment {
     List<String> listDataHeader;
     HashMap<String, List<String>> listDataChild;
     private int lastPosition = -1;
-
-    //Spinner
-    private Spinner spn_subject;
-    private ArrayList<String> arr_subject;
 
     public ContactUsFragment() {
         // Required empty public constructor
@@ -114,16 +101,6 @@ public class ContactUsFragment extends Fragment {
                 }
             }
         });
-
-        spn_subject = view.findViewById(R.id.spn_subject);
-        arr_subject = new ArrayList<>();
-        arr_subject.add("Please select your topic");
-        arr_subject.add("Capture the information you need");
-        arr_subject.add("Add or remove any fields");
-        arr_subject.add("Your own custom criteria");
-        arr_subject.add("Make any field required or not");
-        spn_subject.setAdapter(new ArrayAdapter<>(getContext(),
-                android.R.layout.simple_spinner_dropdown_item, arr_subject));
 
         // get the listview
         expListView = (ExpandableListView) view.findViewById(R.id.lvExp);
@@ -182,7 +159,7 @@ public class ContactUsFragment extends Fragment {
     private void submitInquiry() {
 
         hud.show();
-        String URL = "https://www.supermed.pk/api/api/saveContactUs";
+        String URL = Register.Base_URL + "contact-us";
         StringRequest req = new StringRequest(Request.Method.POST, URL,
                 new com.android.volley.Response.Listener<String>() {
                     @Override
@@ -192,7 +169,7 @@ public class ContactUsFragment extends Fragment {
                             JSONObject jsonObject = new JSONObject(response);
                             Boolean status = jsonObject.getBoolean("status");
                             if (status.equals(true)) {
-                                startActivity(new Intent(getActivity(), Main_Apps.class));
+                                Main_Apps.getMainActivity().backfunction(new Home());
                                 Toast.makeText(getContext(), jsonObject.getString("message"),
                                         Toast.LENGTH_LONG).show();
                             } else {

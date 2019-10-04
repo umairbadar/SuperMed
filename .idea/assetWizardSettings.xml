@@ -19,8 +19,8 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_time" />
-                            <entry key="sourceFile" value="C:\Users\developer\Downloads\time.svg" />
+                            <entry key="outputName" value="ic_arrow_down" />
+                            <entry key="sourceFile" value="C:\Users\developer\Downloads\arrow-down-sign-to-navigate.svg" />
                           </map>
                         </option>
                       </PersistentState>

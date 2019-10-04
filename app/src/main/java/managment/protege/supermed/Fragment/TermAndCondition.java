@@ -17,12 +17,6 @@ import android.widget.Toast;
 import es.dmoral.toasty.Toasty;
 import managment.protege.supermed.Activity.Main_Apps;
 import managment.protege.supermed.R;
-import managment.protege.supermed.Response.ContactUsResponse;
-import managment.protege.supermed.Retrofit.API;
-import managment.protege.supermed.Retrofit.RetrofitAdapter;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.

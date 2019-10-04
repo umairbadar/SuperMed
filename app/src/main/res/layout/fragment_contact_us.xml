@@ -44,7 +44,8 @@
                 android:fontFamily="@font/lato_regular"
                 android:hint="Your Name"
                 android:inputType="text"
-                android:padding="15dp" />
+                android:padding="15dp"
+                android:imeOptions="actionNext"/>
 
 
             <EditText
@@ -58,7 +59,8 @@
                 android:fontFamily="@font/lato_regular"
                 android:hint="Your Email"
                 android:inputType="textEmailAddress"
-                android:padding="15dp" />
+                android:padding="15dp"
+                android:imeOptions="actionNext"/>
 
 
             <EditText
@@ -70,26 +72,11 @@
                 android:layout_marginRight="15dp"
                 android:background="@drawable/et_bg"
                 android:fontFamily="@font/lato_regular"
-                android:hint="Your Subject"
+                android:hint="Your Contact"
                 android:inputType="phone"
-                android:padding="15dp" />
+                android:padding="15dp"
+                android:imeOptions="actionNext"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@drawable/et_bg"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="15dp">
-
-            <Spinner
-                android:id="@+id/spn_subject"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="10dp"/>
-
-
-        </LinearLayout>
 
             <EditText
                 android:id="@+id/et_inquiry"
@@ -101,9 +88,10 @@
                 android:background="@drawable/et_bg"
                 android:fontFamily="@font/lato_regular"
                 android:gravity="left|top"
-                android:hint="Address"
+                android:hint="Inquiry"
                 android:inputType="text"
-                android:padding="15dp" />
+                android:padding="15dp"
+                android:imeOptions="actionDone"/>
 
             <Button
                 android:id="@+id/btn_submit"

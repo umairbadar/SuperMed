@@ -23,8 +23,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import managment.protege.supermed.Activity.Main_Apps;
-import managment.protege.supermed.Adapter.HelpCenterAdapter;
-import managment.protege.supermed.Model.HelpCenterModel;
 import managment.protege.supermed.R;
 import managment.protege.supermed.Response.FaqsResponse;
 import managment.protege.supermed.Response.ForgotPassword;
@@ -57,7 +55,6 @@ public class faqs extends Fragment {
         View v = inflater.inflate(R.layout.fragment_faqs, container, false);
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
         Main_Apps.getMainActivity().addToolbarBack(getContext(), getString(R.string.faq), v);
-        getHelpCenterData(HelpCenterAdapter.data);
 
         initialization(v);
         return v;

@@ -70,7 +70,7 @@ public class SubCategory extends Fragment {
     private void initWidget() {
         toolbar_text = (TextView) view.findViewById(R.id.toolbar_text);
         recyclerViewCata = view.findViewById(R.id.recycler);
-        tv_sc_empty = view.findViewById(R.id.tv_sc_empty);
+        //tv_sc_empty = view.findViewById(R.id.tv_sc_empty);
         hud = KProgressHUD.create(getContext())
                 .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
                 .setCancellable(false);

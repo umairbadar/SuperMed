@@ -40,14 +40,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import managment.protege.supermed.Fragment.AlternativeListFragment;
 import managment.protege.supermed.Fragment.Appointment_Fragment;
 import managment.protege.supermed.Fragment.Cart;
 import managment.protege.supermed.Fragment.Category;
 import managment.protege.supermed.Fragment.ContactUsFragment;
 import managment.protege.supermed.Fragment.Fragment_AboutUs;
 import managment.protege.supermed.Fragment.Fragment_DeliveryInformation;
-import managment.protege.supermed.Fragment.HelpCenterFragment;
+import managment.protege.supermed.Fragment.Fragment_FAQ;
 import managment.protege.supermed.Fragment.JoinUs;
 import managment.protege.supermed.Fragment.OrderHistory;
 import managment.protege.supermed.Fragment.SearchProductFragment;
@@ -376,12 +375,12 @@ public class Main_Apps extends AppCompatActivity implements NavigationView.OnNav
 
             backfunction(new Fragment_DeliveryInformation());
         }
-        if (id == R.id.nav_alternateMedicine) {
+       /* if (id == R.id.nav_alternateMedicine) {
 
             backfunction(new AlternativeListFragment());
-        }
+        }*/
         if (id == R.id.nav_helpCenter) {
-            backfunction(new HelpCenterFragment());
+            backfunction(new Fragment_FAQ());
         }
 
         if (id == R.id.nav_uploadPresciption) {
@@ -490,7 +489,7 @@ public class Main_Apps extends AppCompatActivity implements NavigationView.OnNav
         startActivity(intent);
     }
 
-    public void SearchDialog(final Context context) {
+   /* public void SearchDialog(final Context context) {
         final Dialog searchPopup = new Dialog(context);
         searchPopup.requestWindowFeature(Window.FEATURE_NO_TITLE);
         searchPopup.setContentView(R.layout.search_dialog);
@@ -504,7 +503,7 @@ public class Main_Apps extends AppCompatActivity implements NavigationView.OnNav
             @Override
             public void onClick(View view) {
 
-                HelpCenterFragment.LoadSearchHelpCenterData(email.getText().toString());
+                Fragment_FAQ.LoadSearchHelpCenterData(email.getText().toString());
                 searchPopup.dismiss();
 
 
@@ -527,7 +526,7 @@ public class Main_Apps extends AppCompatActivity implements NavigationView.OnNav
             }
         });
         searchPopup.show();
-    }
+    }*/
 
     public void forgotPasswordDialog(final Context context) {
         final Dialog forgotPasswordPopup = new Dialog(context);
