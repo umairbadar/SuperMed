@@ -1,16 +1,14 @@
 package managment.protege.supermed.Fragment;
 
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -29,46 +27,45 @@ import java.util.List;
 
 import managment.protege.supermed.Activity.Main_Apps;
 import managment.protege.supermed.Activity.Register;
-import managment.protege.supermed.Adapter.Adapter_Category;
-import managment.protege.supermed.Model.Model_Category;
+import managment.protege.supermed.Adapter.Adapter_Appointment_History;
+import managment.protege.supermed.Model.Model_Appointment_History;
 import managment.protege.supermed.R;
 
-public class Category extends Fragment {
+public class Fragment_Appointment_History extends Fragment {
 
-    View view;
-
+    private String appointment_id;
     private RecyclerView recyclerView;
-    private Adapter_Category adapter;
-    private List<Model_Category> list;
-
-    public Category() {
-        // Required empty public constructor
-    }
-
+    private List<Model_Appointment_History> list;
+    private Adapter_Appointment_History adapter;
+    public static TextView tv_total_price;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_category, container, false);
+        View v = inflater.inflate(R.layout.fragment_appointment_history, container, false);
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
-        Main_Apps.getMainActivity().addToolbarBack(getContext(), getString(R.string.categories), view);
+        Main_Apps.getMainActivity().addToolbarBack(getContext(), "APPOINTMENT DETAIL", v);
 
-        recyclerView = view.findViewById(R.id.recyclerViewCategories);
+        if (getArguments() != null){
+            appointment_id = getArguments().getString("appointment_id");
+        }
+
+        recyclerView = v.findViewById(R.id.recycler);
+        tv_total_price = v.findViewById(R.id.tv_total_price);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), 1));
         list = new ArrayList<>();
-        adapter = new Adapter_Category(list, getContext());
+        adapter = new Adapter_Appointment_History(list, getContext());
         recyclerView.setAdapter(adapter);
-        getCategories();
+        getAppointmentDetails(appointment_id);
 
-        return view;
+        return v;
+
     }
 
-    private void getCategories() {
+    private void getAppointmentDetails(String appointment_id){
         Main_Apps.hud.show();
-        String URL = Register.Base_URL + "categories";
+        String URL = Register.Base_URL + "user-appointment-details/" + appointment_id;
         StringRequest req = new StringRequest(Request.Method.GET, URL,
                 new Response.Listener<String>() {
                     @Override
@@ -77,20 +74,36 @@ public class Category extends Fragment {
                             Main_Apps.hud.dismiss();
                             JSONObject jsonObject = new JSONObject(response);
                             JSONArray jsonArray = jsonObject.getJSONArray("data");
-                            for (int i = 0; i < jsonArray.length(); i++) {
+                            for (int i = 0; i < jsonArray.length(); i++){
                                 JSONObject object = jsonArray.getJSONObject(i);
-                                String id = object.getString("id");
-                                String name = object.getString("name");
-                                String slug = object.getString("slug");
+                                String name = object.getString("first_name") + " " + object.getString("last_name");
+                                String status = object.getString("payment_status");
+                                String appointment_id = object.getString("appointment_id");
+                                String dob = object.getString("dob");
+                                String gender = object.getString("gender");
+                                String datetime = object.getString("datetime");
+                                String pay_type = object.getString("pay_type");
+                                String patient_address = object.getString("patient_address");
+                                String problem = object.getString("problem");
+                                String price = object.getString("price");
 
-                                Model_Category item = new Model_Category(
-                                        id,
+                                Model_Appointment_History item = new Model_Appointment_History(
                                         name,
-                                        slug
+                                        status,
+                                        appointment_id,
+                                        dob,
+                                        gender,
+                                        datetime,
+                                        pay_type,
+                                        patient_address,
+                                        problem,
+                                        price
                                 );
 
                                 list.add(item);
+
                             }
+
                             adapter.notifyDataSetChanged();
                         } catch (JSONException e) {
                             e.printStackTrace();

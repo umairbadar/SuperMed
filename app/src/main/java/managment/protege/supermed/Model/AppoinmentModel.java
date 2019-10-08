@@ -1,72 +1,68 @@
 package managment.protege.supermed.Model;
 
-/**
- * Created by Developer on 6/21/2018.
- */
-
 public class AppoinmentModel {
-    public String getAppointment_no() {
-        return appointment_no;
-    }
 
-    public void setAppointment_no(String appointment_no) {
-        this.appointment_no = appointment_no;
-    }
+    private String appointment_id;
+    private String day;
+    private String date;
+    private String time;
+    private String patient_id;
+    private String lab;
+    private String status;
+    private String payment_method;
+    private String desc;
+    private String price;
 
-    public String getTest_name() {
-        return test_name;
-    }
-
-    public void setTest_name(String test_name) {
-        this.test_name = test_name;
-    }
-
-    public String getPatient_id() {
-        return patient_id;
-    }
-
-    public void setPatient_id(String patient_id) {
+    public AppoinmentModel(String appointment_id, String day, String date, String time, String patient_id, String lab, String status, String payment_method, String desc, String price) {
+        this.appointment_id = appointment_id;
+        this.day = day;
+        this.date = date;
+        this.time = time;
         this.patient_id = patient_id;
+        this.lab = lab;
+        this.status = status;
+        this.payment_method = payment_method;
+        this.desc = desc;
+        this.price = price;
     }
 
-    public String getPatient_name() {
-        return patient_name;
+    public String getAppointment_id() {
+        return appointment_id;
     }
 
-    public void setPatient_name(String patient_name) {
-        this.patient_name = patient_name;
-    }
-
-    public String getLabortaory_name() {
-        return labortaory_name;
-    }
-
-    public void setLabortaory_name(String labortaory_name) {
-        this.labortaory_name = labortaory_name;
+    public String getDay() {
+        return day;
     }
 
     public String getDate() {
         return date;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public String getTime() {
+        return time;
     }
 
-    String appointment_no;
-    String test_name;
-    String patient_id;
-    String patient_name;
-    String labortaory_name;
-    String date;
-
-    public AppoinmentModel(String appointment_no, String test_name, String patient_id, String patient_name, String labortaory_name, String date) {
-        this.appointment_no = appointment_no;
-        this.test_name = test_name;
-        this.patient_id = patient_id;
-        this.patient_name = patient_name;
-        this.labortaory_name = labortaory_name;
-        this.date = date;
+    public String getPatient_id() {
+        return patient_id;
     }
 
+    public String getLab() {
+        return lab;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public String getPayment_method() {
+        return payment_method;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public String getPrice() {
+        return price;
+    }
 }

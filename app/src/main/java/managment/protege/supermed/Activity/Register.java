@@ -135,8 +135,8 @@ public class Register extends AppCompatActivity {
 
         hud = KProgressHUD.create(Register.this)
                 .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
-                .setCancellable(false)
-                .setWindowColor(Color.parseColor("#5D910B"));
+                .setCancellable(false);
+
         et_fname = findViewById(R.id.et_fname);
         et_lname = findViewById(R.id.et_lname);
         et_email = findViewById(R.id.et_email);

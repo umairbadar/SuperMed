@@ -224,8 +224,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
     public void initializations() {
         hud = KProgressHUD.create(Login.this)
                 .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
-                .setCancellable(false)
-                .setWindowColor(Color.parseColor("#5D910B"));
+                .setCancellable(false);
 
         login_email = (EditText) findViewById(R.id.login_email);
         login_password = (EditText) findViewById(R.id.login_password);

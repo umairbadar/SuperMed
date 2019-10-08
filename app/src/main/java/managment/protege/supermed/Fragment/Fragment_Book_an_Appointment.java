@@ -594,6 +594,7 @@ public class Fragment_Book_an_Appointment extends Fragment {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<String, String>();
+                map.put("userId", GlobalHelper.getUserProfile(getContext()).getProfile().getId());
                 map.put("patient_id", GlobalHelper.getUserProfile(getContext()).getProfile().getPatientId());
                 map.put("patient_name", et_patient_name.getText().toString());
                 map.put("gender", gender);

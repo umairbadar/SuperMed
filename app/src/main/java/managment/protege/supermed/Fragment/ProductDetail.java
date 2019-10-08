@@ -85,11 +85,11 @@ public class ProductDetail extends Fragment {
         view = inflater.inflate(R.layout.fragment_product_detail, container, false);
         Main_Apps.status = false;
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
-        Main_Apps.getMainActivity().addToolbar(getContext(), "Product Detail", view);
+        Main_Apps.getMainActivity().addToolbarBack(getContext(), "PRODUCT DETAILS", view);
 
         userid = GlobalHelper.getUserProfile(getContext()).getProfile().getId();
 
-        cart_toolbarapps = (ImageView) view.findViewById(R.id.carts);
+        /*cart_toolbarapps = (ImageView) view.findViewById(R.id.carts);
         nobatch_products = (TextView) view.findViewById(R.id.nobatch_product);
         if (ProductDetailCartCounter > 0) {
             nobatch_products.setVisibility(View.VISIBLE);
@@ -101,7 +101,7 @@ public class ProductDetail extends Fragment {
         if (getArguments() != null) {
             product_ID = getArguments().getString("ProductID");
             cateSlug = getArguments().getString("cateslug");
-        }
+        }*/
 
         initViews();
         getProductDetail(product_ID);

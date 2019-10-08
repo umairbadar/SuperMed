@@ -1,51 +1,33 @@
 package managment.protege.supermed.Adapter;
 
-import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
+import android.graphics.Color;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.toolbox.StringRequest;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
-import managment.protege.supermed.Activity.Main_Apps;
-import managment.protege.supermed.Fragment.Home;
+import managment.protege.supermed.Fragment.Fragment_Appointment_History;
 import managment.protege.supermed.Model.AppoinmentModel;
-import managment.protege.supermed.Model.AppointmentHistoryModel;
-import managment.protege.supermed.Model.OrderHistoryList;
 import managment.protege.supermed.R;
 
-/**
- * Created by Developer on 6/21/2018.
- */
 
 public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.MyViewHolder> {
 
-    private Context context;
+    List<AppoinmentModel> list;
+    Context context;
 
-    public AppointmentAdapter(List<AppointmentHistoryModel> orderHistoryLists, Context context) {
-        this.orderHistoryLists = orderHistoryLists;
+    public AppointmentAdapter(List<AppoinmentModel> list, Context context) {
+        this.list = list;
         this.context = context;
     }
-
-    private List<AppointmentHistoryModel> orderHistoryLists;
 
     @NonNull
     @Override
@@ -58,90 +40,67 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder holder, int position) {
-        final AppointmentHistoryModel cata = orderHistoryLists.get(position);
-        holder.test.setText(cata.getTestname());
-        holder.app_number.setText(cata.getAppointmentId());
-        holder.patientname.setText("Patient Name: " + cata.getPatientName());
-        holder.patientid.setText("Patient Id: " + cata.getPatientId());
+        final AppoinmentModel item = list.get(position);
 
-        DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
-        DateFormat outputFormat = new SimpleDateFormat("dd MMM yyyy");
-        String inputDateStr = cata.getDate();
-        Date date = null;
-        try {
-            date = inputFormat.parse(inputDateStr);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        String outputDateStr = outputFormat.format(date);
-        holder.date.setText(outputDateStr);
+        holder.tv_day.setText(item.getDay());
+        holder.tv_date.setText(item.getDate());
+        holder.tv_time.setText(item.getTime());
+        holder.tv_lab.setText(item.getLab());
+        holder.tv_patient_id.setText(item.getPatient_id());
+        holder.tv_desc.setText(item.getDesc());
+        holder.tv_payment_method.setText(item.getPayment_method());
+        holder.tv_price.setText("RS. " + item.getPrice() + "/=");
 
-        holder.laboratory_name.setText(cata.getLabname());
-
-        if (cata != null && cata.getReport() != null) {
-            if (!(cata.getReport().equalsIgnoreCase("Not Uploaded Yet"))) {
-                holder.tv_downlaod.setText("Download Report");
-            } else {
-                holder.tv_downlaod.setText("Report Pending");
-            }
+        if (item.getStatus().equals("Pending")){
+            holder.tv_status.setText(item.getStatus());
+            holder.tv_status.setTextColor(Color.parseColor("#2BA8E4"));
+        } else if (item.getStatus().equals("Cancel")){
+            holder.tv_status.setText(item.getStatus());
+            holder.tv_status.setTextColor(Color.parseColor("#D73030"));
+        }  else if (item.getStatus().equals("Success")){
+            holder.tv_status.setText(item.getStatus());
+            holder.tv_status.setTextColor(Color.parseColor("#67AD51"));
         }
 
-        holder.tv_downlaod.setOnClickListener(new View.OnClickListener() {
+        holder.mainLayout.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                if (cata.getReport() != null && !(cata.getReport().equalsIgnoreCase(""))) {
-                    DownloadBill(context, cata.getReport());
-                }
+            public void onClick(View v) {
+                AppCompatActivity activity = (AppCompatActivity) v.getContext();
+                Fragment_Appointment_History myFragment = new Fragment_Appointment_History();
+                Bundle args = new Bundle();
+                args.putString("appointment_id", item.getAppointment_id());
+                myFragment.setArguments(args);
+                activity.getSupportFragmentManager().beginTransaction().replace(R.id.content_main, myFragment).addToBackStack(null).commit();
             }
         });
     }
 
-    public void DownloadBill(final Context context, final String recipt) {
-        final Dialog downloadBillDialog = new Dialog(context);
-        downloadBillDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        downloadBillDialog.setContentView(R.layout.bill_dialog_box);
-        downloadBillDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        downloadBillDialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-        downloadBillDialog.setCancelable(false);
-        final ImageView btn_close = (ImageView) downloadBillDialog.findViewById(R.id.iv_rp_close);
-        Button sucess = (Button) downloadBillDialog.findViewById(R.id.btn_downloadBill);
-        sucess.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-
-                context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(recipt)));
-                downloadBillDialog.dismiss();
-            }
-        });
-        btn_close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                downloadBillDialog.dismiss();
-            }
-        });
-        downloadBillDialog.show();
-    }
 
     @Override
     public int getItemCount() {
 
-        return orderHistoryLists.size();
+        return list.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView test, app_number, patientid, patientname, laboratory_name, date, orderHistoryNumber, tv_downlaod;
-        ImageView iv;
+
+        TextView tv_day, tv_date, tv_time, tv_lab, tv_patient_id, tv_desc, tv_status, tv_payment_method, tv_price;
+        LinearLayout mainLayout;
 
         public MyViewHolder(View view) {
             super(view);
-            test = (TextView) view.findViewById(R.id.test);
-            patientname = (TextView) view.findViewById(R.id.patientname);
-            app_number = (TextView) view.findViewById(R.id.app_number);
-            patientid = (TextView) view.findViewById(R.id.patientid);
-            laboratory_name = (TextView) view.findViewById(R.id.laboratory_name);
-            tv_downlaod = (TextView) view.findViewById(R.id.tv_downlaod);
-            date = (TextView) view.findViewById(R.id.date);
+
+            tv_day = view.findViewById(R.id.tv_day);
+            tv_date = view.findViewById(R.id.tv_date);
+            tv_time = view.findViewById(R.id.tv_time);
+            tv_lab = view.findViewById(R.id.tv_lab);
+            tv_patient_id = view.findViewById(R.id.tv_patient_id);
+            tv_desc = view.findViewById(R.id.tv_desc);
+            tv_status = view.findViewById(R.id.tv_status);
+            tv_payment_method = view.findViewById(R.id.tv_payment_method);
+            tv_price = view.findViewById(R.id.tv_price);
+            mainLayout = view.findViewById(R.id.mainLayout);
         }
     }
 }

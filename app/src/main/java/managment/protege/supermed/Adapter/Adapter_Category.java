@@ -1,6 +1,7 @@
 package managment.protege.supermed.Adapter;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,7 +27,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import managment.protege.supermed.Activity.Main_Apps;
 import managment.protege.supermed.Activity.Register;
+import managment.protege.supermed.Fragment.Fragment_Cat_Product;
 import managment.protege.supermed.Model.Model_Category;
 import managment.protege.supermed.Model.Model_SubCategory;
 import managment.protege.supermed.R;
@@ -54,6 +57,15 @@ public class Adapter_Category extends RecyclerView.Adapter<Adapter_Category.View
         final Model_Category item = list.get(position);
 
         holder.tv_name.setText(item.getName());
+
+        holder.tv_name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle args = new Bundle();
+                args.putString("slug", item.getSlug());
+                Main_Apps.getMainActivity().backfunction(new Fragment_Cat_Product(), args);
+            }
+        });
 
         list1 = new ArrayList<>();
 
@@ -104,6 +116,7 @@ public class Adapter_Category extends RecyclerView.Adapter<Adapter_Category.View
                                                 id,
                                                 name,
                                                 slugs,
+                                                Sluq,
                                                 thirdlevel
                                         );
 

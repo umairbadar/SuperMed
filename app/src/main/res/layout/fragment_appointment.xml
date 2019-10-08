@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     tools:context="managment.protege.supermed.Fragment.Appointment_Fragment"
     android:orientation="vertical"
-    android:background="#ECECEC">
+    android:background="#D1D1D1">
 
     <!-- TODO: Update blank fragment layout -->
     <include
@@ -15,8 +15,21 @@
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:text="@string/hello_blank_fragment"
         android:id="@+id/recycler" />
+
+    <TextView
+        android:id="@+id/tv_error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="You haven't booked any appointments yet."
+        android:gravity="center"
+        android:textSize="24sp"
+        android:typeface="serif"
+        android:visibility="gone"
+        android:padding="10dp"
+        android:layout_marginTop="20dp"/>
 
 </LinearLayout>
