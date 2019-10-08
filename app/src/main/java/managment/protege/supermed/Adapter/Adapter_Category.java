@@ -77,6 +77,7 @@ public class Adapter_Category extends RecyclerView.Adapter<Adapter_Category.View
             public void onClick(View view) {
                 if (holder.recyclerViewSubCategory.getVisibility() == View.VISIBLE){
                     holder.recyclerViewSubCategory.setVisibility(View.GONE);
+                    holder.img_drop_down.setImageResource(R.drawable.ic_plus);
                 } else {
                     list1.clear();
                     holder.recyclerViewSubCategory.setVisibility(View.VISIBLE);
@@ -104,6 +105,7 @@ public class Adapter_Category extends RecyclerView.Adapter<Adapter_Category.View
                                 JSONObject innerObj1 = jsonArray.getJSONObject(i);
                                 String slug = innerObj1.getString("slug");
                                 if (Sluq.equals(slug)){
+                                    holder.img_drop_down.setImageResource(R.drawable.ic_minus);
                                     JSONArray jsonArray1 = innerObj1.getJSONArray("subcate");
                                     for (int j = 0; j < jsonArray1.length(); j++){
                                         JSONObject innerObj2 = jsonArray1.getJSONObject(j);
